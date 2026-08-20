@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<title>Link×Football | 海外サッカー移籍エージェント・契約交渉サポート</title>
+<meta content="オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。" name="description"/>
+<link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230E1113'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='900' font-size='24' fill='%23E2792E' text-anchor='middle'%3ELF%3C/text%3E%3C/svg%3E" rel="icon"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&amp;family=Noto+Sans+KR:wght@400;500;700;900&amp;family=Noto+Sans+Thai:wght@400;500;700;900&amp;family=Noto+Sans+SC:wght@400;500;700;900&amp;family=Noto+Sans:wght@400;500;700;900&amp;family=League+Spartan:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+/* ==============================================================
+   Link×Football — Design tokens
+   参考: KTX株式会社サイト(ダーク基調・写真主体・力強いゴシック体の
+   製造業コーポレートサイト)のトーン&マナーを踏襲。
+   ============================================================== */
+:root{
+  --bg:#0E1113;
+  --bg-1:#15181B;
+  --bg-2:#1B1F22;
+  --bg-3:#22262A;
+  --ink:#F4F3EF;
+  --ink-muted:#A7ACA8;
+  --ink-faint:#6E7370;
+  --line:rgba(244,243,239,.10);
+  --line-strong:rgba(244,243,239,.20);
+  --accent:#E2792E;
+  --accent-2:#C6621F;
+  --accent-soft:rgba(226,121,46,.14);
+  --accent-ink:#1A0E06;
+
+  --font-jp:'Noto Sans JP', 'Noto Sans', 'Hiragino Sans', sans-serif;
+  --font-en:'League Spartan', sans-serif;
+
+  --container:1180px;
+  --dur:.5s;
+  --ease:cubic-bezier(.2,.7,.3,1);
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;}
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-jp);
+  font-weight:400;
+  line-height:1.85;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%;}
+a{color:inherit;text-decoration:none;}
+ul{margin:0;padding:0;list-style:none;}
+h1,h2,h3,h4{
+  font-family:var(--font-jp);
+  font-weight:900;
+  line-height:1.4;
+  margin:0;
+  letter-spacing:.01em;
+}
+p{margin:0;}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
+
+.wrap{
+  max-width:var(--container);
+  margin-inline:auto;
+  padding-inline:clamp(1.25rem,4.5vw,3rem);
+}
+
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:.7em;
+  font-family:var(--font-en);
+  font-weight:700;
+  font-size:.78rem;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--accent);
+}
+.eyebrow::before{
+  content:"";
+  width:1.8em;
+  height:2px;
+  background:var(--accent);
+  display:inline-block;
+}
+
+.section-head{
+  max-width:44em;
+  margin-bottom:clamp(2.25rem,5vw,3.5rem);
+}
+.section-head h2{
+  margin-top:.8rem;
+  font-size:clamp(1.7rem,3.6vw,2.55rem);
+}
+.section-head .sub{
+  margin-top:1.1rem;
+  color:var(--ink-muted);
+  font-size:.98rem;
+  line-height:1.9;
+}
+
+section{padding-block:clamp(4rem,9vw,7.5rem);}
+.bleed-alt{background:var(--bg-1);}
+
+/* ==============================================================
+   Media slot — 画像差し替え用プレースホルダー
+   実際の写真を入れる際は、対象の <img class="media-slot__ph"> の
+   src 属性を写真のパスに差し替えるだけでOKです(class はそのまま)。
+   下の figcaption(差し替え案内)は本番公開前に削除してください。
+   ============================================================== */
+.media-slot{
+  position:relative;
+  overflow:hidden;
+  background:var(--bg-2);
+  /* padding-top spacer sets the box's aspect ratio (width / height = --ar).
+     Deliberately not using the aspect-ratio property here: combined with
+     CSS Grid's track-sizing algorithm it triggers a layout bug in current
+     Chromium where grid items runaway-grow on reflow. This technique is
+     equivalent and doesn't interact with grid sizing at all. */
+}
+.media-slot::before{
+  content:"";
+  display:block;
+  padding-top:calc(100% / var(--ar, 1.6));
+}
+.media-slot__ph{
+  position:absolute;
+  inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+}
+.media-slot__tag{
+  position:absolute;
+  left:.9rem;bottom:.9rem;
+  display:inline-flex;
+  align-items:center;
+  gap:.5em;
+  background:rgba(14,17,19,.82);
+  border:1px solid var(--line-strong);
+  color:var(--ink-muted);
+  font-size:.68rem;
+  letter-spacing:.04em;
+  padding:.5em .8em;
+  max-width:calc(100% - 1.8rem);
+  backdrop-filter:blur(4px);
+}
+.media-slot__tag b{color:var(--accent);font-weight:700;}
+
+/* Corner-cut signature detail on every photo slot.
+   Deliberately ::after only: ::before on .media-slot is already used as
+   the aspect-ratio spacer, and an element can only have one ::before. */
+.media-slot.cut::after{
+  content:"";
+  position:absolute;
+  right:0;top:0;
+  width:0;height:0;
+  border-style:solid;
+  border-width:0 38px 38px 0;
+  border-color:transparent var(--accent) transparent transparent;
+  z-index:1;
+}
+
+/* ==============================================================
+   Skip link / focus
+   ============================================================== */
+.skip-link{
+  position:absolute;
+  left:-999px;top:auto;
+  background:var(--accent);
+  color:var(--accent-ink);
+  padding:.8em 1.2em;
+  z-index:200;
+  font-weight:700;
+}
+.skip-link:focus{left:1rem;top:1rem;}
+a:focus-visible,button:focus-visible,input:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+}
+
+/* ==============================================================
+   Header
+   ============================================================== */
+.site-header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(14,17,19,.88);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  transition:border-color .3s var(--ease);
+}
+.site-header.is-scrolled{border-color:var(--line-strong);}
+.site-header .wrap{
+  display:flex;align-items:center;justify-content:space-between;
+  height:76px;
+}
+.header-right{display:flex;align-items:center;gap:clamp(.75rem,2vw,1.25rem);}
+.brand{display:flex;align-items:center;gap:.6rem;}
+.brand-logo-slot{
+  /* ロゴ画像を用意した際は、この中に
+     <img src="logo.svg" alt="Link×Football" style="height:100%;width:auto;display:block;">
+     を配置すれば高さ32pxのコンテナに自動で収まります。 */
+  height:32px;
+  display:flex;align-items:center;
+}
+.brand-wordmark{
+  font-family:var(--font-en);
+  font-weight:800;
+  font-size:1.3rem;
+  letter-spacing:.01em;
+  color:var(--ink);
+  white-space:nowrap;
+}
+.brand-wordmark .x{color:var(--accent);font-weight:700;padding-inline:.06em;}
+
+.nav-desktop{display:flex;align-items:center;gap:clamp(1.3rem,2.4vw,2.4rem);}
+.nav-desktop a{
+  font-size:.9rem;
+  font-weight:500;
+  letter-spacing:.02em;
+  position:relative;
+  padding-block:.3rem;
+}
+.nav-desktop a::after{
+  content:"";
+  position:absolute;left:0;right:0;bottom:0;
+  height:2px;background:var(--accent);
+  transform:scaleX(0);transform-origin:right;
+  transition:transform .3s var(--ease);
+}
+.nav-desktop a:hover::after,.nav-desktop a:focus-visible::after{
+  transform:scaleX(1);transform-origin:left;
+}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:.5em;
+  background:var(--accent);
+  color:var(--accent-ink) !important;
+  padding:.65em 1.4em;
+  font-size:.85rem !important;
+  font-weight:700;
+  letter-spacing:.03em;
+  border:1px solid var(--accent);
+  transition:background .3s var(--ease), border-color .3s var(--ease);
+}
+.nav-cta:hover{background:var(--accent-2);border-color:var(--accent-2);}
+.nav-cta::after{display:none !important;}
+
+/* ==============================================================
+   Language switcher (custom dropdown — native <select> was tried
+   first, but flag emoji render as a plain dot inside native
+   <option> elements in some environments; a custom listbox lets us
+   guarantee the flag+name presentation everywhere.)
+   ============================================================== */
+.lang-switch{position:relative;flex-shrink:0;}
+.lang-trigger{
+  display:inline-flex;align-items:center;gap:.5em;
+  background:var(--bg-2);
+  border:1px solid var(--line-strong);
+  color:var(--ink);
+  font-family:var(--font-jp);
+  font-size:.82rem;
+  padding:.5em .7em;
+  cursor:pointer;
+  transition:border-color .25s var(--ease);
+  max-width:150px;
+}
+.lang-trigger:hover,.lang-trigger[aria-expanded="true"]{border-color:var(--accent);}
+.lang-trigger__flag{font-size:1.05em;line-height:1;flex-shrink:0;}
+.lang-trigger__name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lang-trigger__chevron{width:13px;height:13px;flex-shrink:0;margin-left:auto;color:var(--ink-muted);transition:transform .25s var(--ease);}
+.lang-trigger[aria-expanded="true"] .lang-trigger__chevron{transform:rotate(180deg);}
+
+.lang-listbox{
+  position:absolute;
+  top:calc(100% + 8px);right:0;
+  min-width:170px;
+  background:var(--bg-1);
+  border:1px solid var(--line-strong);
+  box-shadow:0 16px 40px -12px rgba(0,0,0,.6);
+  z-index:110;
+  max-height:70vh;
+  overflow-y:auto;
+}
+.lang-listbox[hidden]{display:none;}
+.lang-listbox li{
+  display:flex;align-items:center;gap:.7em;
+  padding:.65em .9em;
+  font-size:.86rem;
+  cursor:pointer;
+  transition:background .15s var(--ease);
+}
+.lang-listbox li:hover,.lang-listbox li:focus-visible{background:var(--bg-2);outline:none;}
+.lang-listbox li[aria-selected="true"]{color:var(--accent);font-weight:700;}
+.lang-listbox li .flag{font-size:1.1em;line-height:1;flex-shrink:0;}
+@media (max-width:480px){
+  .lang-trigger{max-width:76px;padding:.5em .55em;}
+  .lang-trigger__name{display:none;}
+  .lang-trigger__chevron{margin-left:.1em;}
+  .lang-listbox{right:-8px;}
+}
+
+.menu-toggle{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:44px;height:44px;border:1px solid var(--line-strong);
+}
+.menu-toggle span{
+  width:20px;height:2px;background:var(--ink);margin-inline:auto;
+  transition:transform .3s var(--ease), opacity .3s var(--ease);
+}
+.menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0;}
+.menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.nav-mobile{
+  position:fixed;inset:76px 0 0 0;
+  background:var(--bg);
+  padding:2.5rem clamp(1.25rem,6vw,3rem);
+  display:flex;flex-direction:column;gap:1.7rem;
+  transform:translateY(-8px);opacity:0;pointer-events:none;
+  transition:opacity .3s var(--ease), transform .3s var(--ease);
+  z-index:90;overflow-y:auto;
+}
+.nav-mobile.is-open{opacity:1;transform:translateY(0);pointer-events:auto;}
+.nav-mobile a{
+  font-family:var(--font-en);
+  font-weight:700;
+  font-size:1.5rem;
+  letter-spacing:.01em;
+  border-bottom:1px solid var(--line);
+  padding-bottom:1.1rem;
+}
+.nav-mobile .nav-cta{
+  align-self:flex-start;margin-top:.5rem;
+}
+
+/* ==============================================================
+   Hero — full-bleed photo
+   ============================================================== */
+.hero{position:relative;background:var(--bg);}
+.hero-media{
+  position:relative;
+  aspect-ratio:4/3;
+  max-height:52vh;
+}
+@media (min-width:640px){.hero-media{aspect-ratio:16/9;max-height:86vh;}}
+@media (min-width:1024px){.hero-media{aspect-ratio:21/10;}}
+.hero-media::after{
+  content:"";
+  position:absolute;inset:0;
+  z-index:1;
+  background:linear-gradient(180deg, rgba(14,17,19,.05) 0%, rgba(14,17,19,.25) 70%, rgba(14,17,19,.55) 100%);
+}
+@media (min-width:640px){
+  .hero-media::after{
+    background:linear-gradient(180deg, rgba(14,17,19,.15) 0%, rgba(14,17,19,.55) 55%, rgba(14,17,19,.96) 100%);
+  }
+}
+/* Mobile: copy flows normally below the image (own dark background) —
+   avoids overlaying text on a short image where it could collide with
+   the sticky header. Tablet/desktop: copy overlays the bottom of the
+   (taller) image, as in the reference design. */
+.hero-copy{
+  position:static;
+  z-index:2;
+  background:var(--bg);
+  padding:2rem 1.25rem 2.5rem;
+  max-width:var(--container);
+  margin-inline:auto;
+}
+@media (min-width:640px){
+  .hero-copy{
+    position:absolute;left:0;right:0;bottom:0;
+    background:none;
+    padding:clamp(2rem,6vw,4rem) clamp(1.25rem,4.5vw,3rem) clamp(2.5rem,5vw,3.5rem);
+  }
+}
+.hero-copy .eyebrow{margin-bottom:1.2rem;}
+.hero h1{
+  font-size:clamp(2rem,5.6vw,3.6rem);
+  color:var(--ink);
+  max-width:16ch;
+}
+.hero .lead{
+  margin-top:1.4rem;
+  max-width:38em;
+  color:var(--ink-muted);
+  font-size:1rem;
+  line-height:1.95;
+}
+.hero-ctas{
+  display:flex;flex-wrap:wrap;gap:.8rem;
+  margin-top:2rem;
+}
+.btn{
+  display:inline-flex;align-items:center;gap:.6em;
+  padding:.85em 1.5em;
+  font-size:.88rem;font-weight:500;
+  letter-spacing:.02em;
+  border:1px solid transparent;
+  transition:background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease), transform .15s var(--ease);
+}
+.btn svg{width:1.05em;height:1.05em;flex-shrink:0;}
+.btn:active{transform:translateY(1px);}
+.btn-accent{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700;}
+.btn-accent:hover{background:var(--accent-2);border-color:var(--accent-2);}
+.btn-outline{border-color:var(--line-strong);color:var(--ink);}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ticker / info bar under hero */
+.ticker{
+  background:var(--bg-1);
+  border-bottom:1px solid var(--line);
+}
+.ticker .wrap{
+  display:flex;flex-wrap:wrap;align-items:center;gap:1rem 2rem;
+  padding-block:1.1rem;
+}
+.ticker-label{
+  display:inline-flex;align-items:center;gap:.6em;
+  font-family:var(--font-en);
+  font-size:.72rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-muted);
+}
+.ticker-label svg{width:1.1em;height:1.1em;color:var(--accent);}
+.region-tags{display:flex;flex-wrap:wrap;gap:.6rem;flex:1;}
+.region-tags li{
+  font-family:var(--font-en);
+  font-size:.74rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--line-strong);
+  padding:.5em .95em;
+  color:var(--ink-muted);
+}
+.ticker-link{
+  font-size:.84rem;font-weight:700;color:var(--accent);
+  display:inline-flex;align-items:center;gap:.4em;
+  white-space:nowrap;
+}
+.ticker-link svg{width:1em;height:1em;transition:transform .25s var(--ease);}
+.ticker-link:hover svg{transform:translateX(3px);}
+
+/* ==============================================================
+   Service — feature blocks (alternating)
+   ============================================================== */
+.service-intro{
+  max-width:52em;
+  font-size:1.02rem;
+  line-height:2;
+  color:var(--ink-muted);
+}
+.subblock-title{
+  margin-top:clamp(3.25rem,6vw,4.5rem);
+  margin-bottom:1.6rem;
+  font-size:1.1rem;
+  font-weight:700;
+  letter-spacing:.02em;
+}
+
+.feature-list{display:flex;flex-direction:column;gap:1px;background:var(--line);}
+.feature{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  background:var(--bg);
+  align-items:stretch;
+}
+.feature:nth-child(even) .feature-media{order:2;}
+.feature-body{
+  padding:clamp(1.75rem,3.5vw,3rem);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.feature-num{
+  font-family:var(--font-en);
+  font-weight:700;
+  font-size:.82rem;
+  letter-spacing:.1em;
+  color:var(--accent);
+  display:block;
+  margin-bottom:1rem;
+}
+.feature-body h3{
+  font-size:1.2rem;
+  line-height:1.6;
+  margin-bottom:.8rem;
+}
+.feature-body p{
+  font-size:.92rem;
+  color:var(--ink-muted);
+  line-height:1.9;
+}
+
+.eligibility{
+  margin-top:clamp(2.5rem,4vw,3.25rem);
+  border-left:2px solid var(--accent);
+  padding:1.3rem 1.7rem;
+  background:var(--bg-1);
+  max-width:44em;
+}
+.eligibility .label{
+  font-family:var(--font-en);
+  font-size:.72rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);
+  display:block;margin-bottom:.5rem;
+}
+.eligibility p{font-size:.92rem;color:var(--ink-muted);}
+
+/* ==============================================================
+   Plans — two-card "business unit" style
+   ============================================================== */
+.plan-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1px;
+  background:var(--line);
+}
+.plan-card{
+  background:var(--bg);
+  display:flex;flex-direction:column;
+}
+.plan-card .media-slot{--ar:1.6;}
+.plan-body{padding:clamp(1.75rem,3vw,2.4rem);display:flex;flex-direction:column;flex-grow:1;}
+.plan-card h3{font-size:1.25rem;margin-bottom:.9rem;}
+.plan-badge{
+  display:inline-block;
+  background:var(--accent);
+  color:var(--accent-ink);
+  font-size:.68rem;font-weight:700;
+  letter-spacing:.06em;
+  padding:.4em .8em;
+  margin-bottom:1rem;
+  align-self:flex-start;
+}
+.plan-card .price{
+  font-family:var(--font-en);
+  font-size:2.2rem;font-weight:700;
+  color:var(--ink);margin-bottom:.3rem;
+}
+.plan-card .price .yen{font-size:1.1rem;font-weight:600;margin-right:.15em;}
+.plan-card .price .tax{font-family:var(--font-jp);font-size:.78rem;font-weight:400;color:var(--ink-faint);margin-left:.35em;}
+.plan-card .desc{
+  margin-top:1rem;padding-top:1.2rem;
+  border-top:1px solid var(--line);
+  font-size:.92rem;color:var(--ink-muted);line-height:1.95;
+  flex-grow:1;
+}
+
+.continued-support{
+  margin-top:clamp(1.75rem,3vw,2.25rem);
+  display:flex;flex-wrap:wrap;gap:1rem 2rem;
+  align-items:baseline;justify-content:space-between;
+  border:1px dashed var(--line-strong);
+  padding:1.4rem 1.7rem;
+}
+.continued-support .t{font-size:.94rem;color:var(--ink-muted);}
+.continued-support .t strong{font-weight:700;color:var(--ink);}
+.continued-support .rate{
+  font-family:var(--font-en);font-size:1.35rem;font-weight:700;
+  color:var(--accent);white-space:nowrap;
+}
+
+.option-table{display:grid;gap:1px;background:var(--line);}
+.option-row{
+  display:grid;
+  grid-template-columns:1.1fr 2.2fr .9fr;
+  gap:1.5rem;
+  background:var(--bg-1);
+  padding:1.3rem 1.6rem;
+  align-items:center;
+}
+.option-row .cell-label{
+  font-family:var(--font-en);
+  font-size:.66rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);
+  display:block;margin-bottom:.35rem;
+}
+.option-row .name{font-weight:700;font-size:.98rem;}
+.option-row .content{font-size:.88rem;color:var(--ink-muted);line-height:1.85;}
+.option-row .price{
+  font-family:var(--font-en);font-weight:700;font-size:1.02rem;text-align:right;
+}
+.option-row .price .tax{font-family:var(--font-jp);font-weight:400;font-size:.72rem;color:var(--ink-faint);display:block;text-align:right;}
+
+.payment-methods{
+  margin-top:clamp(2.5rem,4vw,3.25rem);
+  display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.5rem;
+}
+.payment-methods .label{
+  font-family:var(--font-en);font-size:.72rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);
+}
+.payment-methods ul{display:flex;flex-wrap:wrap;gap:.6rem;}
+.payment-methods li{
+  font-size:.85rem;border:1px solid var(--line-strong);
+  padding:.5em 1em;color:var(--ink-muted);
+}
+
+/* ==============================================================
+   Results — photo card grid, empty state
+   ============================================================== */
+.results-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--line);
+}
+.result-card{background:var(--bg);}
+.result-card .media-slot{--ar:0.8;}
+.result-body{padding:1.5rem 1.5rem 1.7rem;}
+.result-body .quote-mark{
+  font-family:var(--font-en);
+  font-size:1.8rem;font-weight:700;
+  color:var(--accent);line-height:1;
+  display:block;margin-bottom:.6rem;
+}
+.result-body .msg{font-size:.86rem;line-height:1.85;color:var(--ink-muted);}
+.results-note{
+  margin-top:2.25rem;
+  font-size:.88rem;color:var(--ink-muted);
+  max-width:44em;
+  border-top:1px solid var(--line);
+  padding-top:1.4rem;
+}
+
+/* ==============================================================
+   About / founder
+   ============================================================== */
+.about-layout{
+  display:grid;
+  grid-template-columns:.9fr 1.1fr;
+  gap:0;
+  border:1px solid var(--line);
+}
+.about-layout .media-slot{--ar:0.8;height:100%;}
+.about-body{
+  padding:clamp(2rem,4vw,3rem);
+  display:flex;flex-direction:column;justify-content:center;
+  background:var(--bg-1);
+}
+.about-body .role{
+  font-family:var(--font-en);font-size:.72rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+}
+.about-body .name{
+  margin-top:.7rem;
+  font-size:1.3rem;font-weight:900;
+}
+.about-body .locales{
+  margin-top:1.2rem;padding-top:1.2rem;
+  border-top:1px solid var(--line);
+  font-size:.82rem;color:var(--ink-muted);line-height:2;
+  margin-bottom:1.6rem;
+}
+.about-message p{font-size:.98rem;line-height:2.05;color:var(--ink-muted);}
+.about-message p + p{margin-top:1.3rem;}
+
+/* ==============================================================
+   Contact
+   ============================================================== */
+.contact-cta{
+  background:var(--bg-1);
+  border:1px solid var(--line-strong);
+  padding:clamp(2rem,4vw,2.75rem);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:1.5rem;
+  margin-bottom:clamp(2.5rem,4vw,3rem);
+}
+.contact-cta .t{max-width:32em;}
+.contact-cta .t .k{
+  font-family:var(--font-en);font-size:.72rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+  display:block;margin-bottom:.6rem;
+}
+.contact-cta .t h3{font-size:1.3rem;}
+
+.contact-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:1px;background:var(--line);
+}
+.contact-card{
+  background:var(--bg-1);
+  padding:1.8rem 1.9rem;
+  display:flex;align-items:center;gap:1.1rem;
+  transition:background .25s var(--ease);
+}
+.contact-card:hover{background:var(--bg-2);}
+.contact-card .icon{
+  width:46px;height:46px;flex-shrink:0;
+  border:1px solid var(--line-strong);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--accent);
+}
+.contact-card .icon svg{width:20px;height:20px;}
+.contact-card .info{min-width:0;}
+.contact-card .channel{font-weight:700;font-size:.98rem;}
+.contact-card .detail{
+  font-size:.82rem;color:var(--ink-muted);margin-top:.2rem;
+  overflow-wrap:anywhere;
+}
+
+/* ==============================================================
+   Footer
+   ============================================================== */
+.site-footer{
+  background:var(--bg-1);
+  border-top:1px solid var(--line);
+  padding-block:3rem 2rem;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.2fr repeat(3,1fr);
+  gap:2.5rem;
+  padding-bottom:2.5rem;
+  border-bottom:1px solid var(--line);
+}
+.footer-brand .brand-wordmark{display:block;margin-bottom:1rem;}
+.footer-brand p{font-size:.82rem;color:var(--ink-faint);line-height:1.9;max-width:26em;}
+.footer-col h4{
+  font-family:var(--font-en);
+  font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-faint);margin-bottom:1.1rem;
+}
+.footer-col ul{display:flex;flex-direction:column;gap:.7rem;}
+.footer-col a{font-size:.86rem;color:var(--ink-muted);}
+.footer-col a:hover{color:var(--accent);}
+.footer-bottom{
+  padding-top:1.6rem;
+  display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;
+  font-size:.76rem;color:var(--ink-faint);
+}
+
+/* ==============================================================
+   Responsive breakpoints
+   ============================================================== */
+@media (max-width:1024px){
+  .about-layout{grid-template-columns:1fr;}
+  .about-layout .media-slot{--ar:1.778;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+
+@media (max-width:860px){
+  .nav-desktop{display:none;}
+  .menu-toggle{display:flex;}
+  .feature{grid-template-columns:1fr;}
+  .feature-media{order:-1 !important;}
+  .feature-media .media-slot{--ar:1.6;}
+  .plan-grid{grid-template-columns:1fr;}
+  .results-grid{grid-template-columns:1fr 1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:2rem 1.5rem;}
+}
+
+@media (max-width:640px){
+  body{font-size:15.5px;}
+  section{padding-block:clamp(3.25rem,10vw,4.5rem);}
+  .option-row{grid-template-columns:1fr;gap:.5rem;}
+  .option-row .price{text-align:left;}
+  .option-row .price .tax{text-align:left;}
+  .results-grid{grid-template-columns:1fr;}
+  .continued-support{flex-direction:column;align-items:flex-start;}
+  .contact-cta{flex-direction:column;align-items:flex-start;}
+  .hero-ctas{gap:.6rem;}
+  .btn{font-size:.85rem;padding:.8em 1.2em;}
+  .footer-grid{grid-template-columns:1fr;gap:2rem;}
+  .footer-bottom{flex-direction:column;}
+}
+
+@media (max-width:640px){
+  .ticker .wrap{flex-direction:column;align-items:flex-start;gap:.9rem;}
+  .region-tags{flex:none;width:100%;}
+  .ticker-link{align-self:flex-start;}
+}
+
+@media (max-width:400px){
+  .brand-wordmark{font-size:1.12rem;}
+}
+
+
+/* ==============================================================
+   Per-language font overrides — this single page serves all 7
+   languages, so every script's font is loaded up front (see the
+   Google Fonts <link> in <head>); which one is active just follows
+   <html lang="..">, which the language switcher JS updates.
+   ============================================================== */
+html[lang="ko"]{ --font-jp:'Noto Sans KR', 'Noto Sans', sans-serif; }
+html[lang="th"]{ --font-jp:'Noto Sans Thai', 'Noto Sans', sans-serif; }
+html[lang="zh"]{ --font-jp:'Noto Sans SC', 'Noto Sans', sans-serif; }
+html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto Sans JP', sans-serif; }
+</style>
+<link href="https://link-football.pages.dev/" rel="canonical"/><meta content="website" property="og:type"/><meta content="Link×Football" property="og:site_name"/><meta content="Link×Football | 海外サッカー移籍エージェント・契約交渉サポート" property="og:title"/><meta content="オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。" property="og:description"/><meta content="https://link-football.pages.dev/" property="og:url"/><meta content="https://link-football.pages.dev/og-image.jpg" property="og:image"/><meta content="ja_JP" property="og:locale"/><meta content="summary_large_image" name="twitter:card"/><meta content="Link×Football | 海外サッカー移籍エージェント・契約交渉サポート" name="twitter:title"/><meta content="オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。" name="twitter:description"/><meta content="https://link-football.pages.dev/og-image.jpg" name="twitter:image"/><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Link×Football",
+  "description": "オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。",
+  "url": "https://link-football.pages.dev/",
+  "image": "https://link-football.pages.dev/og-image.jpg",
+  "email": "linkfootball13@gmail.com",
+  "areaServed": [
+    {
+      "@type": "Country",
+      "name": "Australia"
+    },
+    {
+      "@type": "Country",
+      "name": "New Zealand"
+    },
+    {
+      "@type": "Country",
+      "name": "Mongolia"
+    }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/link.football_",
+    "https://www.threads.com/@link.football_"
+  ],
+  "makesOffer": [
+    {
+      "@type": "Offer",
+      "name": "練習参加プラン",
+      "priceCurrency": "JPY",
+      "price": "70000"
+    },
+    {
+      "@type": "Offer",
+      "name": "本契約プラン",
+      "priceCurrency": "JPY",
+      "price": "100000"
+    }
+  ],
+  "inLanguage": [
+    "ja",
+    "en",
+    "pt",
+    "mn",
+    "ko",
+    "th",
+    "zh"
+  ]
+}</script></head>
+<body>
+<a class="skip-link" data-i18n="skip" href="#main">本文へスキップ</a>
+<!--
+  ================= 画像差し替えガイド =================
+  このページには合計11箇所の写真プレースホルダー(.media-slot内の
+  <img class="media-slot__ph">)があります。実写真を入れる際は、
+  対象の img タグの src 属性を写真ファイルのパスに差し替えるだけで
+  反映されます(class・alt はそのまま残してください)。
+
+  1. ヒーロー(#hero-img)            推奨: 1920×1080以上・横長
+  2. STEP.01 お問い合わせ(#step1-img) 推奨: 4:3 横長
+  3. STEP.02 プラン選択(#step2-img)   推奨: 4:3 横長
+  4. STEP.03 クラブ交渉(#step3-img)   推奨: 4:3 横長
+  5. STEP.04 お支払い(#step4-img)     推奨: 4:3 横長
+  6. 練習参加プラン(#plan1-img)       推奨: 16:10 横長
+  7. 本契約プラン(#plan2-img)         推奨: 16:10 横長
+  8-10. 実績・選手の声 3枠(#result1-3-img) 推奨: 4:5 縦長(選手ポートレート)
+  11. 運営者情報(#about-img)          推奨: 4:5 縦長 または 16:9
+
+  各 figcaption(差し替え案内タグ)は公開前に削除してください。
+  ======================================================
+-->
+<!-- ============================================================
+     Header
+     ============================================================ -->
+<header class="site-header" id="top">
+<div class="wrap">
+<a aria-label="Link×Football トップへ" class="brand" href="#top">
+<span class="brand-logo-slot">
+<!-- ロゴ確定後: <img src="logo.svg" alt="Link×Football" style="height:100%;width:auto;"> に差し替え可能 -->
+<span class="brand-wordmark">Link<span class="x">×</span>Football</span>
+</span>
+</a>
+<div class="header-right">
+<nav aria-label="メインナビゲーション" class="nav-desktop">
+<a data-i18n="nav.service" href="#service">サービス</a>
+<a data-i18n="nav.plans" href="#plans">プラン</a>
+<a data-i18n="nav.results" href="#results">実績</a>
+<a data-i18n="nav.about" href="#about">運営者情報</a>
+<a class="nav-cta" data-i18n="nav.contact" href="#contact">無料相談</a>
+</nav>
+<div class="lang-switch">
+<button aria-controls="lang-listbox" aria-expanded="false" aria-haspopup="listbox" class="lang-trigger" id="lang-trigger" type="button">
+<span class="lang-trigger__flag" id="lang-trigger-flag">🇯🇵</span>
+<span class="lang-trigger__name" id="lang-trigger-name">日本語</span>
+<svg class="lang-trigger__chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+<ul aria-label="Language / 言語を選択" class="lang-listbox" hidden="" id="lang-listbox" role="listbox" tabindex="-1"><li aria-selected="true" data-lang="ja" role="option" tabindex="-1"><span class="flag">🇯🇵</span><span class="name">日本語</span></li><li aria-selected="false" data-lang="en" role="option" tabindex="-1"><span class="flag">🇺🇸</span><span class="name">English</span></li><li aria-selected="false" data-lang="pt" role="option" tabindex="-1"><span class="flag">🇧🇷</span><span class="name">Português</span></li><li aria-selected="false" data-lang="mn" role="option" tabindex="-1"><span class="flag">🇲🇳</span><span class="name">Монгол</span></li><li aria-selected="false" data-lang="ko" role="option" tabindex="-1"><span class="flag">🇰🇷</span><span class="name">한국어</span></li><li aria-selected="false" data-lang="th" role="option" tabindex="-1"><span class="flag">🇹🇭</span><span class="name">ไทย</span></li><li aria-selected="false" data-lang="zh" role="option" tabindex="-1"><span class="flag">🇨🇳</span><span class="name">中文</span></li></ul>
+</div>
+<button aria-controls="nav-mobile" aria-expanded="false" aria-label="メニューを開く" class="menu-toggle">
+<span></span><span></span><span></span>
+</button>
+</div>
+</div>
+</header>
+<!-- backdrop-filterを持つヘッダーの外に置くことで、position:fixedの
+     全画面メニューがビューポート全体に正しく広がるようにしています。 -->
+<nav aria-label="モバイルナビゲーション" class="nav-mobile" id="nav-mobile">
+<a data-i18n="nav.service" href="#service">サービス</a>
+<a data-i18n="nav.plans" href="#plans">プラン</a>
+<a data-i18n="nav.results" href="#results">実績</a>
+<a data-i18n="nav.about" href="#about">運営者情報</a>
+<a class="nav-cta" data-i18n="nav.contact" href="#contact">無料相談</a>
+</nav>
+<main id="main">
+<!-- ============================================================
+     1. Hero
+     ============================================================ -->
+<section class="hero">
+<div class="hero-media">
+<img alt="海外挑戦を目指すサッカー選手" class="media-slot__ph" data-i18n-alt="img.hero" id="hero-img" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'&gt;&lt;rect width='1600' height='900' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='d' width='34' height='34' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='34' stroke='%23E2792E' stroke-opacity='0.10' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='1600' height='900' fill='url(%23d)'/&gt;&lt;g transform='translate(800,450)' fill='none' stroke='%23E2792E' stroke-opacity='0.4' stroke-width='4'&gt;&lt;rect x='-70' y='-48' width='140' height='96' rx='6'/&gt;&lt;circle cx='0' cy='0' r='28'/&gt;&lt;rect x='26' y='-64' width='34' height='18' rx='3'/&gt;&lt;/g&gt;&lt;/svg&gt;" style="width:100%;height:100%;object-fit:cover;"/>
+<span class="media-slot__tag" style="left:1.25rem;bottom:auto;top:1.25rem;"><b>画像差替:</b> #hero-img / 選手のトレーニングや試合風景を推奨</span>
+</div>
+<div class="hero-copy">
+<span class="eyebrow">Career Support Agency</span>
+<h1 data-i18n-html="hero.h1">本気で海外を<br/>目指す選手のために。</h1>
+<p class="lead" data-i18n="hero.lead">Link×Footballは、海外のサッカークラブ入りを本気で目指す選手のためのキャリアサポートサービスです。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニア地域への移籍の契約交渉をサポートします。</p>
+<div class="hero-ctas">
+<a class="btn btn-accent" href="https://lin.ee/6agJDsY" rel="noopener" target="_blank">
+<svg fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24"><path d="M21 11.5c0 4.7-4.7 8.5-9.5 8.5-1 0-2-.15-2.9-.45L4 21l1.1-3.8C3.8 15.9 3 13.8 3 11.5 3 6.8 7.7 3 12.5 3S21 6.8 21 11.5Z"></path></svg>
+<span data-i18n="hero.cta.line">公式LINEで相談する</span>
+</a>
+<a class="btn btn-outline" data-i18n="hero.cta.threads" href="https://www.threads.com/@link.football_" rel="noopener" target="_blank">Threadsで相談する</a>
+<a class="btn btn-outline" data-i18n="hero.cta.instagram" href="https://www.instagram.com/link.football_" rel="noopener" target="_blank">Instagramで相談する</a>
+<a class="btn btn-outline" data-i18n="hero.cta.whatsapp" href="https://wa.me/message/OH776LDKUG5LB1" rel="noopener" target="_blank">WhatsAppで相談する</a>
+<a class="btn btn-outline" data-i18n="hero.cta.email" href="mailto:linkfootball13@gmail.com">メールで問い合わせる</a>
+</div>
+</div>
+<div class="ticker">
+<div class="wrap">
+<span class="ticker-label">
+<svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11Z"></path><circle cx="12" cy="10" r="2.6"></circle></svg>
+<span data-i18n="ticker.label">対応地域</span>
+</span>
+<ul class="region-tags">
+<li data-i18n="ticker.tag.au">Australia</li>
+<li data-i18n="ticker.tag.nz">New Zealand</li>
+<li data-i18n="ticker.tag.mn">Mongolia</li>
+<li data-i18n="ticker.tag.asia">Asia &amp; Oceania</li>
+</ul>
+<a class="ticker-link" href="#service">
+<span data-i18n="ticker.link">サービスを見る</span>
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+</a>
+</div>
+</div>
+</section>
+<!-- ============================================================
+     2. Service
+     ============================================================ -->
+<section id="service">
+<div class="wrap">
+<div class="section-head">
+<span class="eyebrow">Service</span>
+<h2 data-i18n="service.h2">なぜLink×Footballなのか</h2>
+</div>
+<p class="service-intro" data-i18n="service.intro">アジア・オセアニア地域(オーストラリア/ニュージーランド/モンゴル)でプレーした経験から強いコネクションがあり、多数の実績を活かし低価格で契約交渉を迅速にサポートさせていただきます。</p>
+<h3 class="subblock-title" data-i18n="service.flow_title">サポートの流れ</h3>
+<div class="feature-list">
+<div class="feature">
+<div class="feature-media">
+<div class="media-slot cut" style="--ar:1.333;">
+<img alt="お問い合わせ・ヒアリングの様子" class="media-slot__ph" data-i18n-alt="img.step1" id="step1-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'&gt;&lt;rect width='400' height='300' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='d1' width='24' height='24' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='24' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='400' height='300' fill='url(%23d1)'/&gt;&lt;g transform='translate(200,150)' fill='none' stroke='%23E2792E' stroke-opacity='0.45' stroke-width='2.5'&gt;&lt;rect x='-38' y='-26' width='76' height='52' rx='4'/&gt;&lt;circle cx='0' cy='0' r='15'/&gt;&lt;rect x='14' y='-34' width='18' height='10' rx='2'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
+<span class="media-slot__tag"><b>差替:</b> #step1-img</span>
+</div>
+</div>
+<div class="feature-body">
+<span class="feature-num">STEP.01</span>
+<h3 data-i18n="step1.title">お問い合わせ・ヒアリング</h3>
+<p data-i18n="step1.desc">現在の状況や希望する国・レベル感を伺います。</p>
+</div>
+</div>
+<div class="feature">
+<div class="feature-media">
+<div class="media-slot cut" style="--ar:1.333;">
+<img alt="プラン選択・契約の様子" class="media-slot__ph" data-i18n-alt="img.step2" id="step2-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'&gt;&lt;rect width='400' height='300' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='d2' width='24' height='24' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='24' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='400' height='300' fill='url(%23d2)'/&gt;&lt;g transform='translate(200,150)' fill='none' stroke='%23E2792E' stroke-opacity='0.45' stroke-width='2.5'&gt;&lt;rect x='-38' y='-26' width='76' height='52' rx='4'/&gt;&lt;circle cx='0' cy='0' r='15'/&gt;&lt;rect x='14' y='-34' width='18' height='10' rx='2'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
+<span class="media-slot__tag"><b>差替:</b> #step2-img</span>
+</div>
+</div>
+<div class="feature-body">
+<span class="feature-num">STEP.02</span>
+<h3 data-i18n="step2.title">プラン選択・契約</h3>
+<p data-i18n="step2.desc">練習参加プラン・本契約プランからご希望に合わせて選択いただきます。</p>
+</div>
+</div>
+<div class="feature">
+<div class="feature-media">
+<div class="media-slot cut" style="--ar:1.333;">
+<img alt="クラブとの交渉・トライアル調整の様子" class="media-slot__ph" data-i18n-alt="img.step3" id="step3-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'&gt;&lt;rect width='400' height='300' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='d3' width='24' height='24' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='24' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='400' height='300' fill='url(%23d3)'/&gt;&lt;g transform='translate(200,150)' fill='none' stroke='%23E2792E' stroke-opacity='0.45' stroke-width='2.5'&gt;&lt;rect x='-38' y='-26' width='76' height='52' rx='4'/&gt;&lt;circle cx='0' cy='0' r='15'/&gt;&lt;rect x='14' y='-34' width='18' height='10' rx='2'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
+<span class="media-slot__tag"><b>差替:</b> #step3-img</span>
+</div>
+</div>
+<div class="feature-body">
+<span class="feature-num">STEP.03</span>
+<h3 data-i18n="step3.title">クラブとの交渉・トライアル調整</h3>
+<p data-i18n="step3.desc">現地クラブとのコネクションを活かし、交渉・調整を進めます。</p>
+</div>
+</div>
+<div class="feature">
+<div class="feature-media">
+<div class="media-slot cut" style="--ar:1.333;">
+<img alt="お支払いの様子" class="media-slot__ph" data-i18n-alt="img.step4" id="step4-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'&gt;&lt;rect width='400' height='300' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='d4' width='24' height='24' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='24' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='400' height='300' fill='url(%23d4)'/&gt;&lt;g transform='translate(200,150)' fill='none' stroke='%23E2792E' stroke-opacity='0.45' stroke-width='2.5'&gt;&lt;rect x='-38' y='-26' width='76' height='52' rx='4'/&gt;&lt;circle cx='0' cy='0' r='15'/&gt;&lt;rect x='14' y='-34' width='18' height='10' rx='2'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
+<span class="media-slot__tag"><b>差替:</b> #step4-img</span>
+</div>
+</div>
+<div class="feature-body">
+<span class="feature-num">STEP.04</span>
+<h3 data-i18n="step4.title">お支払い</h3>
+<p data-i18n="step4.desc">本契約プランは契約決定後、練習参加プランは練習参加決定後のお支払いです。</p>
+</div>
+</div>
+</div>
+<div class="eligibility">
+<span class="label" data-i18n="eligibility.label">対象となる選手</span>
+<p data-i18n="eligibility.text">契約締結時点で満18歳以上の方を対象としています。</p>
+</div>
+</div>
+</section>
+<!-- ============================================================
+     3. Plans & pricing
+     ============================================================ -->
+<section class="bleed-alt" id="plans">
+<div class="wrap">
+<div class="section-head">
+<span class="eyebrow">Plans</span>
+<h2 data-i18n="plans.h2">プラン・料金</h2>
+</div>
+<div class="plan-grid">
+<div class="plan-card">
+<div class="media-slot cut">
+<img alt="練習参加プランのイメージ" class="media-slot__ph" data-i18n-alt="img.plan1" id="plan1-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 250'&gt;&lt;rect width='400' height='250' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='p1' width='24' height='24' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='24' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='400' height='250' fill='url(%23p1)'/&gt;&lt;g transform='translate(200,125)' fill='none' stroke='%23E2792E' stroke-opacity='0.45' stroke-width='2.5'&gt;&lt;rect x='-38' y='-26' width='76' height='52' rx='4'/&gt;&lt;circle cx='0' cy='0' r='15'/&gt;&lt;rect x='14' y='-34' width='18' height='10' rx='2'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
+<span class="media-slot__tag"><b>差替:</b> #plan1-img / 練習・トライアル風景</span>
+</div>
+<div class="plan-body">
+<h3 data-i18n="plan1.title">練習参加プラン</h3>
+<div class="price"><span class="yen">¥</span>70,000<span class="tax" data-i18n="plan1.tax">(税込)</span></div>
+<div class="desc" data-i18n="plan1.desc">クラブへの練習参加・トライアル交渉(ヒアリングに基づき1〜3チーム)、契約交渉を行います。</div>
+</div>
+</div>
+<div class="plan-card">
+<div class="media-slot cut">
+<img alt="本契約プランのイメージ" class="media-slot__ph" data-i18n-alt="img.plan2" id="plan2-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 250'&gt;&lt;rect width='400' height='250' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='p2' width='24' height='24' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='24' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='400' height='250' fill='url(%23p2)'/&gt;&lt;g transform='translate(200,125)' fill='none' stroke='%23E2792E' stroke-opacity='0.45' stroke-width='2.5'&gt;&lt;rect x='-38' y='-26' width='76' height='52' rx='4'/&gt;&lt;circle cx='0' cy='0' r='15'/&gt;&lt;rect x='14' y='-34' width='18' height='10' rx='2'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
+<span class="media-slot__tag"><b>差替:</b> #plan2-img / 契約・加入シーン</span>
+</div>
+<div class="plan-body">
+<span class="plan-badge" data-i18n="plan2.badge">おすすめ</span>
+<h3 data-i18n="plan2.title">本契約プラン</h3>
+<div class="price"><span class="yen">¥</span>100,000<span class="tax" data-i18n="plan2.tax">(税込)</span></div>
+<div class="desc" data-i18n="plan2.desc">練習を経ずに直接加入を目指します(難しい場合は練習参加プランへの変更が可能です)。契約交渉を行います。</div>
+</div>
+</div>
+</div>
+<div class="continued-support">
+<div class="t"><strong data-i18n="continued.label">加入後の継続サポート</strong><span data-i18n="continued.suffix">(希望者のみ)— チームとのコミュニケーションサポート</span></div>
+<div class="rate" data-i18n="continued.rate">月間給料の 3%</div>
+</div>
+<h3 class="subblock-title" data-i18n="options.title">オプション</h3>
+<div class="option-table">
+<div class="option-row">
+<div><span class="cell-label">Option</span><span class="name" data-i18n="opt1.name">動画作成プラン</span></div>
+<div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt1.desc">選手紹介・プレー動画の作成</span></div>
+<div class="price">¥5,000<span class="tax" data-i18n="opt1.tax">(税込)</span></div>
+</div>
+<div class="option-row">
+<div><span class="cell-label">Option</span><span class="name" data-i18n="opt2.name">個人用ホームページ作成プラン</span></div>
+<div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt2.desc">スポンサー獲得やポートフォリオとして使えるホームページを作成</span></div>
+<div class="price">¥50,000〜80,000<span class="tax" data-i18n="opt2.tax">(税込)</span></div>
+</div>
+<div class="option-row">
+<div><span class="cell-label">Option</span><span class="name" data-i18n="opt3.name">渡航サポート</span></div>
+<div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt3.desc">航空券やホテルの予約を電話にてサポート(予約自体はご自身で行っていただきます)</span></div>
+<div class="price" data-i18n="opt3.free">無料</div>
+</div>
+</div>
+<div class="payment-methods">
+<span class="label" data-i18n="payment.label">お支払い方法</span>
+<ul>
+<li data-i18n="payment.credit">クレジットカード</li>
+<li data-i18n="payment.transfer">銀行振込</li>
+<li data-i18n="payment.konbini">コンビニ決済(Stripe決済)</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- ============================================================
+     4. Results / voices — empty state
+     ============================================================ -->
+<section id="results">
+<div class="wrap">
+<div class="section-head">
+<span class="eyebrow">Voices</span>
+<h2 data-i18n="results.h2">実績・選手の声</h2>
+<p class="sub" data-i18n="results.sub">実際にサポートした選手のご紹介・コメントを、準備が整い次第この枠に掲載いたします。</p>
+</div>
+<div class="results-grid">
+<div class="result-card">
+<div class="media-slot cut">
+<img alt="サポートした選手のポートレート" class="media-slot__ph" data-i18n-alt="img.result" id="result1-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 400'&gt;&lt;rect width='320' height='400' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='r1' width='22' height='22' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='22' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='320' height='400' fill='url(%23r1)'/&gt;&lt;g transform='translate(160,200)' fill='none' stroke='%23E2792E' stroke-opacity='0.4' stroke-width='2.5'&gt;&lt;circle cx='0' cy='-30' r='26'/&gt;&lt;path d='M-46,54 C-46,4 46,4 46,54'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
+<span class="media-slot__tag"><b>差替:</b> #result1-img</span>
+</div>
+<div class="result-body">
+<span class="quote-mark">"</span>
+<p class="msg" data-i18n="result1.msg">選手プロフィール・移籍前後の状況を掲載予定です。</p>
+</div>
+</div>
+<div class="result-card">
+<div class="media-slot cut">
+<img alt="サポートした選手のポートレート" class="media-slot__ph" data-i18n-alt="img.result" id="result2-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 400'&gt;&lt;rect width='320' height='400' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='r2' width='22' height='22' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='22' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='320' height='400' fill='url(%23r2)'/&gt;&lt;g transform='translate(160,200)' fill='none' stroke='%23E2792E' stroke-opacity='0.4' stroke-width='2.5'&gt;&lt;circle cx='0' cy='-30' r='26'/&gt;&lt;path d='M-46,54 C-46,4 46,4 46,54'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
+<span class="media-slot__tag"><b>差替:</b> #result2-img</span>
+</div>
+<div class="result-body">
+<span class="quote-mark">"</span>
+<p class="msg" data-i18n="result2.msg">サポートを受けた感想を掲載予定です。</p>
+</div>
+</div>
+<div class="result-card">
+<div class="media-slot cut">
+<img alt="サポートした選手のポートレート" class="media-slot__ph" data-i18n-alt="img.result" id="result3-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 400'&gt;&lt;rect width='320' height='400' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='r3' width='22' height='22' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='22' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='320' height='400' fill='url(%23r3)'/&gt;&lt;g transform='translate(160,200)' fill='none' stroke='%23E2792E' stroke-opacity='0.4' stroke-width='2.5'&gt;&lt;circle cx='0' cy='-30' r='26'/&gt;&lt;path d='M-46,54 C-46,4 46,4 46,54'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
+<span class="media-slot__tag"><b>差替:</b> #result3-img</span>
+</div>
+<div class="result-body">
+<span class="quote-mark">"</span>
+<p class="msg" data-i18n="result3.msg">Before / After(移籍先・活動状況)を掲載予定です。</p>
+</div>
+</div>
+</div>
+<p class="results-note" data-i18n="results.note">掲載には本人の経歴・コメント・写真使用許可の確認が必要なため、確認が取れた選手から順次公開いたします。</p>
+</div>
+</section>
+<!-- ============================================================
+     5. About / founder
+     ============================================================ -->
+<section class="bleed-alt" id="about">
+<div class="wrap">
+<div class="section-head">
+<span class="eyebrow">About</span>
+<h2 data-i18n="about.h2">運営者情報</h2>
+</div>
+<div class="about-layout">
+<div class="media-slot">
+<img alt="Link×Football代表" class="media-slot__ph" data-i18n-alt="img.about" id="about-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'&gt;&lt;rect width='400' height='500' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='ab' width='26' height='26' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='26' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='400' height='500' fill='url(%23ab)'/&gt;&lt;g transform='translate(200,250)' fill='none' stroke='%23E2792E' stroke-opacity='0.4' stroke-width='2.5'&gt;&lt;circle cx='0' cy='-40' r='34'/&gt;&lt;path d='M-62,70 C-62,4 62,4 62,70'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
+<span class="media-slot__tag"><b>差替:</b> #about-img / 代表者または現地クラブ視察の写真</span>
+</div>
+<div class="about-body">
+<span class="role" data-i18n="about.role">代表挨拶</span>
+<div class="name">Link×Football</div>
+<div class="locales">
+<span data-i18n="about.locales_label">対応地域</span><br/>
+<span data-i18n="about.locales_line1">オーストラリア / ニュージーランド / モンゴル</span><br/>
+<span data-i18n="about.locales_line2">アジア・オセアニア全域</span>
+</div>
+<div class="about-message">
+<p data-i18n="about.p1">日本には、本気で海外に挑戦したいと思っている選手がたくさんいます。しかし、その一歩を踏み出す環境や情報は、まだまだ十分に整っていません。</p>
+<p data-i18n="about.p2">私たちLink×Footballは、そんな選手たちのために立ち上がりました。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニアのクラブとの強いつながりを活かし、一人ひとりに本気で向き合いながら契約交渉をサポートします。</p>
+<p data-i18n="about.p3">「本気で挑戦したい」その想いさえあれば、あとは私たちが全力で後押しします。一緒に、海外という新しい景色を目指しましょう。</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================
+     6. Contact
+     ============================================================ -->
+<section id="contact">
+<div class="wrap">
+<div class="section-head">
+<span class="eyebrow">Contact</span>
+<h2 data-i18n="contact.h2">お問い合わせ</h2>
+</div>
+<div class="contact-cta">
+<div class="t">
+<span class="k">Free Consultation</span>
+<h3 data-i18n="contact.cta_text">ご相談は下記いずれかの窓口よりお気軽にご連絡ください。</h3>
+</div>
+<a class="btn btn-accent" href="https://lin.ee/6agJDsY" rel="noopener" target="_blank">
+<svg fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24"><path d="M21 11.5c0 4.7-4.7 8.5-9.5 8.5-1 0-2-.15-2.9-.45L4 21l1.1-3.8C3.8 15.9 3 13.8 3 11.5 3 6.8 7.7 3 12.5 3S21 6.8 21 11.5Z"></path></svg>
+<span data-i18n="contact.cta_button">公式LINEで無料相談する</span>
+</a>
+</div>
+<div class="contact-grid">
+<a class="contact-card" href="https://lin.ee/6agJDsY" rel="noopener" target="_blank">
+<span class="icon"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24"><path d="M21 11.5c0 4.7-4.7 8.5-9.5 8.5-1 0-2-.15-2.9-.45L4 21l1.1-3.8C3.8 15.9 3 13.8 3 11.5 3 6.8 7.7 3 12.5 3S21 6.8 21 11.5Z"></path></svg></span>
+<span class="info"><span class="channel" data-i18n="contact.line_label">公式LINE</span><span class="detail">lin.ee/6agJDsY</span></span>
+</a>
+<a class="contact-card" href="https://www.threads.com/@link.football_" rel="noopener" target="_blank">
+<span class="icon"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 8a3 3 0 1 1-2.1 5.1"></path></svg></span>
+<span class="info"><span class="channel" data-i18n="contact.threads_label">公式Threads</span><span class="detail">@link.football_</span></span>
+</a>
+<a class="contact-card" href="https://www.instagram.com/link.football_" rel="noopener" target="_blank">
+<span class="icon"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24"><rect height="17" rx="4.5" width="17" x="3.5" y="3.5"></rect><circle cx="12" cy="12" r="3.6"></circle><circle cx="17" cy="7" r="1"></circle></svg></span>
+<span class="info"><span class="channel" data-i18n="contact.instagram_label">公式Instagram</span><span class="detail">@link.football_</span></span>
+</a>
+<a class="contact-card" href="https://wa.me/message/OH776LDKUG5LB1" rel="noopener" target="_blank">
+<span class="icon"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.6 19L4 20Z"></path><path d="M8.5 9.5c.3 2.6 2.4 4.7 5 5"></path></svg></span>
+<span class="info"><span class="channel">WhatsApp</span><span class="detail" data-i18n="contact.whatsapp_detail">メッセージを送る</span></span>
+</a>
+<a class="contact-card" href="mailto:linkfootball13@gmail.com" style="grid-column:1/-1;">
+<span class="icon"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewbox="0 0 24 24"><rect height="13" rx="1.5" width="17" x="3.5" y="5.5"></rect><path d="M4 6.5 12 13l8-6.5"></path></svg></span>
+<span class="info"><span class="channel" data-i18n="contact.email_label">メールアドレス</span><span class="detail">linkfootball13@gmail.com</span></span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- ============================================================
+     Footer
+     ============================================================ -->
+<footer class="site-footer">
+<div class="wrap">
+<div class="footer-grid">
+<div class="footer-brand">
+<span class="brand-wordmark">Link<span class="x">×</span>Football</span>
+<p data-i18n="footer.desc">本気で海外を目指す選手のためのキャリアサポートサービス。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニア地域への移籍をサポートします。</p>
+</div>
+<div class="footer-col">
+<h4>Menu</h4>
+<ul>
+<li><a data-i18n="nav.service" href="#service">サービス</a></li>
+<li><a data-i18n="nav.plans" href="#plans">プラン</a></li>
+<li><a data-i18n="nav.results" href="#results">実績</a></li>
+<li><a data-i18n="nav.about" href="#about">運営者情報</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Contact</h4>
+<ul>
+<li><a data-i18n="contact.line_label" href="https://lin.ee/6agJDsY" rel="noopener" target="_blank">公式LINE</a></li>
+<li><a href="https://www.instagram.com/link.football_" rel="noopener" target="_blank">Instagram</a></li>
+<li><a data-i18n="footer.contact.email" href="mailto:linkfootball13@gmail.com">メール</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4>Region</h4>
+<ul>
+<li data-i18n="ticker.tag.au">Australia</li>
+<li data-i18n="ticker.tag.nz">New Zealand</li>
+<li data-i18n="ticker.tag.mn">Mongolia</li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<span>© <span id="year"></span> Link×Football. <span data-i18n="footer.copyright">All rights reserved.</span></span>
+</div>
+</div>
+</footer>
+<!--
+  制作メモ(公開前にご確認ください):
+  ・特定商取引法に基づく表記ページは今回未作成です(構成案の保留事項のため)。決済導線を公開する前に追加してください。
+  ・実績・選手の声セクションは、情報が揃い次第カードを差し替えてください(該当箇所は #results 内の .result-card)。
+  ・画像プレースホルダーの一覧・差し替え方法は、ファイル冒頭のコメントを参照してください。
+-->
+<script>
+(function(){
+  "use strict";
+
+  var header = document.querySelector('.site-header');
+  var onScroll = function(){
+    if(window.scrollY > 8){ header.classList.add('is-scrolled'); }
+    else{ header.classList.remove('is-scrolled'); }
+  };
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  var toggle = document.querySelector('.menu-toggle');
+  var navMobile = document.getElementById('nav-mobile');
+  function closeMenu(){
+    toggle.setAttribute('aria-expanded','false');
+    navMobile.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  function openMenu(){
+    toggle.setAttribute('aria-expanded','true');
+    navMobile.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  toggle.addEventListener('click', function(){
+    var expanded = toggle.getAttribute('aria-expanded') === 'true';
+    expanded ? closeMenu() : openMenu();
+  });
+  navMobile.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMenu);
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeMenu();
+  });
+  window.addEventListener('resize', function(){
+    if(window.innerWidth > 860) closeMenu();
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  var langTrigger = document.getElementById('lang-trigger');
+  var langListbox = document.getElementById('lang-listbox');
+  var langTriggerFlag = document.getElementById('lang-trigger-flag');
+  var langTriggerName = document.getElementById('lang-trigger-name');
+
+  function closeLangListbox(){
+    langListbox.hidden = true;
+    langTrigger.setAttribute('aria-expanded','false');
+  }
+  function openLangListbox(){
+    langListbox.hidden = false;
+    langTrigger.setAttribute('aria-expanded','true');
+  }
+  langTrigger.addEventListener('click', function(){
+    langListbox.hidden ? openLangListbox() : closeLangListbox();
+  });
+  document.addEventListener('click', function(e){
+    if(!langListbox.hidden && !langListbox.contains(e.target) && !langTrigger.contains(e.target)){
+      closeLangListbox();
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !langListbox.hidden){
+      closeLangListbox();
+      langTrigger.focus();
+    }
+  });
+
+
+
+  /* ============================================================
+     Language switcher — translation dictionary
+     I18N holds every visible, translatable string keyed by
+     language code, then by a dot-namespaced key matching the
+     data-i18n / data-i18n-html / data-i18n-alt attributes in the
+     markup above. Design-eyebrow labels (SERVICE, STEP.01, Career
+     Support Agency, etc.) are deliberately left untranslated in the
+     markup itself — a consistent visual motif across every language.
+     ============================================================ */
+  var I18N = {
+  "ja": {
+    "nav.service": "サービス",
+    "nav.plans": "プラン",
+    "nav.results": "実績",
+    "nav.about": "運営者情報",
+    "nav.contact": "無料相談",
+    "skip": "本文へスキップ",
+    "hero.h1": "本気で海外を<br>目指す選手のために。",
+    "hero.lead": "Link×Footballは、海外のサッカークラブ入りを本気で目指す選手のためのキャリアサポートサービスです。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニア地域への移籍の契約交渉をサポートします。",
+    "hero.cta.line": "公式LINEで相談する",
+    "hero.cta.threads": "Threadsで相談する",
+    "hero.cta.instagram": "Instagramで相談する",
+    "hero.cta.whatsapp": "WhatsAppで相談する",
+    "hero.cta.email": "メールで問い合わせる",
+    "ticker.label": "対応地域",
+    "ticker.tag.au": "Australia",
+    "ticker.tag.nz": "New Zealand",
+    "ticker.tag.mn": "Mongolia",
+    "ticker.tag.asia": "Asia & Oceania",
+    "ticker.link": "サービスを見る",
+    "service.h2": "なぜLink×Footballなのか",
+    "service.intro": "アジア・オセアニア地域(オーストラリア/ニュージーランド/モンゴル)でプレーした経験から強いコネクションがあり、多数の実績を活かし低価格で契約交渉を迅速にサポートさせていただきます。",
+    "service.flow_title": "サポートの流れ",
+    "step1.title": "お問い合わせ・ヒアリング",
+    "step1.desc": "現在の状況や希望する国・レベル感を伺います。",
+    "step2.title": "プラン選択・契約",
+    "step2.desc": "練習参加プラン・本契約プランからご希望に合わせて選択いただきます。",
+    "step3.title": "クラブとの交渉・トライアル調整",
+    "step3.desc": "現地クラブとのコネクションを活かし、交渉・調整を進めます。",
+    "step4.title": "お支払い",
+    "step4.desc": "本契約プランは契約決定後、練習参加プランは練習参加決定後のお支払いです。",
+    "eligibility.label": "対象となる選手",
+    "eligibility.text": "契約締結時点で満18歳以上の方を対象としています。",
+    "plans.h2": "プラン・料金",
+    "plan1.title": "練習参加プラン",
+    "plan1.tax": "(税込)",
+    "plan1.desc": "クラブへの練習参加・トライアル交渉(ヒアリングに基づき1〜3チーム)、契約交渉を行います。",
+    "plan2.badge": "おすすめ",
+    "plan2.title": "本契約プラン",
+    "plan2.tax": "(税込)",
+    "plan2.desc": "練習を経ずに直接加入を目指します(難しい場合は練習参加プランへの変更が可能です)。契約交渉を行います。",
+    "continued.label": "加入後の継続サポート",
+    "continued.suffix": "(希望者のみ)— チームとのコミュニケーションサポート",
+    "continued.rate": "月間給料の 3%",
+    "options.title": "オプション",
+    "opt.label": "内容",
+    "opt1.name": "動画作成プラン",
+    "opt1.desc": "選手紹介・プレー動画の作成",
+    "opt1.tax": "(税込)",
+    "opt2.name": "個人用ホームページ作成プラン",
+    "opt2.desc": "スポンサー獲得やポートフォリオとして使えるホームページを作成",
+    "opt2.tax": "(税込)",
+    "opt3.name": "渡航サポート",
+    "opt3.desc": "航空券やホテルの予約を電話にてサポート(予約自体はご自身で行っていただきます)",
+    "opt3.free": "無料",
+    "payment.label": "お支払い方法",
+    "payment.credit": "クレジットカード",
+    "payment.transfer": "銀行振込",
+    "payment.konbini": "コンビニ決済(Stripe決済)",
+    "results.h2": "実績・選手の声",
+    "results.sub": "実際にサポートした選手のご紹介・コメントを、準備が整い次第この枠に掲載いたします。",
+    "result1.msg": "選手プロフィール・移籍前後の状況を掲載予定です。",
+    "result2.msg": "サポートを受けた感想を掲載予定です。",
+    "result3.msg": "Before / After(移籍先・活動状況)を掲載予定です。",
+    "results.note": "掲載には本人の経歴・コメント・写真使用許可の確認が必要なため、確認が取れた選手から順次公開いたします。",
+    "about.h2": "運営者情報",
+    "about.role": "代表挨拶",
+    "about.locales_label": "対応地域",
+    "about.locales_line1": "オーストラリア / ニュージーランド / モンゴル",
+    "about.locales_line2": "アジア・オセアニア全域",
+    "about.p1": "日本には、本気で海外に挑戦したいと思っている選手がたくさんいます。しかし、その一歩を踏み出す環境や情報は、まだまだ十分に整っていません。",
+    "about.p2": "私たちLink×Footballは、そんな選手たちのために立ち上がりました。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニアのクラブとの強いつながりを活かし、一人ひとりに本気で向き合いながら契約交渉をサポートします。",
+    "about.p3": "「本気で挑戦したい」その想いさえあれば、あとは私たちが全力で後押しします。一緒に、海外という新しい景色を目指しましょう。",
+    "contact.h2": "お問い合わせ",
+    "contact.cta_text": "ご相談は下記いずれかの窓口よりお気軽にご連絡ください。",
+    "contact.cta_button": "公式LINEで無料相談する",
+    "contact.line_label": "公式LINE",
+    "contact.threads_label": "公式Threads",
+    "contact.instagram_label": "公式Instagram",
+    "contact.whatsapp_detail": "メッセージを送る",
+    "contact.email_label": "メールアドレス",
+    "footer.desc": "本気で海外を目指す選手のためのキャリアサポートサービス。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニア地域への移籍をサポートします。",
+    "footer.contact.email": "メール",
+    "footer.copyright": "All rights reserved.",
+    "img.hero": "海外挑戦を目指すサッカー選手",
+    "img.step1": "お問い合わせ・ヒアリングの様子",
+    "img.step2": "プラン選択・契約の様子",
+    "img.step3": "クラブとの交渉・トライアル調整の様子",
+    "img.step4": "お支払いの様子",
+    "img.plan1": "練習参加プランのイメージ",
+    "img.plan2": "本契約プランのイメージ",
+    "img.result": "サポートした選手のポートレート",
+    "img.about": "Link×Football代表"
+  },
+  "en": {
+    "nav.service": "Service",
+    "nav.plans": "Plans",
+    "nav.results": "Results",
+    "nav.about": "About",
+    "nav.contact": "Free Consultation",
+    "skip": "Skip to content",
+    "hero.h1": "For players serious<br>about playing overseas.",
+    "hero.lead": "Link×Football is a career support service for players who are seriously aiming to join football clubs overseas. We support contract negotiations for transfers to Australia, New Zealand, Mongolia, and other clubs across Asia and Oceania.",
+    "hero.cta.line": "Chat on official LINE",
+    "hero.cta.threads": "Chat on Threads",
+    "hero.cta.instagram": "Chat on Instagram",
+    "hero.cta.whatsapp": "Chat on WhatsApp",
+    "hero.cta.email": "Contact by email",
+    "ticker.label": "Regions we cover",
+    "ticker.tag.au": "Australia",
+    "ticker.tag.nz": "New Zealand",
+    "ticker.tag.mn": "Mongolia",
+    "ticker.tag.asia": "Asia & Oceania",
+    "ticker.link": "See our services",
+    "service.h2": "Why Link×Football",
+    "service.intro": "Having played in Australia, New Zealand, and Mongolia ourselves, we've built strong connections across the region. We draw on a proven track record to support contract negotiations quickly and affordably.",
+    "service.flow_title": "How it works",
+    "step1.title": "Inquiry & interview",
+    "step1.desc": "We'll ask about your current situation and which country or level you're aiming for.",
+    "step2.title": "Choose a plan & sign",
+    "step2.desc": "Choose between the Trial Plan and the Direct Contract Plan based on what fits you best.",
+    "step3.title": "Club negotiation & trial arrangements",
+    "step3.desc": "We use our local club connections to negotiate and coordinate on your behalf.",
+    "step4.title": "Payment",
+    "step4.desc": "The Direct Contract Plan is paid once the contract is confirmed; the Trial Plan is paid once a trial is confirmed.",
+    "eligibility.label": "Who can apply",
+    "eligibility.text": "Open to players who are 18 years old or older at the time of signing.",
+    "plans.h2": "Plans & Pricing",
+    "plan1.title": "Trial Plan",
+    "plan1.tax": "(tax included)",
+    "plan1.desc": "We negotiate club trials (1–3 teams, based on your interview) and handle contract negotiations.",
+    "plan2.badge": "Recommended",
+    "plan2.title": "Direct Contract Plan",
+    "plan2.tax": "(tax included)",
+    "plan2.desc": "We aim to place you directly without a trial (switching to the Trial Plan is possible if this proves difficult). We handle contract negotiations.",
+    "continued.label": "Ongoing support after joining",
+    "continued.suffix": "(optional) — communication support with your team",
+    "continued.rate": "3% of monthly salary",
+    "options.title": "Add-ons",
+    "opt.label": "Details",
+    "opt1.name": "Video Production",
+    "opt1.desc": "Player introduction and highlight video production.",
+    "opt1.tax": "(tax included)",
+    "opt2.name": "Personal Website",
+    "opt2.desc": "A website you can use for sponsorship pitches or as a portfolio.",
+    "opt2.tax": "(tax included)",
+    "opt3.name": "Travel Support",
+    "opt3.desc": "Phone support for booking flights and hotels (bookings are made by you).",
+    "opt3.free": "Free",
+    "payment.label": "Payment methods",
+    "payment.credit": "Credit card",
+    "payment.transfer": "Bank transfer",
+    "payment.konbini": "Convenience store payment (via Stripe)",
+    "results.h2": "Track Record & Player Voices",
+    "results.sub": "Profiles and comments from players we've supported will be added here as they become available.",
+    "result1.msg": "Player profile and before/after transfer details will be posted here.",
+    "result2.msg": "Feedback from supported players will be posted here.",
+    "result3.msg": "Before / After (destination club & current activity) will be posted here.",
+    "results.note": "Publishing requires each player's consent for their background, comments, and photos, so profiles will go live as consent is confirmed.",
+    "about.h2": "About Us",
+    "about.role": "A Message From Us",
+    "about.locales_label": "Regions we cover",
+    "about.locales_line1": "Australia / New Zealand / Mongolia",
+    "about.locales_line2": "Across Asia & Oceania",
+    "about.p1": "Many players in Japan are serious about taking on the challenge of playing overseas. But the environment and information to take that first step are still far from adequate.",
+    "about.p2": "Link×Football was founded for exactly these players. Drawing on our strong ties to clubs across Asia and Oceania — including Australia, New Zealand, and Mongolia — we work closely with each player to support their contract negotiations.",
+    "about.p3": "If you're serious about taking on the challenge, that's all it takes — we'll put everything we have behind you. Let's aim for a new horizon overseas, together.",
+    "contact.h2": "Contact",
+    "contact.cta_text": "Feel free to reach out through any of the channels below.",
+    "contact.cta_button": "Free consultation on LINE",
+    "contact.line_label": "Official LINE",
+    "contact.threads_label": "Official Threads",
+    "contact.instagram_label": "Official Instagram",
+    "contact.whatsapp_detail": "Send a message",
+    "contact.email_label": "Email",
+    "footer.desc": "A career support service for players seriously aiming to play overseas. We support transfers to Australia, New Zealand, Mongolia, and other clubs across Asia and Oceania.",
+    "footer.contact.email": "Email",
+    "footer.copyright": "All rights reserved.",
+    "img.hero": "Football player pursuing an overseas career",
+    "img.step1": "Inquiry and interview",
+    "img.step2": "Choosing a plan and signing",
+    "img.step3": "Club negotiation and trial arrangement",
+    "img.step4": "Payment",
+    "img.plan1": "Trial Plan",
+    "img.plan2": "Direct Contract Plan",
+    "img.result": "Portrait of a supported player",
+    "img.about": "Link×Football representative"
+  },
+  "pt": {
+    "nav.service": "Serviços",
+    "nav.plans": "Planos",
+    "nav.results": "Resultados",
+    "nav.about": "Sobre nós",
+    "nav.contact": "Consulta Gratuita",
+    "skip": "Pular para o conteúdo",
+    "hero.h1": "Para jogadores que levam<br>a sério o desafio no exterior.",
+    "hero.lead": "A Link×Football é um serviço de suporte de carreira para jogadores que buscam seriamente ingressar em clubes de futebol no exterior. Apoiamos negociações de contrato para transferências à Austrália, Nova Zelândia, Mongólia e outros países da Ásia e Oceania.",
+    "hero.cta.line": "Falar pelo LINE oficial",
+    "hero.cta.threads": "Falar pelo Threads",
+    "hero.cta.instagram": "Falar pelo Instagram",
+    "hero.cta.whatsapp": "Falar pelo WhatsApp",
+    "hero.cta.email": "Contato por e-mail",
+    "ticker.label": "Regiões atendidas",
+    "ticker.tag.au": "Austrália",
+    "ticker.tag.nz": "Nova Zelândia",
+    "ticker.tag.mn": "Mongólia",
+    "ticker.tag.asia": "Ásia e Oceania",
+    "ticker.link": "Ver serviços",
+    "service.h2": "Por que a Link×Football",
+    "service.intro": "Por termos jogado na Austrália, Nova Zelândia e Mongólia, temos conexões sólidas na região. Usamos nossa experiência comprovada para apoiar negociações de contrato de forma rápida e acessível.",
+    "service.flow_title": "Como funciona",
+    "step1.title": "Contato e entrevista",
+    "step1.desc": "Conversamos sobre sua situação atual e o país ou nível que você deseja alcançar.",
+    "step2.title": "Escolha do plano e contrato",
+    "step2.desc": "Escolha entre o Plano de Teste e o Plano de Contrato Direto, conforme sua necessidade.",
+    "step3.title": "Negociação com clubes e testes",
+    "step3.desc": "Usamos nossas conexões locais para negociar e organizar tudo por você.",
+    "step4.title": "Pagamento",
+    "step4.desc": "O Plano de Contrato Direto é pago após a confirmação do contrato; o Plano de Teste, após a confirmação do teste.",
+    "eligibility.label": "Quem pode se inscrever",
+    "eligibility.text": "Aberto a jogadores com 18 anos ou mais na data da assinatura do contrato.",
+    "plans.h2": "Planos e Valores",
+    "plan1.title": "Plano de Teste",
+    "plan1.tax": "(impostos inclusos)",
+    "plan1.desc": "Negociamos testes em clubes (1 a 3 times, conforme entrevista) e cuidamos da negociação do contrato.",
+    "plan2.badge": "Recomendado",
+    "plan2.title": "Plano de Contrato Direto",
+    "plan2.tax": "(impostos inclusos)",
+    "plan2.desc": "Buscamos sua contratação direta, sem passar por teste (é possível mudar para o Plano de Teste caso não seja viável). Cuidamos da negociação do contrato.",
+    "continued.label": "Suporte contínuo após a contratação",
+    "continued.suffix": "(opcional) — suporte de comunicação com o time",
+    "continued.rate": "3% do salário mensal",
+    "options.title": "Opcionais",
+    "opt.label": "Detalhes",
+    "opt1.name": "Produção de vídeo",
+    "opt1.desc": "Produção de vídeo de apresentação e melhores momentos do jogador.",
+    "opt1.tax": "(impostos inclusos)",
+    "opt2.name": "Site pessoal",
+    "opt2.desc": "Um site que pode ser usado para buscar patrocínio ou como portfólio.",
+    "opt2.tax": "(impostos inclusos)",
+    "opt3.name": "Suporte de viagem",
+    "opt3.desc": "Suporte por telefone para reserva de passagens e hotéis (as reservas são feitas por você).",
+    "opt3.free": "Gratuito",
+    "payment.label": "Formas de pagamento",
+    "payment.credit": "Cartão de crédito",
+    "payment.transfer": "Transferência bancária",
+    "payment.konbini": "Pagamento em loja de conveniência (via Stripe)",
+    "results.h2": "Resultados e Depoimentos",
+    "results.sub": "Perfis e depoimentos dos jogadores que já apoiamos serão publicados aqui assim que estiverem disponíveis.",
+    "result1.msg": "O perfil do jogador e a situação antes/depois da transferência serão publicados aqui.",
+    "result2.msg": "Depoimentos dos jogadores apoiados serão publicados aqui.",
+    "result3.msg": "Antes / Depois (clube de destino e situação atual) será publicado aqui.",
+    "results.note": "A publicação depende da autorização de cada jogador para uso de histórico, depoimento e foto, por isso os perfis serão liberados conforme confirmados.",
+    "about.h2": "Sobre nós",
+    "about.role": "Mensagem da diretoria",
+    "about.locales_label": "Regiões atendidas",
+    "about.locales_line1": "Austrália / Nova Zelândia / Mongólia",
+    "about.locales_line2": "Toda a Ásia e Oceania",
+    "about.p1": "No Japão, muitos jogadores têm o desejo sério de encarar o desafio do futebol no exterior. Mas o ambiente e as informações para dar esse primeiro passo ainda são insuficientes.",
+    "about.p2": "A Link×Football nasceu para esses jogadores. Com nossos fortes vínculos com clubes da Ásia e Oceania — incluindo Austrália, Nova Zelândia e Mongólia — acompanhamos cada jogador de perto nas negociações de contrato.",
+    "about.p3": "Se você tem a vontade séria de encarar esse desafio, é só isso que precisa: nós daremos o nosso máximo ao seu lado. Vamos juntos em busca de um novo horizonte no exterior.",
+    "contact.h2": "Contato",
+    "contact.cta_text": "Fique à vontade para falar conosco por qualquer um dos canais abaixo.",
+    "contact.cta_button": "Consulta gratuita pelo LINE",
+    "contact.line_label": "LINE oficial",
+    "contact.threads_label": "Threads oficial",
+    "contact.instagram_label": "Instagram oficial",
+    "contact.whatsapp_detail": "Enviar mensagem",
+    "contact.email_label": "E-mail",
+    "footer.desc": "Um serviço de suporte de carreira para jogadores que buscam seriamente jogar no exterior. Apoiamos transferências para Austrália, Nova Zelândia, Mongólia e outros países da Ásia e Oceania.",
+    "footer.contact.email": "E-mail",
+    "footer.copyright": "Todos os direitos reservados.",
+    "img.hero": "Jogador de futebol em busca de carreira no exterior",
+    "img.step1": "Contato e entrevista",
+    "img.step2": "Escolha do plano e contrato",
+    "img.step3": "Negociação com clube e teste",
+    "img.step4": "Pagamento",
+    "img.plan1": "Plano de Teste",
+    "img.plan2": "Plano de Contrato Direto",
+    "img.result": "Retrato de um jogador apoiado",
+    "img.about": "Representante da Link×Football"
+  },
+  "mn": {
+    "nav.service": "Үйлчилгээ",
+    "nav.plans": "Багц",
+    "nav.results": "Амжилт",
+    "nav.about": "Бидний тухай",
+    "nav.contact": "Үнэгүй зөвлөгөө",
+    "skip": "Үндсэн контент руу очих",
+    "hero.h1": "Гадаадад тоглохоор<br>шийдсэн тоглогчдод зориулав.",
+    "hero.lead": "Link×Football бол гадаадын хөлбөмбөгийн клубт элсэхийг чин сэтгэлээсээ хүсдэг тоглогчдод зориулсан карьерын дэмжлэгийн үйлчилгээ юм. Бид Австрали, Шинэ Зеланд, Монгол зэрэг Ази, Номхон далайн бүсийн клубуудтай гэрээ хэлэлцээр хийхэд тусалдаг.",
+    "hero.cta.line": "LINE-аар зөвлөгөө авах",
+    "hero.cta.threads": "Threads-ээр зөвлөгөө авах",
+    "hero.cta.instagram": "Instagram-аар зөвлөгөө авах",
+    "hero.cta.whatsapp": "WhatsApp-аар зөвлөгөө авах",
+    "hero.cta.email": "И-мэйлээр холбогдох",
+    "ticker.label": "Хамрах бүс нутаг",
+    "ticker.tag.au": "Австрали",
+    "ticker.tag.nz": "Шинэ Зеланд",
+    "ticker.tag.mn": "Монгол",
+    "ticker.tag.asia": "Ази, Номхон далай",
+    "ticker.link": "Үйлчилгээг үзэх",
+    "service.h2": "Яагаад Link×Football вэ",
+    "service.intro": "Бид өөрсдөө Австрали, Шинэ Зеланд, Монголд тоглож байсан туршлагатай тул тухайн бүс нутагт бат бэх холбоо харилцаатай. Тогтвортой туршлага дээрээ тулгуурлан гэрээний хэлэлцээрийг хямд, шуурхай дэмждэг.",
+    "service.flow_title": "Дэмжлэгийн явц",
+    "step1.title": "Асуулга, ярилцлага",
+    "step1.desc": "Одоогийн байдал болон зорьж буй улс, түвшингийн талаар асууна.",
+    "step2.title": "Багц сонгох, гэрээ байгуулах",
+    "step2.desc": "Хүсэлтэд тохируулан Сорилтын багц эсвэл Шууд гэрээний багцаас сонгоно.",
+    "step3.title": "Клубтэй хэлэлцээр, сорилт зохион байгуулах",
+    "step3.desc": "Тухайн орны клубуудтай холбоогоо ашиглан хэлэлцээр, зохицуулалт хийнэ.",
+    "step4.title": "Төлбөр",
+    "step4.desc": "Шууд гэрээний багц нь гэрээ баталгаажсаны дараа, Сорилтын багц нь сорилтод орохоор шийдвэрлэсний дараа төлбөртэй.",
+    "eligibility.label": "Хэн хамрагдах вэ",
+    "eligibility.text": "Гэрээ байгуулах үед 18 болон түүнээс дээш насны тоглогчдод зориулагдсан.",
+    "plans.h2": "Багц, Үнэ",
+    "plan1.title": "Сорилтын багц",
+    "plan1.tax": "(татвар багтсан)",
+    "plan1.desc": "Клубын сорилтын хэлэлцээр (ярилцлагад үндэслэн 1–3 баг) болон гэрээний хэлэлцээр хийнэ.",
+    "plan2.badge": "Санал болгож буй",
+    "plan2.title": "Шууд гэрээний багц",
+    "plan2.tax": "(татвар багтсан)",
+    "plan2.desc": "Сорилт өгөлгүйгээр шууд элсэхийг зорино (боломжгүй бол Сорилтын багц руу шилжих боломжтой). Гэрээний хэлэлцээр хийнэ.",
+    "continued.label": "Элссэний дараах тасралтгүй дэмжлэг",
+    "continued.suffix": "(хүсвэл) — багтай харилцах дэмжлэг",
+    "continued.rate": "Сарын цалингийн 3%",
+    "options.title": "Нэмэлт үйлчилгээ",
+    "opt.label": "Дэлгэрэнгүй",
+    "opt1.name": "Видео бэлтгэх багц",
+    "opt1.desc": "Тоглогчийн танилцуулга, тоглолтын бичлэг бэлтгэнэ.",
+    "opt1.tax": "(татвар багтсан)",
+    "opt2.name": "Хувийн вэбсайт бэлтгэх багц",
+    "opt2.desc": "Ивээн тэтгэгч олох, портфолио болгон ашиглах вэбсайт бэлтгэнэ.",
+    "opt2.tax": "(татвар багтсан)",
+    "opt3.name": "Аяллын дэмжлэг",
+    "opt3.desc": "Нислэг, зочид буудлын захиалгад утсаар туслах (захиалгыг та өөрөө хийнэ).",
+    "opt3.free": "Үнэгүй",
+    "payment.label": "Төлбөрийн хэлбэр",
+    "payment.credit": "Кредит карт",
+    "payment.transfer": "Банкны шилжүүлэг",
+    "payment.konbini": "Дэлгүүрийн төлбөр (Stripe-ээр)",
+    "results.h2": "Амжилт, Тоглогчдын сэтгэгдэл",
+    "results.sub": "Бидний дэмжсэн тоглогчдын танилцуулга, сэтгэгдлийг бэлэн болмогц энд байршуулна.",
+    "result1.msg": "Тоглогчийн танилцуулга, шилжилтийн өмнөх/дараах байдал энд байршина.",
+    "result2.msg": "Дэмжлэг авсан тоглогчийн сэтгэгдэл энд байршина.",
+    "result3.msg": "Өмнөх/Дараах (шилжсэн клуб, одоогийн байдал) энд байршина.",
+    "results.note": "Байршуулахын тулд тухайн тоглогчийн намтар, сэтгэгдэл, зургийн зөвшөөрлийг авах шаардлагатай тул зөвшөөрөл авагдсан дарааллаар нийтэлнэ.",
+    "about.h2": "Бидний тухай",
+    "about.role": "Захирлын мэндчилгээ",
+    "about.locales_label": "Хамрах бүс нутаг",
+    "about.locales_line1": "Австрали / Шинэ Зеланд / Монгол",
+    "about.locales_line2": "Ази, Номхон далайн бүс нутаг бүхэлдээ",
+    "about.p1": "Японд гадаадад тоглохыг чин сэтгэлээсээ хүсдэг тоглогч олон бий. Гэвч түүнийг эхлүүлэх орчин, мэдээлэл хараахан хангалттай бүрдээгүй байна.",
+    "about.p2": "Бид, Link×Football, яг ийм тоглогчдын төлөө байгуулагдсан. Австрали, Шинэ Зеланд, Монгол зэрэг Ази, Номхон далайн бүсийн клубуудтай бат бэх холбоогоо ашиглан, тоглогч бүртэй чин сэтгэлээсээ хамтран гэрээний хэлэлцээрийг дэмждэг.",
+    "about.p3": "Чин сэтгэлээсээ туршихыг хүсч байвал таны хүсэл л хангалттай — үлдсэнийг нь бид бүх хүчээрээ дэмжинэ. Хамтдаа гадаад дахь шинэ ертөнц рүү зорьцгооё.",
+    "contact.h2": "Холбоо барих",
+    "contact.cta_text": "Доорх сувгуудын дурын нэгээр чөлөөтэй холбогдоорой.",
+    "contact.cta_button": "LINE-аар үнэгүй зөвлөгөө авах",
+    "contact.line_label": "Албан ёсны LINE",
+    "contact.threads_label": "Албан ёсны Threads",
+    "contact.instagram_label": "Албан ёсны Instagram",
+    "contact.whatsapp_detail": "Зурвас илгээх",
+    "contact.email_label": "И-мэйл хаяг",
+    "footer.desc": "Гадаадад тоглохыг чин сэтгэлээсээ хүсдэг тоглогчдод зориулсан карьерын дэмжлэгийн үйлчилгээ. Австрали, Шинэ Зеланд, Монгол зэрэг Ази, Номхон далайн бүс рүү шилжихэд тусална.",
+    "footer.contact.email": "И-мэйл",
+    "footer.copyright": "Бүх эрх хуулиар хамгаалагдсан.",
+    "img.hero": "Гадаадад тоглохыг зорьж буй хөлбөмбөгчин",
+    "img.step1": "Асуулга, ярилцлага",
+    "img.step2": "Багц сонгох, гэрээ байгуулах",
+    "img.step3": "Клубтэй хэлэлцээр, сорилт",
+    "img.step4": "Төлбөр",
+    "img.plan1": "Сорилтын багц",
+    "img.plan2": "Шууд гэрээний багц",
+    "img.result": "Дэмжигдсэн тоглогчийн зураг",
+    "img.about": "Link×Football-ийн төлөөлөгч"
+  },
+  "ko": {
+    "nav.service": "서비스",
+    "nav.plans": "플랜",
+    "nav.results": "실적",
+    "nav.about": "회사 소개",
+    "nav.contact": "무료 상담",
+    "skip": "본문으로 건너뛰기",
+    "hero.h1": "진심으로 해외를<br>목표로 하는 선수들을 위해.",
+    "hero.lead": "Link×Football은 해외 축구 클럽 입단을 진심으로 목표로 하는 선수를 위한 커리어 지원 서비스입니다. 호주, 뉴질랜드, 몽골을 비롯한 아시아·오세아니아 지역 클럽으로의 이적 계약 협상을 지원합니다.",
+    "hero.cta.line": "공식 LINE으로 상담하기",
+    "hero.cta.threads": "Threads로 상담하기",
+    "hero.cta.instagram": "Instagram으로 상담하기",
+    "hero.cta.whatsapp": "WhatsApp으로 상담하기",
+    "hero.cta.email": "이메일로 문의하기",
+    "ticker.label": "지원 지역",
+    "ticker.tag.au": "호주",
+    "ticker.tag.nz": "뉴질랜드",
+    "ticker.tag.mn": "몽골",
+    "ticker.tag.asia": "아시아·오세아니아",
+    "ticker.link": "서비스 보기",
+    "service.h2": "Link×Football을 선택하는 이유",
+    "service.intro": "호주·뉴질랜드·몽골에서 직접 뛰었던 경험을 바탕으로 강력한 네트워크를 보유하고 있으며, 다수의 실적을 바탕으로 합리적인 비용으로 신속하게 계약 협상을 지원합니다.",
+    "service.flow_title": "지원 절차",
+    "step1.title": "문의 및 인터뷰",
+    "step1.desc": "현재 상황과 희망하는 국가·레벨을 확인합니다.",
+    "step2.title": "플랜 선택 및 계약",
+    "step2.desc": "희망에 맞춰 트라이얼 플랜 또는 다이렉트 계약 플랜 중에서 선택합니다.",
+    "step3.title": "클럽 협상 및 트라이얼 조율",
+    "step3.desc": "현지 클럽과의 네트워크를 활용해 협상과 조율을 진행합니다.",
+    "step4.title": "결제",
+    "step4.desc": "다이렉트 계약 플랜은 계약 확정 후, 트라이얼 플랜은 트라이얼 참가 확정 후 결제합니다.",
+    "eligibility.label": "지원 대상",
+    "eligibility.text": "계약 체결 시점 기준 만 18세 이상인 분을 대상으로 합니다.",
+    "plans.h2": "플랜 및 요금",
+    "plan1.title": "트라이얼 플랜",
+    "plan1.tax": "(세금 포함)",
+    "plan1.desc": "클럽 트라이얼 협상(인터뷰 기반 1~3개 팀) 및 계약 협상을 진행합니다.",
+    "plan2.badge": "추천",
+    "plan2.title": "다이렉트 계약 플랜",
+    "plan2.tax": "(세금 포함)",
+    "plan2.desc": "트라이얼 없이 곧바로 입단을 목표로 합니다(어려운 경우 트라이얼 플랜으로 변경 가능). 계약 협상을 진행합니다.",
+    "continued.label": "입단 후 지속 지원",
+    "continued.suffix": "(희망 시) — 팀과의 커뮤니케이션 지원",
+    "continued.rate": "월급의 3%",
+    "options.title": "옵션",
+    "opt.label": "내용",
+    "opt1.name": "영상 제작 플랜",
+    "opt1.desc": "선수 소개 및 플레이 영상을 제작합니다.",
+    "opt1.tax": "(세금 포함)",
+    "opt2.name": "개인 홈페이지 제작 플랜",
+    "opt2.desc": "스폰서 확보나 포트폴리오로 활용할 수 있는 홈페이지를 제작합니다.",
+    "opt2.tax": "(세금 포함)",
+    "opt3.name": "출국 지원",
+    "opt3.desc": "항공권·호텔 예약을 전화로 지원합니다(예약 자체는 본인이 진행합니다).",
+    "opt3.free": "무료",
+    "payment.label": "결제 방법",
+    "payment.credit": "신용카드",
+    "payment.transfer": "계좌 이체",
+    "payment.konbini": "편의점 결제(Stripe)",
+    "results.h2": "실적 및 선수 후기",
+    "results.sub": "실제로 지원한 선수의 소개와 후기는 준비되는 대로 이곳에 게재하겠습니다.",
+    "result1.msg": "선수 프로필과 이적 전후 상황이 게재될 예정입니다.",
+    "result2.msg": "지원을 받은 소감이 게재될 예정입니다.",
+    "result3.msg": "Before / After(이적 클럽·현재 활동)가 게재될 예정입니다.",
+    "results.note": "게재를 위해서는 본인의 경력·후기·사진 사용에 대한 동의가 필요하여, 동의를 받은 선수부터 순차적으로 공개합니다.",
+    "about.h2": "회사 소개",
+    "about.role": "대표 인사말",
+    "about.locales_label": "지원 지역",
+    "about.locales_line1": "호주 / 뉴질랜드 / 몽골",
+    "about.locales_line2": "아시아·오세아니아 전역",
+    "about.p1": "일본에는 진심으로 해외 진출에 도전하고 싶어 하는 선수가 많습니다. 하지만 그 첫걸음을 내딛을 환경과 정보는 아직 충분하지 않습니다.",
+    "about.p2": "저희 Link×Football은 바로 그런 선수들을 위해 시작되었습니다. 호주·뉴질랜드·몽골을 비롯한 아시아·오세아니아 클럽과의 강력한 네트워크를 바탕으로, 선수 한 명 한 명과 진심으로 마주하며 계약 협상을 지원합니다.",
+    "about.p3": "진심으로 도전하고 싶다는 마음만 있다면 그걸로 충분합니다. 나머지는 저희가 전력을 다해 도와드리겠습니다. 함께 해외라는 새로운 무대를 향해 나아갑시다.",
+    "contact.h2": "문의하기",
+    "contact.cta_text": "아래 채널 중 편하신 방법으로 편하게 연락 주세요.",
+    "contact.cta_button": "LINE으로 무료 상담하기",
+    "contact.line_label": "공식 LINE",
+    "contact.threads_label": "공식 Threads",
+    "contact.instagram_label": "공식 Instagram",
+    "contact.whatsapp_detail": "메시지 보내기",
+    "contact.email_label": "이메일 주소",
+    "footer.desc": "진심으로 해외 진출을 목표로 하는 선수를 위한 커리어 지원 서비스입니다. 호주, 뉴질랜드, 몽골을 비롯한 아시아·오세아니아 지역으로의 이적을 지원합니다.",
+    "footer.contact.email": "이메일",
+    "footer.copyright": "모든 권리 보유.",
+    "img.hero": "해외 진출을 목표로 하는 축구 선수",
+    "img.step1": "문의 및 인터뷰",
+    "img.step2": "플랜 선택 및 계약",
+    "img.step3": "클럽 협상 및 트라이얼 조율",
+    "img.step4": "결제",
+    "img.plan1": "트라이얼 플랜",
+    "img.plan2": "다이렉트 계약 플랜",
+    "img.result": "지원한 선수의 포트레이트",
+    "img.about": "Link×Football 대표"
+  },
+  "th": {
+    "nav.service": "บริการ",
+    "nav.plans": "แพ็กเกจ",
+    "nav.results": "ผลงาน",
+    "nav.about": "เกี่ยวกับเรา",
+    "nav.contact": "ปรึกษาฟรี",
+    "skip": "ข้ามไปยังเนื้อหา",
+    "hero.h1": "เพื่อนักฟุตบอลที่ตั้งใจจริง<br>จะไปเล่นต่างประเทศ",
+    "hero.lead": "Link×Football คือบริการสนับสนุนเส้นทางอาชีพสำหรับนักฟุตบอลที่ตั้งใจจริงจะเข้าร่วมสโมสรฟุตบอลในต่างประเทศ เราสนับสนุนการเจรจาสัญญาย้ายทีมไปยังออสเตรเลีย นิวซีแลนด์ มองโกเลีย และประเทศอื่น ๆ ในภูมิภาคเอเชีย-โอเชียเนีย",
+    "hero.cta.line": "ปรึกษาผ่าน LINE ทางการ",
+    "hero.cta.threads": "ปรึกษาผ่าน Threads",
+    "hero.cta.instagram": "ปรึกษาผ่าน Instagram",
+    "hero.cta.whatsapp": "ปรึกษาผ่าน WhatsApp",
+    "hero.cta.email": "ติดต่อทางอีเมล",
+    "ticker.label": "พื้นที่ให้บริการ",
+    "ticker.tag.au": "ออสเตรเลีย",
+    "ticker.tag.nz": "นิวซีแลนด์",
+    "ticker.tag.mn": "มองโกเลีย",
+    "ticker.tag.asia": "เอเชีย-โอเชียเนีย",
+    "ticker.link": "ดูบริการของเรา",
+    "service.h2": "ทำไมต้อง Link×Football",
+    "service.intro": "ด้วยประสบการณ์ที่เราเคยลงเล่นในออสเตรเลีย นิวซีแลนด์ และมองโกเลียด้วยตัวเอง เราจึงมีเครือข่ายที่แข็งแกร่งในภูมิภาคนี้ และใช้ผลงานที่ผ่านมาสนับสนุนการเจรจาสัญญาอย่างรวดเร็วในราคาที่เข้าถึงได้",
+    "service.flow_title": "ขั้นตอนการให้บริการ",
+    "step1.title": "สอบถามและสัมภาษณ์",
+    "step1.desc": "เราจะสอบถามสถานการณ์ปัจจุบันและประเทศ/ระดับที่คุณต้องการ",
+    "step2.title": "เลือกแพ็กเกจและทำสัญญา",
+    "step2.desc": "เลือกระหว่างแพ็กเกจทดสอบฝีเท้า หรือแพ็กเกจเซ็นสัญญาโดยตรง ตามที่เหมาะกับคุณ",
+    "step3.title": "เจรจากับสโมสรและจัดตารางทดสอบฝีเท้า",
+    "step3.desc": "เราใช้เครือข่ายกับสโมสรในพื้นที่เพื่อเจรจาและประสานงานให้คุณ",
+    "step4.title": "การชำระเงิน",
+    "step4.desc": "แพ็กเกจเซ็นสัญญาโดยตรงชำระเมื่อยืนยันสัญญาแล้ว ส่วนแพ็กเกจทดสอบฝีเท้าชำระเมื่อยืนยันการทดสอบแล้ว",
+    "eligibility.label": "คุณสมบัติผู้สมัคร",
+    "eligibility.text": "สำหรับนักฟุตบอลอายุ 18 ปีขึ้นไป ณ วันที่ทำสัญญา",
+    "plans.h2": "แพ็กเกจและราคา",
+    "plan1.title": "แพ็กเกจทดสอบฝีเท้า",
+    "plan1.tax": "(รวมภาษีแล้ว)",
+    "plan1.desc": "เจรจาทดสอบฝีเท้ากับสโมสร (1-3 ทีม ตามผลสัมภาษณ์) และดำเนินการเจรจาสัญญา",
+    "plan2.badge": "แนะนำ",
+    "plan2.title": "แพ็กเกจเซ็นสัญญาโดยตรง",
+    "plan2.tax": "(รวมภาษีแล้ว)",
+    "plan2.desc": "มุ่งเข้าร่วมทีมโดยตรงโดยไม่ต้องทดสอบฝีเท้า (หากเป็นไปได้ยากสามารถเปลี่ยนเป็นแพ็กเกจทดสอบฝีเท้าได้) ดำเนินการเจรจาสัญญา",
+    "continued.label": "การสนับสนุนต่อเนื่องหลังเข้าร่วมทีม",
+    "continued.suffix": "(ตามต้องการ) — สนับสนุนการสื่อสารกับทีม",
+    "continued.rate": "3% ของเงินเดือนรายเดือน",
+    "options.title": "บริการเสริม",
+    "opt.label": "รายละเอียด",
+    "opt1.name": "แพ็กเกจผลิตวิดีโอ",
+    "opt1.desc": "ผลิตวิดีโอแนะนำตัวและไฮไลต์การเล่นของนักฟุตบอล",
+    "opt1.tax": "(รวมภาษีแล้ว)",
+    "opt2.name": "แพ็กเกจทำเว็บไซต์ส่วนตัว",
+    "opt2.desc": "เว็บไซต์ที่ใช้หาสปอนเซอร์หรือเป็นพอร์ตโฟลิโอ",
+    "opt2.tax": "(รวมภาษีแล้ว)",
+    "opt3.name": "บริการสนับสนุนการเดินทาง",
+    "opt3.desc": "สนับสนุนการจองตั๋วเครื่องบินและโรงแรมทางโทรศัพท์ (การจองจริงทำโดยตัวท่านเอง)",
+    "opt3.free": "ฟรี",
+    "payment.label": "วิธีการชำระเงิน",
+    "payment.credit": "บัตรเครดิต",
+    "payment.transfer": "โอนเงินผ่านธนาคาร",
+    "payment.konbini": "ชำระที่ร้านสะดวกซื้อ (ผ่าน Stripe)",
+    "results.h2": "ผลงานและเสียงจากนักฟุตบอล",
+    "results.sub": "ประวัติและความคิดเห็นของนักฟุตบอลที่เราสนับสนุนจริง จะนำมาลงในส่วนนี้เมื่อพร้อม",
+    "result1.msg": "ประวัตินักฟุตบอลและสถานการณ์ก่อน/หลังย้ายทีมจะลงในส่วนนี้",
+    "result2.msg": "ความคิดเห็นจากนักฟุตบอลที่ได้รับการสนับสนุนจะลงในส่วนนี้",
+    "result3.msg": "Before / After (สโมสรปลายทาง/สถานะปัจจุบัน) จะลงในส่วนนี้",
+    "results.note": "การเผยแพร่ต้องได้รับความยินยอมจากนักฟุตบอลในเรื่องประวัติ ความคิดเห็น และรูปภาพ จึงจะทยอยเผยแพร่ตามลำดับที่ได้รับความยินยอม",
+    "about.h2": "เกี่ยวกับเรา",
+    "about.role": "สารจากผู้บริหาร",
+    "about.locales_label": "พื้นที่ให้บริการ",
+    "about.locales_line1": "ออสเตรเลีย / นิวซีแลนด์ / มองโกเลีย",
+    "about.locales_line2": "ทั่วภูมิภาคเอเชีย-โอเชียเนีย",
+    "about.p1": "ในญี่ปุ่นมีนักฟุตบอลจำนวนมากที่ตั้งใจจริงอยากท้าทายตัวเองในต่างประเทศ แต่สภาพแวดล้อมและข้อมูลสำหรับก้าวแรกนั้นยังไม่เพียงพอ",
+    "about.p2": "Link×Football ก่อตั้งขึ้นเพื่อนักฟุตบอลเหล่านี้โดยเฉพาะ เราใช้เครือข่ายที่แข็งแกร่งกับสโมสรในเอเชีย-โอเชียเนีย รวมถึงออสเตรเลีย นิวซีแลนด์ และมองโกเลีย เพื่อสนับสนุนการเจรจาสัญญาอย่างจริงใจกับนักฟุตบอลแต่ละคน",
+    "about.p3": "แค่คุณมีความตั้งใจจริงที่จะท้าทายตัวเอง ที่เหลือเราจะสนับสนุนอย่างสุดความสามารถ มาก้าวไปสู่ทิวทัศน์ใหม่ในต่างแดนไปด้วยกัน",
+    "contact.h2": "ติดต่อเรา",
+    "contact.cta_text": "สามารถติดต่อสอบถามได้ตามช่องทางด้านล่างนี้",
+    "contact.cta_button": "ปรึกษาฟรีผ่าน LINE",
+    "contact.line_label": "LINE ทางการ",
+    "contact.threads_label": "Threads ทางการ",
+    "contact.instagram_label": "Instagram ทางการ",
+    "contact.whatsapp_detail": "ส่งข้อความ",
+    "contact.email_label": "อีเมล",
+    "footer.desc": "บริการสนับสนุนเส้นทางอาชีพสำหรับนักฟุตบอลที่ตั้งใจจริงจะไปเล่นต่างประเทศ สนับสนุนการย้ายทีมไปยังออสเตรเลีย นิวซีแลนด์ มองโกเลีย และภูมิภาคเอเชีย-โอเชียเนีย",
+    "footer.contact.email": "อีเมล",
+    "footer.copyright": "สงวนลิขสิทธิ์",
+    "img.hero": "นักฟุตบอลที่มุ่งสู่เส้นทางอาชีพต่างประเทศ",
+    "img.step1": "สอบถามและสัมภาษณ์",
+    "img.step2": "เลือกแพ็กเกจและทำสัญญา",
+    "img.step3": "เจรจากับสโมสรและทดสอบฝีเท้า",
+    "img.step4": "การชำระเงิน",
+    "img.plan1": "แพ็กเกจทดสอบฝีเท้า",
+    "img.plan2": "แพ็กเกจเซ็นสัญญาโดยตรง",
+    "img.result": "ภาพนักฟุตบอลที่ได้รับการสนับสนุน",
+    "img.about": "ตัวแทนของ Link×Football"
+  },
+  "zh": {
+    "nav.service": "服务内容",
+    "nav.plans": "方案与价格",
+    "nav.results": "案例",
+    "nav.about": "关于我们",
+    "nav.contact": "免费咨询",
+    "skip": "跳转到正文",
+    "hero.h1": "献给认真<br>挑战海外赛场的球员。",
+    "hero.lead": "Link×Football 是为认真想加盟海外足球俱乐部的球员提供的职业生涯支持服务。我们为前往澳大利亚、新西兰、蒙古等亚太地区俱乐部的转会提供合同谈判支持。",
+    "hero.cta.line": "通过官方LINE咨询",
+    "hero.cta.threads": "通过Threads咨询",
+    "hero.cta.instagram": "通过Instagram咨询",
+    "hero.cta.whatsapp": "通过WhatsApp咨询",
+    "hero.cta.email": "通过邮件咨询",
+    "ticker.label": "服务地区",
+    "ticker.tag.au": "澳大利亚",
+    "ticker.tag.nz": "新西兰",
+    "ticker.tag.mn": "蒙古",
+    "ticker.tag.asia": "亚太地区",
+    "ticker.link": "查看服务内容",
+    "service.h2": "为什么选择 Link×Football",
+    "service.intro": "凭借我们在澳大利亚、新西兰、蒙古的亲身踢球经验,我们在当地拥有牢固的人脉网络。凭借丰富的实绩,以更低的价格快速支持合同谈判。",
+    "service.flow_title": "服务流程",
+    "step1.title": "咨询与访谈",
+    "step1.desc": "了解您目前的状况以及希望前往的国家、水平等级。",
+    "step2.title": "选择方案并签约",
+    "step2.desc": "可根据需求在试训方案与直接签约方案中选择。",
+    "step3.title": "与俱乐部谈判、安排试训",
+    "step3.desc": "运用与当地俱乐部的人脉进行谈判与协调。",
+    "step4.title": "付款",
+    "step4.desc": "直接签约方案在合同确定后付款,试训方案在确定参加试训后付款。",
+    "eligibility.label": "适用对象",
+    "eligibility.text": "面向签约时年满18周岁以上的球员。",
+    "plans.h2": "方案与价格",
+    "plan1.title": "试训方案",
+    "plan1.tax": "(含税)",
+    "plan1.desc": "协助与俱乐部进行试训谈判(根据访谈内容,1~3支球队)及合同谈判。",
+    "plan2.badge": "推荐",
+    "plan2.title": "直接签约方案",
+    "plan2.tax": "(含税)",
+    "plan2.desc": "以不经过试训直接加盟为目标(如有困难可变更为试训方案)。提供合同谈判支持。",
+    "continued.label": "加盟后的持续支持",
+    "continued.suffix": "(可选)— 与球队的沟通支持",
+    "continued.rate": "月薪的3%",
+    "options.title": "附加服务",
+    "opt.label": "内容",
+    "opt1.name": "视频制作方案",
+    "opt1.desc": "制作球员介绍及比赛集锦视频。",
+    "opt1.tax": "(含税)",
+    "opt2.name": "个人网站制作方案",
+    "opt2.desc": "可用于争取赞助或作为作品集展示的个人网站。",
+    "opt2.tax": "(含税)",
+    "opt3.name": "出行支持",
+    "opt3.desc": "通过电话协助预订机票和酒店(预订本身需由您本人完成)。",
+    "opt3.free": "免费",
+    "payment.label": "付款方式",
+    "payment.credit": "信用卡",
+    "payment.transfer": "银行转账",
+    "payment.konbini": "便利店付款(通过Stripe)",
+    "results.h2": "案例与球员心声",
+    "results.sub": "实际获得支持的球员介绍与感言,将在准备就绪后陆续刊载于此。",
+    "result1.msg": "球员简介及转会前后情况将刊载于此。",
+    "result2.msg": "获得支持球员的感言将刊载于此。",
+    "result3.msg": "转会前后对比(转会俱乐部、目前状态)将刊载于此。",
+    "results.note": "刊载前需获得本人对履历、感言及照片使用的许可,将按获得许可的顺序陆续公开。",
+    "about.h2": "关于我们",
+    "about.role": "代表致辞",
+    "about.locales_label": "服务地区",
+    "about.locales_line1": "澳大利亚 / 新西兰 / 蒙古",
+    "about.locales_line2": "亚太地区全境",
+    "about.p1": "在日本,有许多球员真心渴望挑战海外赛场。然而,迈出这一步所需的环境与信息仍远远不够完善。",
+    "about.p2": "我们 Link×Football 正是为这样的球员而成立。凭借与澳大利亚、新西兰、蒙古等亚太地区俱乐部之间的牢固联系,我们真诚地与每一位球员并肩同行,支持其合同谈判。",
+    "about.p3": "只要您怀有真心想要挑战的决心,剩下的就交给我们全力以赴。让我们一起迈向海外的全新风景。",
+    "contact.h2": "联系我们",
+    "contact.cta_text": "欢迎通过以下任意渠道与我们联系咨询。",
+    "contact.cta_button": "通过LINE免费咨询",
+    "contact.line_label": "官方LINE",
+    "contact.threads_label": "官方Threads",
+    "contact.instagram_label": "官方Instagram",
+    "contact.whatsapp_detail": "发送消息",
+    "contact.email_label": "邮箱地址",
+    "footer.desc": "为认真挑战海外赛场的球员提供的职业生涯支持服务。支持前往澳大利亚、新西兰、蒙古等亚太地区俱乐部的转会。",
+    "footer.contact.email": "邮箱",
+    "footer.copyright": "版权所有。",
+    "img.hero": "追求海外职业生涯的足球运动员",
+    "img.step1": "咨询与访谈",
+    "img.step2": "选择方案并签约",
+    "img.step3": "与俱乐部谈判及试训安排",
+    "img.step4": "付款",
+    "img.plan1": "试训方案",
+    "img.plan2": "直接签约方案",
+    "img.result": "获得支持球员的肖像",
+    "img.about": "Link×Football代表"
+  }
+};
+
+  var LANG_META = {
+    ja:{flag:'\ud83c\uddef\ud83c\uddf5',name:'\u65e5\u672c\u8a9e'}, en:{flag:'\ud83c\uddfa\ud83c\uddf8',name:'English'}, pt:{flag:'\ud83c\udde7\ud83c\uddf7',name:'Portugu\u00eas'},
+    mn:{flag:'\ud83c\uddf2\ud83c\uddf3',name:'\u041c\u043e\u043d\u0433\u043e\u043b'}, ko:{flag:'\ud83c\uddf0\ud83c\uddf7',name:'\ud55c\uad6d\uc5b4'}, th:{flag:'\ud83c\uddf9\ud83c\udded',name:'\u0e44\u0e17\u0e22'}, zh:{flag:'\ud83c\udde8\ud83c\uddf3',name:'\u4e2d\u6587'}
+  };
+  var STORAGE_KEY = 'lf_lang';
+
+  function applyLang(lang){
+    var dict = I18N[lang] || I18N.ja;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(dict[key] !== undefined) el.textContent = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+      var key = el.getAttribute('data-i18n-html');
+      if(dict[key] !== undefined) el.innerHTML = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-alt]').forEach(function(el){
+      var key = el.getAttribute('data-i18n-alt');
+      if(dict[key] !== undefined) el.setAttribute('alt', dict[key]);
+    });
+    document.documentElement.setAttribute('lang', lang);
+    var meta = LANG_META[lang] || LANG_META.ja;
+    langTriggerFlag.textContent = meta.flag;
+    langTriggerName.textContent = meta.name;
+    langOptions.forEach(function(li){
+      li.setAttribute('aria-selected', li.getAttribute('data-lang') === lang ? 'true' : 'false');
+    });
+    try{ localStorage.setItem(STORAGE_KEY, lang); }catch(e){}
+  }
+
+  var langOptions = Array.prototype.slice.call(langListbox.querySelectorAll('li'));
+  langOptions.forEach(function(li, idx){
+    li.addEventListener('click', function(){
+      applyLang(li.getAttribute('data-lang'));
+      closeLangListbox();
+      langTrigger.focus();
+    });
+    li.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        applyLang(li.getAttribute('data-lang'));
+        closeLangListbox();
+        langTrigger.focus();
+      } else if(e.key === 'ArrowDown'){
+        e.preventDefault();
+        (langOptions[idx+1] || langOptions[0]).focus();
+      } else if(e.key === 'ArrowUp'){
+        e.preventDefault();
+        (langOptions[idx-1] || langOptions[langOptions.length-1]).focus();
+      }
+    });
+  });
+
+  var initialLang = 'ja';
+  try{
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if(saved && I18N[saved]) initialLang = saved;
+  }catch(e){}
+  applyLang(initialLang);
+
+})();
+</script>
+</body>
+</html>
