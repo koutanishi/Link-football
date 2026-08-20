@@ -205,6 +205,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   display:flex;align-items:center;justify-content:space-between;
   height:76px;
 }
+.header-right{display:flex;align-items:center;gap:clamp(.75rem,2vw,1.25rem);}
 .brand{display:flex;align-items:center;gap:.6rem;}
 .brand-logo-slot{
   /* ロゴ画像を用意した際は、この中に
@@ -254,6 +255,60 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 }
 .nav-cta:hover{background:var(--accent-2);border-color:var(--accent-2);}
 .nav-cta::after{display:none !important;}
+
+/* ==============================================================
+   Language switcher (custom dropdown — native <select> was tried
+   first, but flag emoji render as a plain dot inside native
+   <option> elements in some environments; a custom listbox lets us
+   guarantee the flag+name presentation everywhere.)
+   ============================================================== */
+.lang-switch{position:relative;flex-shrink:0;}
+.lang-trigger{
+  display:inline-flex;align-items:center;gap:.5em;
+  background:var(--bg-2);
+  border:1px solid var(--line-strong);
+  color:var(--ink);
+  font-family:var(--font-jp);
+  font-size:.82rem;
+  padding:.5em .7em;
+  cursor:pointer;
+  transition:border-color .25s var(--ease);
+  max-width:150px;
+}
+.lang-trigger:hover,.lang-trigger[aria-expanded="true"]{border-color:var(--accent);}
+.lang-trigger__flag{font-size:1.05em;line-height:1;flex-shrink:0;}
+.lang-trigger__name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lang-trigger__chevron{width:13px;height:13px;flex-shrink:0;margin-left:auto;color:var(--ink-muted);transition:transform .25s var(--ease);}
+.lang-trigger[aria-expanded="true"] .lang-trigger__chevron{transform:rotate(180deg);}
+
+.lang-listbox{
+  position:absolute;
+  top:calc(100% + 8px);right:0;
+  min-width:170px;
+  background:var(--bg-1);
+  border:1px solid var(--line-strong);
+  box-shadow:0 16px 40px -12px rgba(0,0,0,.6);
+  z-index:110;
+  max-height:70vh;
+  overflow-y:auto;
+}
+.lang-listbox[hidden]{display:none;}
+.lang-listbox li{
+  display:flex;align-items:center;gap:.7em;
+  padding:.65em .9em;
+  font-size:.86rem;
+  cursor:pointer;
+  transition:background .15s var(--ease);
+}
+.lang-listbox li:hover,.lang-listbox li:focus-visible{background:var(--bg-2);outline:none;}
+.lang-listbox li[aria-selected="true"]{color:var(--accent);font-weight:700;}
+.lang-listbox li .flag{font-size:1.1em;line-height:1;flex-shrink:0;}
+@media (max-width:480px){
+  .lang-trigger{max-width:76px;padding:.5em .55em;}
+  .lang-trigger__name{display:none;}
+  .lang-trigger__chevron{margin-left:.1em;}
+  .lang-listbox{right:-8px;}
+}
 
 .menu-toggle{
   display:none;flex-direction:column;justify-content:center;gap:5px;
@@ -735,7 +790,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 </head>
 <body>
 
-<a href="#main" class="skip-link">本文へスキップ</a>
+<a href="#main" class="skip-link" data-i18n="skip">本文へスキップ</a>
 
 <!--
   ================= 画像差し替えガイド =================
@@ -770,28 +825,47 @@ a:focus-visible,button:focus-visible,input:focus-visible{
       </span>
     </a>
 
-    <nav class="nav-desktop" aria-label="メインナビゲーション">
-      <a href="#service">サービス</a>
-      <a href="#plans">プラン</a>
-      <a href="#results">実績</a>
-      <a href="#about">運営者情報</a>
-      <a href="#contact" class="nav-cta">無料相談</a>
-    </nav>
+    <div class="header-right">
+      <nav class="nav-desktop" aria-label="メインナビゲーション">
+        <a href="#service" data-i18n="nav.service">サービス</a>
+        <a href="#plans" data-i18n="nav.plans">プラン</a>
+        <a href="#results" data-i18n="nav.results">実績</a>
+        <a href="#about" data-i18n="nav.about">運営者情報</a>
+        <a href="#contact" class="nav-cta" data-i18n="nav.contact">無料相談</a>
+      </nav>
 
-    <button class="menu-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="nav-mobile">
-      <span></span><span></span><span></span>
-    </button>
+      <div class="lang-switch">
+        <button type="button" class="lang-trigger" id="lang-trigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="lang-listbox">
+          <span class="lang-trigger__flag" id="lang-trigger-flag">🇯🇵</span>
+          <span class="lang-trigger__name" id="lang-trigger-name">日本語</span>
+          <svg class="lang-trigger__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <ul class="lang-listbox" id="lang-listbox" role="listbox" aria-label="Language / 言語を選択" tabindex="-1" hidden>
+          <li role="option" data-lang="ja" aria-selected="true" tabindex="-1"><span class="flag">🇯🇵</span><span class="name">日本語</span></li>
+          <li role="option" data-lang="en" aria-selected="false" tabindex="-1"><span class="flag">🇺🇸</span><span class="name">English</span></li>
+          <li role="option" data-lang="pt" aria-selected="false" tabindex="-1"><span class="flag">🇧🇷</span><span class="name">Português</span></li>
+          <li role="option" data-lang="mn" aria-selected="false" tabindex="-1"><span class="flag">🇲🇳</span><span class="name">Монгол</span></li>
+          <li role="option" data-lang="ko" aria-selected="false" tabindex="-1"><span class="flag">🇰🇷</span><span class="name">한국어</span></li>
+          <li role="option" data-lang="th" aria-selected="false" tabindex="-1"><span class="flag">🇹🇭</span><span class="name">ไทย</span></li>
+          <li role="option" data-lang="zh" aria-selected="false" tabindex="-1"><span class="flag">🇨🇳</span><span class="name">中文</span></li>
+        </ul>
+      </div>
+
+      <button class="menu-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="nav-mobile">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
 <!-- backdrop-filterを持つヘッダーの外に置くことで、position:fixedの
      全画面メニューがビューポート全体に正しく広がるようにしています。 -->
 <nav class="nav-mobile" id="nav-mobile" aria-label="モバイルナビゲーション">
-  <a href="#service">サービス</a>
-  <a href="#plans">プラン</a>
-  <a href="#results">実績</a>
-  <a href="#about">運営者情報</a>
-  <a href="#contact" class="nav-cta">無料相談</a>
+  <a href="#service" data-i18n="nav.service">サービス</a>
+  <a href="#plans" data-i18n="nav.plans">プラン</a>
+  <a href="#results" data-i18n="nav.results">実績</a>
+  <a href="#about" data-i18n="nav.about">運営者情報</a>
+  <a href="#contact" class="nav-cta" data-i18n="nav.contact">無料相談</a>
 </nav>
 
 <main id="main">
@@ -807,8 +881,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   </div>
     <div class="hero-copy">
       <span class="eyebrow">Career Support Agency</span>
-      <h1>本気で海外を<br>目指す選手のために。</h1>
-      <p class="lead">
+      <h1 data-i18n-html="hero.h1">本気で海外を<br>目指す選手のために。</h1>
+      <p class="lead" data-i18n="hero.lead">
         Link×Footballは、海外のサッカークラブ入りを本気で目指す選手のための
         キャリアサポートサービスです。オーストラリア・ニュージーランド・モンゴルをはじめとする
         アジア・オセアニア地域への移籍の契約交渉をサポートします。
@@ -816,12 +890,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{
       <div class="hero-ctas">
         <a class="btn btn-accent" href="https://lin.ee/6agJDsY" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5c0 4.7-4.7 8.5-9.5 8.5-1 0-2-.15-2.9-.45L4 21l1.1-3.8C3.8 15.9 3 13.8 3 11.5 3 6.8 7.7 3 12.5 3S21 6.8 21 11.5Z"/></svg>
-          公式LINEで相談する
+          <span data-i18n="hero.cta.line">公式LINEで相談する</span>
         </a>
-        <a class="btn btn-outline" href="https://www.threads.com/@link.football_" target="_blank" rel="noopener">Threadsで相談する</a>
-        <a class="btn btn-outline" href="https://www.instagram.com/link.football_" target="_blank" rel="noopener">Instagramで相談する</a>
-        <a class="btn btn-outline" href="https://wa.me/message/OH776LDKUG5LB1" target="_blank" rel="noopener">WhatsAppで相談する</a>
-        <a class="btn btn-outline" href="mailto:linkfootball13@gmail.com">メールで問い合わせる</a>
+        <a class="btn btn-outline" href="https://www.threads.com/@link.football_" target="_blank" rel="noopener" data-i18n="hero.cta.threads">Threadsで相談する</a>
+        <a class="btn btn-outline" href="https://www.instagram.com/link.football_" target="_blank" rel="noopener" data-i18n="hero.cta.instagram">Instagramで相談する</a>
+        <a class="btn btn-outline" href="https://wa.me/message/OH776LDKUG5LB1" target="_blank" rel="noopener" data-i18n="hero.cta.whatsapp">WhatsAppで相談する</a>
+        <a class="btn btn-outline" href="mailto:linkfootball13@gmail.com" data-i18n="hero.cta.email">メールで問い合わせる</a>
       </div>
     </div>
 
@@ -829,16 +903,16 @@ a:focus-visible,button:focus-visible,input:focus-visible{
     <div class="wrap">
       <span class="ticker-label">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
-        対応地域
+        <span data-i18n="ticker.label">対応地域</span>
       </span>
       <ul class="region-tags">
-        <li>Australia</li>
-        <li>New Zealand</li>
-        <li>Mongolia</li>
-        <li>Asia &amp; Oceania 全域</li>
+        <li data-i18n="ticker.tag.au">Australia</li>
+        <li data-i18n="ticker.tag.nz">New Zealand</li>
+        <li data-i18n="ticker.tag.mn">Mongolia</li>
+        <li data-i18n="ticker.tag.asia">Asia &amp; Oceania</li>
       </ul>
       <a class="ticker-link" href="#service">
-        サービスを見る
+        <span data-i18n="ticker.link">サービスを見る</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
     </div>
@@ -852,15 +926,15 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Service</span>
-      <h2>なぜLink×Footballなのか</h2>
+      <h2 data-i18n="service.h2">なぜLink×Footballなのか</h2>
     </div>
 
-    <p class="service-intro">
+    <p class="service-intro" data-i18n="service.intro">
       アジア・オセアニア地域(オーストラリア/ニュージーランド/モンゴル)でプレーした経験から
       強いコネクションがあり、多数の実績を活かし低価格で契約交渉を迅速にサポートさせていただきます。
     </p>
 
-    <h3 class="subblock-title">サポートの流れ</h3>
+    <h3 class="subblock-title" data-i18n="service.flow_title">サポートの流れ</h3>
     <div class="feature-list">
       <div class="feature">
         <div class="feature-media">
@@ -872,8 +946,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{
         </div>
         <div class="feature-body">
           <span class="feature-num">STEP.01</span>
-          <h3>お問い合わせ・ヒアリング</h3>
-          <p>現在の状況や希望する国・レベル感を伺います。</p>
+          <h3 data-i18n="step1.title">お問い合わせ・ヒアリング</h3>
+          <p data-i18n="step1.desc">現在の状況や希望する国・レベル感を伺います。</p>
         </div>
       </div>
 
@@ -887,8 +961,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{
         </div>
         <div class="feature-body">
           <span class="feature-num">STEP.02</span>
-          <h3>プラン選択・契約</h3>
-          <p>練習参加プラン・本契約プランからご希望に合わせて選択いただきます。</p>
+          <h3 data-i18n="step2.title">プラン選択・契約</h3>
+          <p data-i18n="step2.desc">練習参加プラン・本契約プランからご希望に合わせて選択いただきます。</p>
         </div>
       </div>
 
@@ -902,8 +976,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{
         </div>
         <div class="feature-body">
           <span class="feature-num">STEP.03</span>
-          <h3>クラブとの交渉・トライアル調整</h3>
-          <p>現地クラブとのコネクションを活かし、交渉・調整を進めます。</p>
+          <h3 data-i18n="step3.title">クラブとの交渉・トライアル調整</h3>
+          <p data-i18n="step3.desc">現地クラブとのコネクションを活かし、交渉・調整を進めます。</p>
         </div>
       </div>
 
@@ -917,15 +991,15 @@ a:focus-visible,button:focus-visible,input:focus-visible{
         </div>
         <div class="feature-body">
           <span class="feature-num">STEP.04</span>
-          <h3>お支払い</h3>
-          <p>本契約プランは契約決定後、練習参加プランは練習参加決定後のお支払いです。</p>
+          <h3 data-i18n="step4.title">お支払い</h3>
+          <p data-i18n="step4.desc">本契約プランは契約決定後、練習参加プランは練習参加決定後のお支払いです。</p>
         </div>
       </div>
     </div>
 
     <div class="eligibility">
-      <span class="label">対象となる選手</span>
-      <p>契約締結時点で満18歳以上の方を対象としています。</p>
+      <span class="label" data-i18n="eligibility.label">対象となる選手</span>
+      <p data-i18n="eligibility.text">契約締結時点で満18歳以上の方を対象としています。</p>
     </div>
   </div>
 </section>
@@ -937,7 +1011,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Plans</span>
-      <h2>プラン・料金</h2>
+      <h2 data-i18n="plans.h2">プラン・料金</h2>
     </div>
 
     <div class="plan-grid">
@@ -948,9 +1022,9 @@ a:focus-visible,button:focus-visible,input:focus-visible{
           <span class="media-slot__tag"><b>差替:</b>&nbsp;#plan1-img / 練習・トライアル風景</span>
         </div>
         <div class="plan-body">
-          <h3>練習参加プラン</h3>
-          <div class="price"><span class="yen">¥</span>70,000<span class="tax">(税込)</span></div>
-          <div class="desc">
+          <h3 data-i18n="plan1.title">練習参加プラン</h3>
+          <div class="price"><span class="yen">¥</span>70,000<span class="tax" data-i18n="plan1.tax">(税込)</span></div>
+          <div class="desc" data-i18n="plan1.desc">
             クラブへの練習参加・トライアル交渉(ヒアリングに基づき1〜3チーム)、契約交渉を行います。
           </div>
         </div>
@@ -963,10 +1037,10 @@ a:focus-visible,button:focus-visible,input:focus-visible{
           <span class="media-slot__tag"><b>差替:</b>&nbsp;#plan2-img / 契約・加入シーン</span>
         </div>
         <div class="plan-body">
-          <span class="plan-badge">おすすめ</span>
-          <h3>本契約プラン</h3>
-          <div class="price"><span class="yen">¥</span>100,000<span class="tax">(税込)</span></div>
-          <div class="desc">
+          <span class="plan-badge" data-i18n="plan2.badge">おすすめ</span>
+          <h3 data-i18n="plan2.title">本契約プラン</h3>
+          <div class="price"><span class="yen">¥</span>100,000<span class="tax" data-i18n="plan2.tax">(税込)</span></div>
+          <div class="desc" data-i18n="plan2.desc">
             練習を経ずに直接加入を目指します(難しい場合は練習参加プランへの変更が可能です)。契約交渉を行います。
           </div>
         </div>
@@ -974,35 +1048,35 @@ a:focus-visible,button:focus-visible,input:focus-visible{
     </div>
 
     <div class="continued-support">
-      <div class="t"><strong>加入後の継続サポート</strong>(希望者のみ)— チームとのコミュニケーションサポート</div>
-      <div class="rate">月間給料の 3%</div>
+      <div class="t"><strong data-i18n="continued.label">加入後の継続サポート</strong><span data-i18n="continued.suffix">(希望者のみ)— チームとのコミュニケーションサポート</span></div>
+      <div class="rate" data-i18n="continued.rate">月間給料の 3%</div>
     </div>
 
-    <h3 class="subblock-title">オプション</h3>
+    <h3 class="subblock-title" data-i18n="options.title">オプション</h3>
     <div class="option-table">
       <div class="option-row">
-        <div><span class="cell-label">Option</span><span class="name">動画作成プラン</span></div>
-        <div><span class="cell-label">内容</span><span class="content">選手紹介・プレー動画の作成</span></div>
-        <div class="price">¥5,000<span class="tax">(税込)</span></div>
+        <div><span class="cell-label">Option</span><span class="name" data-i18n="opt1.name">動画作成プラン</span></div>
+        <div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt1.desc">選手紹介・プレー動画の作成</span></div>
+        <div class="price">¥5,000<span class="tax" data-i18n="opt1.tax">(税込)</span></div>
       </div>
       <div class="option-row">
-        <div><span class="cell-label">Option</span><span class="name">個人用ホームページ作成プラン</span></div>
-        <div><span class="cell-label">内容</span><span class="content">スポンサー獲得やポートフォリオとして使えるホームページを作成</span></div>
-        <div class="price">¥50,000〜80,000<span class="tax">(税込)</span></div>
+        <div><span class="cell-label">Option</span><span class="name" data-i18n="opt2.name">個人用ホームページ作成プラン</span></div>
+        <div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt2.desc">スポンサー獲得やポートフォリオとして使えるホームページを作成</span></div>
+        <div class="price">¥50,000〜80,000<span class="tax" data-i18n="opt2.tax">(税込)</span></div>
       </div>
       <div class="option-row">
-        <div><span class="cell-label">Option</span><span class="name">渡航サポート</span></div>
-        <div><span class="cell-label">内容</span><span class="content">航空券やホテルの予約を電話にてサポート(予約自体はご自身で行っていただきます)</span></div>
-        <div class="price">無料</div>
+        <div><span class="cell-label">Option</span><span class="name" data-i18n="opt3.name">渡航サポート</span></div>
+        <div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt3.desc">航空券やホテルの予約を電話にてサポート(予約自体はご自身で行っていただきます)</span></div>
+        <div class="price" data-i18n="opt3.free">無料</div>
       </div>
     </div>
 
     <div class="payment-methods">
-      <span class="label">お支払い方法</span>
+      <span class="label" data-i18n="payment.label">お支払い方法</span>
       <ul>
-        <li>クレジットカード</li>
-        <li>銀行振込</li>
-        <li>コンビニ決済(Stripe決済)</li>
+        <li data-i18n="payment.credit">クレジットカード</li>
+        <li data-i18n="payment.transfer">銀行振込</li>
+        <li data-i18n="payment.konbini">コンビニ決済(Stripe決済)</li>
       </ul>
     </div>
   </div>
@@ -1015,8 +1089,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Voices</span>
-      <h2>実績・選手の声</h2>
-      <p class="sub">実際にサポートした選手のご紹介・コメントを、準備が整い次第この枠に掲載いたします。</p>
+      <h2 data-i18n="results.h2">実績・選手の声</h2>
+      <p class="sub" data-i18n="results.sub">実際にサポートした選手のご紹介・コメントを、準備が整い次第この枠に掲載いたします。</p>
     </div>
 
     <div class="results-grid">
@@ -1028,7 +1102,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
           </div>
         <div class="result-body">
           <span class="quote-mark">"</span>
-          <p class="msg">選手プロフィール・移籍前後の状況を掲載予定です。</p>
+          <p class="msg" data-i18n="result1.msg">選手プロフィール・移籍前後の状況を掲載予定です。</p>
         </div>
       </div>
 
@@ -1040,7 +1114,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
           </div>
         <div class="result-body">
           <span class="quote-mark">"</span>
-          <p class="msg">サポートを受けた感想を掲載予定です。</p>
+          <p class="msg" data-i18n="result2.msg">サポートを受けた感想を掲載予定です。</p>
         </div>
       </div>
 
@@ -1052,12 +1126,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{
           </div>
         <div class="result-body">
           <span class="quote-mark">"</span>
-          <p class="msg">Before / After(移籍先・活動状況)を掲載予定です。</p>
+          <p class="msg" data-i18n="result3.msg">Before / After(移籍先・活動状況)を掲載予定です。</p>
         </div>
       </div>
     </div>
 
-    <p class="results-note">
+    <p class="results-note" data-i18n="results.note">
       掲載には本人の経歴・コメント・写真使用許可の確認が必要なため、確認が取れた選手から順次公開いたします。
     </p>
   </div>
@@ -1070,7 +1144,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">About</span>
-      <h2>運営者情報</h2>
+      <h2 data-i18n="about.h2">運営者情報</h2>
     </div>
 
     <div class="about-layout">
@@ -1080,24 +1154,24 @@ a:focus-visible,button:focus-visible,input:focus-visible{
         <span class="media-slot__tag"><b>差替:</b>&nbsp;#about-img / 代表者または現地クラブ視察の写真</span>
       </div>
       <div class="about-body">
-        <span class="role">代表挨拶</span>
+        <span class="role" data-i18n="about.role">代表挨拶</span>
         <div class="name">Link×Football</div>
         <div class="locales">
-          対応地域<br>
-          オーストラリア / ニュージーランド / モンゴル<br>
-          アジア・オセアニア全域
+          <span data-i18n="about.locales_label">対応地域</span><br>
+          <span data-i18n="about.locales_line1">オーストラリア / ニュージーランド / モンゴル</span><br>
+          <span data-i18n="about.locales_line2">アジア・オセアニア全域</span>
         </div>
         <div class="about-message">
-          <p>
+          <p data-i18n="about.p1">
             日本には、本気で海外に挑戦したいと思っている選手がたくさんいます。しかし、その一歩を踏み出す環境や情報は、
             まだまだ十分に整っていません。
           </p>
-          <p>
+          <p data-i18n="about.p2">
             私たちLink×Footballは、そんな選手たちのために立ち上がりました。オーストラリア・ニュージーランド・
             モンゴルをはじめとするアジア・オセアニアのクラブとの強いつながりを活かし、一人ひとりに本気で向き合いながら
             契約交渉をサポートします。
           </p>
-          <p>
+          <p data-i18n="about.p3">
             「本気で挑戦したい」その想いさえあれば、あとは私たちが全力で後押しします。一緒に、海外という新しい景色を
             目指しましょう。
           </p>
@@ -1114,40 +1188,40 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Contact</span>
-      <h2>お問い合わせ</h2>
+      <h2 data-i18n="contact.h2">お問い合わせ</h2>
     </div>
 
     <div class="contact-cta">
       <div class="t">
         <span class="k">Free Consultation</span>
-        <h3>ご相談は下記いずれかの窓口よりお気軽にご連絡ください。</h3>
+        <h3 data-i18n="contact.cta_text">ご相談は下記いずれかの窓口よりお気軽にご連絡ください。</h3>
       </div>
       <a class="btn btn-accent" href="https://lin.ee/6agJDsY" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5c0 4.7-4.7 8.5-9.5 8.5-1 0-2-.15-2.9-.45L4 21l1.1-3.8C3.8 15.9 3 13.8 3 11.5 3 6.8 7.7 3 12.5 3S21 6.8 21 11.5Z"/></svg>
-        公式LINEで無料相談する
+        <span data-i18n="contact.cta_button">公式LINEで無料相談する</span>
       </a>
     </div>
 
     <div class="contact-grid">
       <a class="contact-card" href="https://lin.ee/6agJDsY" target="_blank" rel="noopener">
         <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5c0 4.7-4.7 8.5-9.5 8.5-1 0-2-.15-2.9-.45L4 21l1.1-3.8C3.8 15.9 3 13.8 3 11.5 3 6.8 7.7 3 12.5 3S21 6.8 21 11.5Z"/></svg></span>
-        <span class="info"><span class="channel">公式LINE</span><span class="detail">lin.ee/6agJDsY</span></span>
+        <span class="info"><span class="channel" data-i18n="contact.line_label">公式LINE</span><span class="detail">lin.ee/6agJDsY</span></span>
       </a>
       <a class="contact-card" href="https://www.threads.com/@link.football_" target="_blank" rel="noopener">
         <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8a3 3 0 1 1-2.1 5.1"/></svg></span>
-        <span class="info"><span class="channel">公式Threads</span><span class="detail">@link.football_</span></span>
+        <span class="info"><span class="channel" data-i18n="contact.threads_label">公式Threads</span><span class="detail">@link.football_</span></span>
       </a>
       <a class="contact-card" href="https://www.instagram.com/link.football_" target="_blank" rel="noopener">
         <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17" cy="7" r="1"/></svg></span>
-        <span class="info"><span class="channel">公式Instagram</span><span class="detail">@link.football_</span></span>
+        <span class="info"><span class="channel" data-i18n="contact.instagram_label">公式Instagram</span><span class="detail">@link.football_</span></span>
       </a>
       <a class="contact-card" href="https://wa.me/message/OH776LDKUG5LB1" target="_blank" rel="noopener">
         <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20l1.3-3.9A8 8 0 1 1 8.6 19L4 20Z"/><path d="M8.5 9.5c.3 2.6 2.4 4.7 5 5"/></svg></span>
-        <span class="info"><span class="channel">WhatsApp</span><span class="detail">メッセージを送る</span></span>
+        <span class="info"><span class="channel">WhatsApp</span><span class="detail" data-i18n="contact.whatsapp_detail">メッセージを送る</span></span>
       </a>
       <a class="contact-card" href="mailto:linkfootball13@gmail.com" style="grid-column:1/-1;">
         <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><path d="M4 6.5 12 13l8-6.5"/></svg></span>
-        <span class="info"><span class="channel">メールアドレス</span><span class="detail">linkfootball13@gmail.com</span></span>
+        <span class="info"><span class="channel" data-i18n="contact.email_label">メールアドレス</span><span class="detail">linkfootball13@gmail.com</span></span>
       </a>
     </div>
   </div>
@@ -1163,36 +1237,36 @@ a:focus-visible,button:focus-visible,input:focus-visible{
     <div class="footer-grid">
       <div class="footer-brand">
         <span class="brand-wordmark">Link<span class="x">×</span>Football</span>
-        <p>本気で海外を目指す選手のためのキャリアサポートサービス。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニア地域への移籍をサポートします。</p>
+        <p data-i18n="footer.desc">本気で海外を目指す選手のためのキャリアサポートサービス。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニア地域への移籍をサポートします。</p>
       </div>
       <div class="footer-col">
         <h4>Menu</h4>
         <ul>
-          <li><a href="#service">サービス</a></li>
-          <li><a href="#plans">プラン</a></li>
-          <li><a href="#results">実績</a></li>
-          <li><a href="#about">運営者情報</a></li>
+          <li><a href="#service" data-i18n="nav.service">サービス</a></li>
+          <li><a href="#plans" data-i18n="nav.plans">プラン</a></li>
+          <li><a href="#results" data-i18n="nav.results">実績</a></li>
+          <li><a href="#about" data-i18n="nav.about">運営者情報</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Contact</h4>
         <ul>
-          <li><a href="https://lin.ee/6agJDsY" target="_blank" rel="noopener">公式LINE</a></li>
+          <li><a href="https://lin.ee/6agJDsY" target="_blank" rel="noopener" data-i18n="contact.line_label">公式LINE</a></li>
           <li><a href="https://www.instagram.com/link.football_" target="_blank" rel="noopener">Instagram</a></li>
-          <li><a href="mailto:linkfootball13@gmail.com">メール</a></li>
+          <li><a href="mailto:linkfootball13@gmail.com" data-i18n="footer.contact.email">メール</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Region</h4>
         <ul>
-          <li>Australia</li>
-          <li>New Zealand</li>
-          <li>Mongolia</li>
+          <li data-i18n="ticker.tag.au">Australia</li>
+          <li data-i18n="ticker.tag.nz">New Zealand</li>
+          <li data-i18n="ticker.tag.mn">Mongolia</li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; <span id="year"></span> Link×Football. All rights reserved.</span>
+      <span>&copy; <span id="year"></span> Link×Football. <span data-i18n="footer.copyright">All rights reserved.</span></span>
     </div>
   </div>
 </footer>
@@ -1243,6 +1317,362 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   });
 
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  var langTrigger = document.getElementById('lang-trigger');
+  var langListbox = document.getElementById('lang-listbox');
+  var langTriggerFlag = document.getElementById('lang-trigger-flag');
+  var langTriggerName = document.getElementById('lang-trigger-name');
+  var LANG_META = {
+    ja:{flag:'🇯🇵',name:'日本語'}, en:{flag:'🇺🇸',name:'English'}, pt:{flag:'🇧🇷',name:'Português'},
+    mn:{flag:'🇲🇳',name:'Монгол'}, ko:{flag:'🇰🇷',name:'한국어'}, th:{flag:'🇹🇭',name:'ไทย'}, zh:{flag:'🇨🇳',name:'中文'}
+  };
+  var STORAGE_KEY = 'lf_lang';
+
+  function closeLangListbox(){
+    langListbox.hidden = true;
+    langTrigger.setAttribute('aria-expanded','false');
+  }
+  function openLangListbox(){
+    langListbox.hidden = false;
+    langTrigger.setAttribute('aria-expanded','true');
+  }
+  langTrigger.addEventListener('click', function(){
+    langListbox.hidden ? openLangListbox() : closeLangListbox();
+  });
+  document.addEventListener('click', function(e){
+    if(!langListbox.hidden && !langListbox.contains(e.target) && !langTrigger.contains(e.target)){
+      closeLangListbox();
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !langListbox.hidden){
+      closeLangListbox();
+      langTrigger.focus();
+    }
+  });
+  var langOptions = Array.prototype.slice.call(langListbox.querySelectorAll('li'));
+  langOptions.forEach(function(li, idx){
+    li.addEventListener('click', function(){
+      applyLang(li.getAttribute('data-lang'));
+      closeLangListbox();
+      langTrigger.focus();
+    });
+    li.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        applyLang(li.getAttribute('data-lang'));
+        closeLangListbox();
+        langTrigger.focus();
+      } else if(e.key === 'ArrowDown'){
+        e.preventDefault();
+        (langOptions[idx+1] || langOptions[0]).focus();
+      } else if(e.key === 'ArrowUp'){
+        e.preventDefault();
+        (langOptions[idx-1] || langOptions[langOptions.length-1]).focus();
+      }
+    });
+  });
+
+  /* ============================================================
+     Language switcher — translation dictionary
+     I18N holds every visible, translatable string keyed by
+     language code, then by a dot-namespaced key matching the
+     data-i18n / data-i18n-html attributes in the markup above.
+     Design-eyebrow labels (SERVICE, STEP.01, Career Support Agency,
+     etc.) are deliberately left untranslated in the markup itself —
+     they're a consistent visual motif across every language, similar
+     to the reference site's own bilingual heading pattern.
+     ============================================================ */
+  var I18N = {
+    ja: {
+      "nav.service":"サービス","nav.plans":"プラン","nav.results":"実績","nav.about":"運営者情報","nav.contact":"無料相談",
+      "skip":"本文へスキップ",
+      "hero.h1":"本気で海外を<br>目指す選手のために。",
+      "hero.lead":"Link×Footballは、海外のサッカークラブ入りを本気で目指す選手のためのキャリアサポートサービスです。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニア地域への移籍の契約交渉をサポートします。",
+      "hero.cta.line":"公式LINEで相談する","hero.cta.threads":"Threadsで相談する","hero.cta.instagram":"Instagramで相談する","hero.cta.whatsapp":"WhatsAppで相談する","hero.cta.email":"メールで問い合わせる",
+      "ticker.label":"対応地域","ticker.tag.au":"Australia","ticker.tag.nz":"New Zealand","ticker.tag.mn":"Mongolia","ticker.tag.asia":"Asia & Oceania","ticker.link":"サービスを見る",
+      "service.h2":"なぜLink×Footballなのか",
+      "service.intro":"アジア・オセアニア地域(オーストラリア/ニュージーランド/モンゴル)でプレーした経験から強いコネクションがあり、多数の実績を活かし低価格で契約交渉を迅速にサポートさせていただきます。",
+      "service.flow_title":"サポートの流れ",
+      "step1.title":"お問い合わせ・ヒアリング","step1.desc":"現在の状況や希望する国・レベル感を伺います。",
+      "step2.title":"プラン選択・契約","step2.desc":"練習参加プラン・本契約プランからご希望に合わせて選択いただきます。",
+      "step3.title":"クラブとの交渉・トライアル調整","step3.desc":"現地クラブとのコネクションを活かし、交渉・調整を進めます。",
+      "step4.title":"お支払い","step4.desc":"本契約プランは契約決定後、練習参加プランは練習参加決定後のお支払いです。",
+      "eligibility.label":"対象となる選手","eligibility.text":"契約締結時点で満18歳以上の方を対象としています。",
+      "plans.h2":"プラン・料金",
+      "plan1.title":"練習参加プラン","plan1.tax":"(税込)","plan1.desc":"クラブへの練習参加・トライアル交渉(ヒアリングに基づき1〜3チーム)、契約交渉を行います。",
+      "plan2.badge":"おすすめ","plan2.title":"本契約プラン","plan2.tax":"(税込)","plan2.desc":"練習を経ずに直接加入を目指します(難しい場合は練習参加プランへの変更が可能です)。契約交渉を行います。",
+      "continued.label":"加入後の継続サポート","continued.suffix":"(希望者のみ)— チームとのコミュニケーションサポート","continued.rate":"月間給料の 3%",
+      "options.title":"オプション","opt.label":"内容",
+      "opt1.name":"動画作成プラン","opt1.desc":"選手紹介・プレー動画の作成","opt1.tax":"(税込)",
+      "opt2.name":"個人用ホームページ作成プラン","opt2.desc":"スポンサー獲得やポートフォリオとして使えるホームページを作成","opt2.tax":"(税込)",
+      "opt3.name":"渡航サポート","opt3.desc":"航空券やホテルの予約を電話にてサポート(予約自体はご自身で行っていただきます)","opt3.free":"無料",
+      "payment.label":"お支払い方法","payment.credit":"クレジットカード","payment.transfer":"銀行振込","payment.konbini":"コンビニ決済(Stripe決済)",
+      "results.h2":"実績・選手の声","results.sub":"実際にサポートした選手のご紹介・コメントを、準備が整い次第この枠に掲載いたします。",
+      "result1.msg":"選手プロフィール・移籍前後の状況を掲載予定です。","result2.msg":"サポートを受けた感想を掲載予定です。","result3.msg":"Before / After(移籍先・活動状況)を掲載予定です。",
+      "results.note":"掲載には本人の経歴・コメント・写真使用許可の確認が必要なため、確認が取れた選手から順次公開いたします。",
+      "about.h2":"運営者情報","about.role":"代表挨拶",
+      "about.locales_label":"対応地域","about.locales_line1":"オーストラリア / ニュージーランド / モンゴル","about.locales_line2":"アジア・オセアニア全域",
+      "about.p1":"日本には、本気で海外に挑戦したいと思っている選手がたくさんいます。しかし、その一歩を踏み出す環境や情報は、まだまだ十分に整っていません。",
+      "about.p2":"私たちLink×Footballは、そんな選手たちのために立ち上がりました。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニアのクラブとの強いつながりを活かし、一人ひとりに本気で向き合いながら契約交渉をサポートします。",
+      "about.p3":"「本気で挑戦したい」その想いさえあれば、あとは私たちが全力で後押しします。一緒に、海外という新しい景色を目指しましょう。",
+      "contact.h2":"お問い合わせ","contact.cta_text":"ご相談は下記いずれかの窓口よりお気軽にご連絡ください。","contact.cta_button":"公式LINEで無料相談する",
+      "contact.line_label":"公式LINE","contact.threads_label":"公式Threads","contact.instagram_label":"公式Instagram","contact.whatsapp_detail":"メッセージを送る","contact.email_label":"メールアドレス",
+      "footer.desc":"本気で海外を目指す選手のためのキャリアサポートサービス。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニア地域への移籍をサポートします。",
+      "footer.contact.email":"メール","footer.copyright":"All rights reserved."
+    },
+    en: {
+      "nav.service":"Service","nav.plans":"Plans","nav.results":"Results","nav.about":"About","nav.contact":"Free Consultation",
+      "skip":"Skip to content",
+      "hero.h1":"For players serious<br>about playing overseas.",
+      "hero.lead":"Link×Football is a career support service for players who are seriously aiming to join football clubs overseas. We support contract negotiations for transfers to Australia, New Zealand, Mongolia, and other clubs across Asia and Oceania.",
+      "hero.cta.line":"Chat on official LINE","hero.cta.threads":"Chat on Threads","hero.cta.instagram":"Chat on Instagram","hero.cta.whatsapp":"Chat on WhatsApp","hero.cta.email":"Contact by email",
+      "ticker.label":"Regions we cover","ticker.tag.au":"Australia","ticker.tag.nz":"New Zealand","ticker.tag.mn":"Mongolia","ticker.tag.asia":"Asia & Oceania","ticker.link":"See our services",
+      "service.h2":"Why Link×Football",
+      "service.intro":"Having played in Australia, New Zealand, and Mongolia ourselves, we've built strong connections across the region. We draw on a proven track record to support contract negotiations quickly and affordably.",
+      "service.flow_title":"How it works",
+      "step1.title":"Inquiry & interview","step1.desc":"We'll ask about your current situation and which country or level you're aiming for.",
+      "step2.title":"Choose a plan & sign","step2.desc":"Choose between the Trial Plan and the Direct Contract Plan based on what fits you best.",
+      "step3.title":"Club negotiation & trial arrangements","step3.desc":"We use our local club connections to negotiate and coordinate on your behalf.",
+      "step4.title":"Payment","step4.desc":"The Direct Contract Plan is paid once the contract is confirmed; the Trial Plan is paid once a trial is confirmed.",
+      "eligibility.label":"Who can apply","eligibility.text":"Open to players who are 18 years old or older at the time of signing.",
+      "plans.h2":"Plans & Pricing",
+      "plan1.title":"Trial Plan","plan1.tax":"(tax included)","plan1.desc":"We negotiate club trials (1–3 teams, based on your interview) and handle contract negotiations.",
+      "plan2.badge":"Recommended","plan2.title":"Direct Contract Plan","plan2.tax":"(tax included)","plan2.desc":"We aim to place you directly without a trial (switching to the Trial Plan is possible if this proves difficult). We handle contract negotiations.",
+      "continued.label":"Ongoing support after joining","continued.suffix":"(optional) — communication support with your team","continued.rate":"3% of monthly salary",
+      "options.title":"Add-ons","opt.label":"Details",
+      "opt1.name":"Video Production","opt1.desc":"Player introduction and highlight video production.","opt1.tax":"(tax included)",
+      "opt2.name":"Personal Website","opt2.desc":"A website you can use for sponsorship pitches or as a portfolio.","opt2.tax":"(tax included)",
+      "opt3.name":"Travel Support","opt3.desc":"Phone support for booking flights and hotels (bookings are made by you).","opt3.free":"Free",
+      "payment.label":"Payment methods","payment.credit":"Credit card","payment.transfer":"Bank transfer","payment.konbini":"Convenience store payment (via Stripe)",
+      "results.h2":"Track Record & Player Voices","results.sub":"Profiles and comments from players we've supported will be added here as they become available.",
+      "result1.msg":"Player profile and before/after transfer details will be posted here.","result2.msg":"Feedback from supported players will be posted here.","result3.msg":"Before / After (destination club & current activity) will be posted here.",
+      "results.note":"Publishing requires each player's consent for their background, comments, and photos, so profiles will go live as consent is confirmed.",
+      "about.h2":"About Us","about.role":"A Message From Us",
+      "about.locales_label":"Regions we cover","about.locales_line1":"Australia / New Zealand / Mongolia","about.locales_line2":"Across Asia & Oceania",
+      "about.p1":"Many players in Japan are serious about taking on the challenge of playing overseas. But the environment and information to take that first step are still far from adequate.",
+      "about.p2":"Link×Football was founded for exactly these players. Drawing on our strong ties to clubs across Asia and Oceania — including Australia, New Zealand, and Mongolia — we work closely with each player to support their contract negotiations.",
+      "about.p3":"If you're serious about taking on the challenge, that's all it takes — we'll put everything we have behind you. Let's aim for a new horizon overseas, together.",
+      "contact.h2":"Contact","contact.cta_text":"Feel free to reach out through any of the channels below.","contact.cta_button":"Free consultation on LINE",
+      "contact.line_label":"Official LINE","contact.threads_label":"Official Threads","contact.instagram_label":"Official Instagram","contact.whatsapp_detail":"Send a message","contact.email_label":"Email",
+      "footer.desc":"A career support service for players seriously aiming to play overseas. We support transfers to Australia, New Zealand, Mongolia, and other clubs across Asia and Oceania.",
+      "footer.contact.email":"Email","footer.copyright":"All rights reserved."
+    },
+    pt: {
+      "nav.service":"Serviços","nav.plans":"Planos","nav.results":"Resultados","nav.about":"Sobre nós","nav.contact":"Consulta Gratuita",
+      "skip":"Pular para o conteúdo",
+      "hero.h1":"Para jogadores que levam<br>a sério o desafio no exterior.",
+      "hero.lead":"A Link×Football é um serviço de suporte de carreira para jogadores que buscam seriamente ingressar em clubes de futebol no exterior. Apoiamos negociações de contrato para transferências à Austrália, Nova Zelândia, Mongólia e outros países da Ásia e Oceania.",
+      "hero.cta.line":"Falar pelo LINE oficial","hero.cta.threads":"Falar pelo Threads","hero.cta.instagram":"Falar pelo Instagram","hero.cta.whatsapp":"Falar pelo WhatsApp","hero.cta.email":"Contato por e-mail",
+      "ticker.label":"Regiões atendidas","ticker.tag.au":"Austrália","ticker.tag.nz":"Nova Zelândia","ticker.tag.mn":"Mongólia","ticker.tag.asia":"Ásia e Oceania","ticker.link":"Ver serviços",
+      "service.h2":"Por que a Link×Football",
+      "service.intro":"Por termos jogado na Austrália, Nova Zelândia e Mongólia, temos conexões sólidas na região. Usamos nossa experiência comprovada para apoiar negociações de contrato de forma rápida e acessível.",
+      "service.flow_title":"Como funciona",
+      "step1.title":"Contato e entrevista","step1.desc":"Conversamos sobre sua situação atual e o país ou nível que você deseja alcançar.",
+      "step2.title":"Escolha do plano e contrato","step2.desc":"Escolha entre o Plano de Teste e o Plano de Contrato Direto, conforme sua necessidade.",
+      "step3.title":"Negociação com clubes e testes","step3.desc":"Usamos nossas conexões locais para negociar e organizar tudo por você.",
+      "step4.title":"Pagamento","step4.desc":"O Plano de Contrato Direto é pago após a confirmação do contrato; o Plano de Teste, após a confirmação do teste.",
+      "eligibility.label":"Quem pode se inscrever","eligibility.text":"Aberto a jogadores com 18 anos ou mais na data da assinatura do contrato.",
+      "plans.h2":"Planos e Valores",
+      "plan1.title":"Plano de Teste","plan1.tax":"(impostos inclusos)","plan1.desc":"Negociamos testes em clubes (1 a 3 times, conforme entrevista) e cuidamos da negociação do contrato.",
+      "plan2.badge":"Recomendado","plan2.title":"Plano de Contrato Direto","plan2.tax":"(impostos inclusos)","plan2.desc":"Buscamos sua contratação direta, sem passar por teste (é possível mudar para o Plano de Teste caso não seja viável). Cuidamos da negociação do contrato.",
+      "continued.label":"Suporte contínuo após a contratação","continued.suffix":"(opcional) — suporte de comunicação com o time","continued.rate":"3% do salário mensal",
+      "options.title":"Opcionais","opt.label":"Detalhes",
+      "opt1.name":"Produção de vídeo","opt1.desc":"Produção de vídeo de apresentação e melhores momentos do jogador.","opt1.tax":"(impostos inclusos)",
+      "opt2.name":"Site pessoal","opt2.desc":"Um site que pode ser usado para buscar patrocínio ou como portfólio.","opt2.tax":"(impostos inclusos)",
+      "opt3.name":"Suporte de viagem","opt3.desc":"Suporte por telefone para reserva de passagens e hotéis (as reservas são feitas por você).","opt3.free":"Gratuito",
+      "payment.label":"Formas de pagamento","payment.credit":"Cartão de crédito","payment.transfer":"Transferência bancária","payment.konbini":"Pagamento em loja de conveniência (via Stripe)",
+      "results.h2":"Resultados e Depoimentos","results.sub":"Perfis e depoimentos dos jogadores que já apoiamos serão publicados aqui assim que estiverem disponíveis.",
+      "result1.msg":"O perfil do jogador e a situação antes/depois da transferência serão publicados aqui.","result2.msg":"Depoimentos dos jogadores apoiados serão publicados aqui.","result3.msg":"Antes / Depois (clube de destino e situação atual) será publicado aqui.",
+      "results.note":"A publicação depende da autorização de cada jogador para uso de histórico, depoimento e foto, por isso os perfis serão liberados conforme confirmados.",
+      "about.h2":"Sobre nós","about.role":"Mensagem da diretoria",
+      "about.locales_label":"Regiões atendidas","about.locales_line1":"Austrália / Nova Zelândia / Mongólia","about.locales_line2":"Toda a Ásia e Oceania",
+      "about.p1":"No Japão, muitos jogadores têm o desejo sério de encarar o desafio do futebol no exterior. Mas o ambiente e as informações para dar esse primeiro passo ainda são insuficientes.",
+      "about.p2":"A Link×Football nasceu para esses jogadores. Com nossos fortes vínculos com clubes da Ásia e Oceania — incluindo Austrália, Nova Zelândia e Mongólia — acompanhamos cada jogador de perto nas negociações de contrato.",
+      "about.p3":"Se você tem a vontade séria de encarar esse desafio, é só isso que precisa: nós daremos o nosso máximo ao seu lado. Vamos juntos em busca de um novo horizonte no exterior.",
+      "contact.h2":"Contato","contact.cta_text":"Fique à vontade para falar conosco por qualquer um dos canais abaixo.","contact.cta_button":"Consulta gratuita pelo LINE",
+      "contact.line_label":"LINE oficial","contact.threads_label":"Threads oficial","contact.instagram_label":"Instagram oficial","contact.whatsapp_detail":"Enviar mensagem","contact.email_label":"E-mail",
+      "footer.desc":"Um serviço de suporte de carreira para jogadores que buscam seriamente jogar no exterior. Apoiamos transferências para Austrália, Nova Zelândia, Mongólia e outros países da Ásia e Oceania.",
+      "footer.contact.email":"E-mail","footer.copyright":"Todos os direitos reservados."
+    },
+    mn: {
+      "nav.service":"Үйлчилгээ","nav.plans":"Багц","nav.results":"Амжилт","nav.about":"Бидний тухай","nav.contact":"Үнэгүй зөвлөгөө",
+      "skip":"Үндсэн контент руу очих",
+      "hero.h1":"Гадаадад тоглохоор<br>шийдсэн тоглогчдод зориулав.",
+      "hero.lead":"Link×Football бол гадаадын хөлбөмбөгийн клубт элсэхийг чин сэтгэлээсээ хүсдэг тоглогчдод зориулсан карьерын дэмжлэгийн үйлчилгээ юм. Бид Австрали, Шинэ Зеланд, Монгол зэрэг Ази, Номхон далайн бүсийн клубуудтай гэрээ хэлэлцээр хийхэд тусалдаг.",
+      "hero.cta.line":"LINE-аар зөвлөгөө авах","hero.cta.threads":"Threads-ээр зөвлөгөө авах","hero.cta.instagram":"Instagram-аар зөвлөгөө авах","hero.cta.whatsapp":"WhatsApp-аар зөвлөгөө авах","hero.cta.email":"И-мэйлээр холбогдох",
+      "ticker.label":"Хамрах бүс нутаг","ticker.tag.au":"Австрали","ticker.tag.nz":"Шинэ Зеланд","ticker.tag.mn":"Монгол","ticker.tag.asia":"Ази, Номхон далай","ticker.link":"Үйлчилгээг үзэх",
+      "service.h2":"Яагаад Link×Football вэ",
+      "service.intro":"Бид өөрсдөө Австрали, Шинэ Зеланд, Монголд тоглож байсан туршлагатай тул тухайн бүс нутагт бат бэх холбоо харилцаатай. Тогтвортой туршлага дээрээ тулгуурлан гэрээний хэлэлцээрийг хямд, шуурхай дэмждэг.",
+      "service.flow_title":"Дэмжлэгийн явц",
+      "step1.title":"Асуулга, ярилцлага","step1.desc":"Одоогийн байдал болон зорьж буй улс, түвшингийн талаар асууна.",
+      "step2.title":"Багц сонгох, гэрээ байгуулах","step2.desc":"Хүсэлтэд тохируулан Сорилтын багц эсвэл Шууд гэрээний багцаас сонгоно.",
+      "step3.title":"Клубтэй хэлэлцээр, сорилт зохион байгуулах","step3.desc":"Тухайн орны клубуудтай холбоогоо ашиглан хэлэлцээр, зохицуулалт хийнэ.",
+      "step4.title":"Төлбөр","step4.desc":"Шууд гэрээний багц нь гэрээ баталгаажсаны дараа, Сорилтын багц нь сорилтод орохоор шийдвэрлэсний дараа төлбөртэй.",
+      "eligibility.label":"Хэн хамрагдах вэ","eligibility.text":"Гэрээ байгуулах үед 18 болон түүнээс дээш насны тоглогчдод зориулагдсан.",
+      "plans.h2":"Багц, Үнэ",
+      "plan1.title":"Сорилтын багц","plan1.tax":"(татвар багтсан)","plan1.desc":"Клубын сорилтын хэлэлцээр (ярилцлагад үндэслэн 1–3 баг) болон гэрээний хэлэлцээр хийнэ.",
+      "plan2.badge":"Санал болгож буй","plan2.title":"Шууд гэрээний багц","plan2.tax":"(татвар багтсан)","plan2.desc":"Сорилт өгөлгүйгээр шууд элсэхийг зорино (боломжгүй бол Сорилтын багц руу шилжих боломжтой). Гэрээний хэлэлцээр хийнэ.",
+      "continued.label":"Элссэний дараах тасралтгүй дэмжлэг","continued.suffix":"(хүсвэл) — багтай харилцах дэмжлэг","continued.rate":"Сарын цалингийн 3%",
+      "options.title":"Нэмэлт үйлчилгээ","opt.label":"Дэлгэрэнгүй",
+      "opt1.name":"Видео бэлтгэх багц","opt1.desc":"Тоглогчийн танилцуулга, тоглолтын бичлэг бэлтгэнэ.","opt1.tax":"(татвар багтсан)",
+      "opt2.name":"Хувийн вэбсайт бэлтгэх багц","opt2.desc":"Ивээн тэтгэгч олох, портфолио болгон ашиглах вэбсайт бэлтгэнэ.","opt2.tax":"(татвар багтсан)",
+      "opt3.name":"Аяллын дэмжлэг","opt3.desc":"Нислэг, зочид буудлын захиалгад утсаар туслах (захиалгыг та өөрөө хийнэ).","opt3.free":"Үнэгүй",
+      "payment.label":"Төлбөрийн хэлбэр","payment.credit":"Кредит карт","payment.transfer":"Банкны шилжүүлэг","payment.konbini":"Дэлгүүрийн төлбөр (Stripe-ээр)",
+      "results.h2":"Амжилт, Тоглогчдын сэтгэгдэл","results.sub":"Бидний дэмжсэн тоглогчдын танилцуулга, сэтгэгдлийг бэлэн болмогц энд байршуулна.",
+      "result1.msg":"Тоглогчийн танилцуулга, шилжилтийн өмнөх/дараах байдал энд байршина.","result2.msg":"Дэмжлэг авсан тоглогчийн сэтгэгдэл энд байршина.","result3.msg":"Өмнөх/Дараах (шилжсэн клуб, одоогийн байдал) энд байршина.",
+      "results.note":"Байршуулахын тулд тухайн тоглогчийн намтар, сэтгэгдэл, зургийн зөвшөөрлийг авах шаардлагатай тул зөвшөөрөл авагдсан дарааллаар нийтэлнэ.",
+      "about.h2":"Бидний тухай","about.role":"Захирлын мэндчилгээ",
+      "about.locales_label":"Хамрах бүс нутаг","about.locales_line1":"Австрали / Шинэ Зеланд / Монгол","about.locales_line2":"Ази, Номхон далайн бүс нутаг бүхэлдээ",
+      "about.p1":"Японд гадаадад тоглохыг чин сэтгэлээсээ хүсдэг тоглогч олон бий. Гэвч түүнийг эхлүүлэх орчин, мэдээлэл хараахан хангалттай бүрдээгүй байна.",
+      "about.p2":"Бид, Link×Football, яг ийм тоглогчдын төлөө байгуулагдсан. Австрали, Шинэ Зеланд, Монгол зэрэг Ази, Номхон далайн бүсийн клубуудтай бат бэх холбоогоо ашиглан, тоглогч бүртэй чин сэтгэлээсээ хамтран гэрээний хэлэлцээрийг дэмждэг.",
+      "about.p3":"Чин сэтгэлээсээ туршихыг хүсч байвал таны хүсэл л хангалттай — үлдсэнийг нь бид бүх хүчээрээ дэмжинэ. Хамтдаа гадаад дахь шинэ ертөнц рүү зорьцгооё.",
+      "contact.h2":"Холбоо барих","contact.cta_text":"Доорх сувгуудын дурын нэгээр чөлөөтэй холбогдоорой.","contact.cta_button":"LINE-аар үнэгүй зөвлөгөө авах",
+      "contact.line_label":"Албан ёсны LINE","contact.threads_label":"Албан ёсны Threads","contact.instagram_label":"Албан ёсны Instagram","contact.whatsapp_detail":"Зурвас илгээх","contact.email_label":"И-мэйл хаяг",
+      "footer.desc":"Гадаадад тоглохыг чин сэтгэлээсээ хүсдэг тоглогчдод зориулсан карьерын дэмжлэгийн үйлчилгээ. Австрали, Шинэ Зеланд, Монгол зэрэг Ази, Номхон далайн бүс рүү шилжихэд тусална.",
+      "footer.contact.email":"И-мэйл","footer.copyright":"Бүх эрх хуулиар хамгаалагдсан."
+    },
+    ko: {
+      "nav.service":"서비스","nav.plans":"플랜","nav.results":"실적","nav.about":"회사 소개","nav.contact":"무료 상담",
+      "skip":"본문으로 건너뛰기",
+      "hero.h1":"진심으로 해외를<br>목표로 하는 선수들을 위해.",
+      "hero.lead":"Link×Football은 해외 축구 클럽 입단을 진심으로 목표로 하는 선수를 위한 커리어 지원 서비스입니다. 호주, 뉴질랜드, 몽골을 비롯한 아시아·오세아니아 지역 클럽으로의 이적 계약 협상을 지원합니다.",
+      "hero.cta.line":"공식 LINE으로 상담하기","hero.cta.threads":"Threads로 상담하기","hero.cta.instagram":"Instagram으로 상담하기","hero.cta.whatsapp":"WhatsApp으로 상담하기","hero.cta.email":"이메일로 문의하기",
+      "ticker.label":"지원 지역","ticker.tag.au":"호주","ticker.tag.nz":"뉴질랜드","ticker.tag.mn":"몽골","ticker.tag.asia":"아시아·오세아니아","ticker.link":"서비스 보기",
+      "service.h2":"Link×Football을 선택하는 이유",
+      "service.intro":"호주·뉴질랜드·몽골에서 직접 뛰었던 경험을 바탕으로 강력한 네트워크를 보유하고 있으며, 다수의 실적을 바탕으로 합리적인 비용으로 신속하게 계약 협상을 지원합니다.",
+      "service.flow_title":"지원 절차",
+      "step1.title":"문의 및 인터뷰","step1.desc":"현재 상황과 희망하는 국가·레벨을 확인합니다.",
+      "step2.title":"플랜 선택 및 계약","step2.desc":"희망에 맞춰 트라이얼 플랜 또는 다이렉트 계약 플랜 중에서 선택합니다.",
+      "step3.title":"클럽 협상 및 트라이얼 조율","step3.desc":"현지 클럽과의 네트워크를 활용해 협상과 조율을 진행합니다.",
+      "step4.title":"결제","step4.desc":"다이렉트 계약 플랜은 계약 확정 후, 트라이얼 플랜은 트라이얼 참가 확정 후 결제합니다.",
+      "eligibility.label":"지원 대상","eligibility.text":"계약 체결 시점 기준 만 18세 이상인 분을 대상으로 합니다.",
+      "plans.h2":"플랜 및 요금",
+      "plan1.title":"트라이얼 플랜","plan1.tax":"(세금 포함)","plan1.desc":"클럽 트라이얼 협상(인터뷰 기반 1~3개 팀) 및 계약 협상을 진행합니다.",
+      "plan2.badge":"추천","plan2.title":"다이렉트 계약 플랜","plan2.tax":"(세금 포함)","plan2.desc":"트라이얼 없이 곧바로 입단을 목표로 합니다(어려운 경우 트라이얼 플랜으로 변경 가능). 계약 협상을 진행합니다.",
+      "continued.label":"입단 후 지속 지원","continued.suffix":"(희망 시) — 팀과의 커뮤니케이션 지원","continued.rate":"월급의 3%",
+      "options.title":"옵션","opt.label":"내용",
+      "opt1.name":"영상 제작 플랜","opt1.desc":"선수 소개 및 플레이 영상을 제작합니다.","opt1.tax":"(세금 포함)",
+      "opt2.name":"개인 홈페이지 제작 플랜","opt2.desc":"스폰서 확보나 포트폴리오로 활용할 수 있는 홈페이지를 제작합니다.","opt2.tax":"(세금 포함)",
+      "opt3.name":"출국 지원","opt3.desc":"항공권·호텔 예약을 전화로 지원합니다(예약 자체는 본인이 진행합니다).","opt3.free":"무료",
+      "payment.label":"결제 방법","payment.credit":"신용카드","payment.transfer":"계좌 이체","payment.konbini":"편의점 결제(Stripe)",
+      "results.h2":"실적 및 선수 후기","results.sub":"실제로 지원한 선수의 소개와 후기는 준비되는 대로 이곳에 게재하겠습니다.",
+      "result1.msg":"선수 프로필과 이적 전후 상황이 게재될 예정입니다.","result2.msg":"지원을 받은 소감이 게재될 예정입니다.","result3.msg":"Before / After(이적 클럽·현재 활동)가 게재될 예정입니다.",
+      "results.note":"게재를 위해서는 본인의 경력·후기·사진 사용에 대한 동의가 필요하여, 동의를 받은 선수부터 순차적으로 공개합니다.",
+      "about.h2":"회사 소개","about.role":"대표 인사말",
+      "about.locales_label":"지원 지역","about.locales_line1":"호주 / 뉴질랜드 / 몽골","about.locales_line2":"아시아·오세아니아 전역",
+      "about.p1":"일본에는 진심으로 해외 진출에 도전하고 싶어 하는 선수가 많습니다. 하지만 그 첫걸음을 내딛을 환경과 정보는 아직 충분하지 않습니다.",
+      "about.p2":"저희 Link×Football은 바로 그런 선수들을 위해 시작되었습니다. 호주·뉴질랜드·몽골을 비롯한 아시아·오세아니아 클럽과의 강력한 네트워크를 바탕으로, 선수 한 명 한 명과 진심으로 마주하며 계약 협상을 지원합니다.",
+      "about.p3":"진심으로 도전하고 싶다는 마음만 있다면 그걸로 충분합니다. 나머지는 저희가 전력을 다해 도와드리겠습니다. 함께 해외라는 새로운 무대를 향해 나아갑시다.",
+      "contact.h2":"문의하기","contact.cta_text":"아래 채널 중 편하신 방법으로 편하게 연락 주세요.","contact.cta_button":"LINE으로 무료 상담하기",
+      "contact.line_label":"공식 LINE","contact.threads_label":"공식 Threads","contact.instagram_label":"공식 Instagram","contact.whatsapp_detail":"메시지 보내기","contact.email_label":"이메일 주소",
+      "footer.desc":"진심으로 해외 진출을 목표로 하는 선수를 위한 커리어 지원 서비스입니다. 호주, 뉴질랜드, 몽골을 비롯한 아시아·오세아니아 지역으로의 이적을 지원합니다.",
+      "footer.contact.email":"이메일","footer.copyright":"모든 권리 보유."
+    },
+    th: {
+      "nav.service":"บริการ","nav.plans":"แพ็กเกจ","nav.results":"ผลงาน","nav.about":"เกี่ยวกับเรา","nav.contact":"ปรึกษาฟรี",
+      "skip":"ข้ามไปยังเนื้อหา",
+      "hero.h1":"เพื่อนักฟุตบอลที่ตั้งใจจริง<br>จะไปเล่นต่างประเทศ",
+      "hero.lead":"Link×Football คือบริการสนับสนุนเส้นทางอาชีพสำหรับนักฟุตบอลที่ตั้งใจจริงจะเข้าร่วมสโมสรฟุตบอลในต่างประเทศ เราสนับสนุนการเจรจาสัญญาย้ายทีมไปยังออสเตรเลีย นิวซีแลนด์ มองโกเลีย และประเทศอื่น ๆ ในภูมิภาคเอเชีย-โอเชียเนีย",
+      "hero.cta.line":"ปรึกษาผ่าน LINE ทางการ","hero.cta.threads":"ปรึกษาผ่าน Threads","hero.cta.instagram":"ปรึกษาผ่าน Instagram","hero.cta.whatsapp":"ปรึกษาผ่าน WhatsApp","hero.cta.email":"ติดต่อทางอีเมล",
+      "ticker.label":"พื้นที่ให้บริการ","ticker.tag.au":"ออสเตรเลีย","ticker.tag.nz":"นิวซีแลนด์","ticker.tag.mn":"มองโกเลีย","ticker.tag.asia":"เอเชีย-โอเชียเนีย","ticker.link":"ดูบริการของเรา",
+      "service.h2":"ทำไมต้อง Link×Football",
+      "service.intro":"ด้วยประสบการณ์ที่เราเคยลงเล่นในออสเตรเลีย นิวซีแลนด์ และมองโกเลียด้วยตัวเอง เราจึงมีเครือข่ายที่แข็งแกร่งในภูมิภาคนี้ และใช้ผลงานที่ผ่านมาสนับสนุนการเจรจาสัญญาอย่างรวดเร็วในราคาที่เข้าถึงได้",
+      "service.flow_title":"ขั้นตอนการให้บริการ",
+      "step1.title":"สอบถามและสัมภาษณ์","step1.desc":"เราจะสอบถามสถานการณ์ปัจจุบันและประเทศ/ระดับที่คุณต้องการ",
+      "step2.title":"เลือกแพ็กเกจและทำสัญญา","step2.desc":"เลือกระหว่างแพ็กเกจทดสอบฝีเท้า หรือแพ็กเกจเซ็นสัญญาโดยตรง ตามที่เหมาะกับคุณ",
+      "step3.title":"เจรจากับสโมสรและจัดตารางทดสอบฝีเท้า","step3.desc":"เราใช้เครือข่ายกับสโมสรในพื้นที่เพื่อเจรจาและประสานงานให้คุณ",
+      "step4.title":"การชำระเงิน","step4.desc":"แพ็กเกจเซ็นสัญญาโดยตรงชำระเมื่อยืนยันสัญญาแล้ว ส่วนแพ็กเกจทดสอบฝีเท้าชำระเมื่อยืนยันการทดสอบแล้ว",
+      "eligibility.label":"คุณสมบัติผู้สมัคร","eligibility.text":"สำหรับนักฟุตบอลอายุ 18 ปีขึ้นไป ณ วันที่ทำสัญญา",
+      "plans.h2":"แพ็กเกจและราคา",
+      "plan1.title":"แพ็กเกจทดสอบฝีเท้า","plan1.tax":"(รวมภาษีแล้ว)","plan1.desc":"เจรจาทดสอบฝีเท้ากับสโมสร (1-3 ทีม ตามผลสัมภาษณ์) และดำเนินการเจรจาสัญญา",
+      "plan2.badge":"แนะนำ","plan2.title":"แพ็กเกจเซ็นสัญญาโดยตรง","plan2.tax":"(รวมภาษีแล้ว)","plan2.desc":"มุ่งเข้าร่วมทีมโดยตรงโดยไม่ต้องทดสอบฝีเท้า (หากเป็นไปได้ยากสามารถเปลี่ยนเป็นแพ็กเกจทดสอบฝีเท้าได้) ดำเนินการเจรจาสัญญา",
+      "continued.label":"การสนับสนุนต่อเนื่องหลังเข้าร่วมทีม","continued.suffix":"(ตามต้องการ) — สนับสนุนการสื่อสารกับทีม","continued.rate":"3% ของเงินเดือนรายเดือน",
+      "options.title":"บริการเสริม","opt.label":"รายละเอียด",
+      "opt1.name":"แพ็กเกจผลิตวิดีโอ","opt1.desc":"ผลิตวิดีโอแนะนำตัวและไฮไลต์การเล่นของนักฟุตบอล","opt1.tax":"(รวมภาษีแล้ว)",
+      "opt2.name":"แพ็กเกจทำเว็บไซต์ส่วนตัว","opt2.desc":"เว็บไซต์ที่ใช้หาสปอนเซอร์หรือเป็นพอร์ตโฟลิโอ","opt2.tax":"(รวมภาษีแล้ว)",
+      "opt3.name":"บริการสนับสนุนการเดินทาง","opt3.desc":"สนับสนุนการจองตั๋วเครื่องบินและโรงแรมทางโทรศัพท์ (การจองจริงทำโดยตัวท่านเอง)","opt3.free":"ฟรี",
+      "payment.label":"วิธีการชำระเงิน","payment.credit":"บัตรเครดิต","payment.transfer":"โอนเงินผ่านธนาคาร","payment.konbini":"ชำระที่ร้านสะดวกซื้อ (ผ่าน Stripe)",
+      "results.h2":"ผลงานและเสียงจากนักฟุตบอล","results.sub":"ประวัติและความคิดเห็นของนักฟุตบอลที่เราสนับสนุนจริง จะนำมาลงในส่วนนี้เมื่อพร้อม",
+      "result1.msg":"ประวัตินักฟุตบอลและสถานการณ์ก่อน/หลังย้ายทีมจะลงในส่วนนี้","result2.msg":"ความคิดเห็นจากนักฟุตบอลที่ได้รับการสนับสนุนจะลงในส่วนนี้","result3.msg":"Before / After (สโมสรปลายทาง/สถานะปัจจุบัน) จะลงในส่วนนี้",
+      "results.note":"การเผยแพร่ต้องได้รับความยินยอมจากนักฟุตบอลในเรื่องประวัติ ความคิดเห็น และรูปภาพ จึงจะทยอยเผยแพร่ตามลำดับที่ได้รับความยินยอม",
+      "about.h2":"เกี่ยวกับเรา","about.role":"สารจากผู้บริหาร",
+      "about.locales_label":"พื้นที่ให้บริการ","about.locales_line1":"ออสเตรเลีย / นิวซีแลนด์ / มองโกเลีย","about.locales_line2":"ทั่วภูมิภาคเอเชีย-โอเชียเนีย",
+      "about.p1":"ในญี่ปุ่นมีนักฟุตบอลจำนวนมากที่ตั้งใจจริงอยากท้าทายตัวเองในต่างประเทศ แต่สภาพแวดล้อมและข้อมูลสำหรับก้าวแรกนั้นยังไม่เพียงพอ",
+      "about.p2":"Link×Football ก่อตั้งขึ้นเพื่อนักฟุตบอลเหล่านี้โดยเฉพาะ เราใช้เครือข่ายที่แข็งแกร่งกับสโมสรในเอเชีย-โอเชียเนีย รวมถึงออสเตรเลีย นิวซีแลนด์ และมองโกเลีย เพื่อสนับสนุนการเจรจาสัญญาอย่างจริงใจกับนักฟุตบอลแต่ละคน",
+      "about.p3":"แค่คุณมีความตั้งใจจริงที่จะท้าทายตัวเอง ที่เหลือเราจะสนับสนุนอย่างสุดความสามารถ มาก้าวไปสู่ทิวทัศน์ใหม่ในต่างแดนไปด้วยกัน",
+      "contact.h2":"ติดต่อเรา","contact.cta_text":"สามารถติดต่อสอบถามได้ตามช่องทางด้านล่างนี้","contact.cta_button":"ปรึกษาฟรีผ่าน LINE",
+      "contact.line_label":"LINE ทางการ","contact.threads_label":"Threads ทางการ","contact.instagram_label":"Instagram ทางการ","contact.whatsapp_detail":"ส่งข้อความ","contact.email_label":"อีเมล",
+      "footer.desc":"บริการสนับสนุนเส้นทางอาชีพสำหรับนักฟุตบอลที่ตั้งใจจริงจะไปเล่นต่างประเทศ สนับสนุนการย้ายทีมไปยังออสเตรเลีย นิวซีแลนด์ มองโกเลีย และภูมิภาคเอเชีย-โอเชียเนีย",
+      "footer.contact.email":"อีเมล","footer.copyright":"สงวนลิขสิทธิ์"
+    },
+    zh: {
+      "nav.service":"服务内容","nav.plans":"方案与价格","nav.results":"案例","nav.about":"关于我们","nav.contact":"免费咨询",
+      "skip":"跳转到正文",
+      "hero.h1":"献给认真<br>挑战海外赛场的球员。",
+      "hero.lead":"Link×Football 是为认真想加盟海外足球俱乐部的球员提供的职业生涯支持服务。我们为前往澳大利亚、新西兰、蒙古等亚太地区俱乐部的转会提供合同谈判支持。",
+      "hero.cta.line":"通过官方LINE咨询","hero.cta.threads":"通过Threads咨询","hero.cta.instagram":"通过Instagram咨询","hero.cta.whatsapp":"通过WhatsApp咨询","hero.cta.email":"通过邮件咨询",
+      "ticker.label":"服务地区","ticker.tag.au":"澳大利亚","ticker.tag.nz":"新西兰","ticker.tag.mn":"蒙古","ticker.tag.asia":"亚太地区","ticker.link":"查看服务内容",
+      "service.h2":"为什么选择 Link×Football",
+      "service.intro":"凭借我们在澳大利亚、新西兰、蒙古的亲身踢球经验,我们在当地拥有牢固的人脉网络。凭借丰富的实绩,以更低的价格快速支持合同谈判。",
+      "service.flow_title":"服务流程",
+      "step1.title":"咨询与访谈","step1.desc":"了解您目前的状况以及希望前往的国家、水平等级。",
+      "step2.title":"选择方案并签约","step2.desc":"可根据需求在试训方案与直接签约方案中选择。",
+      "step3.title":"与俱乐部谈判、安排试训","step3.desc":"运用与当地俱乐部的人脉进行谈判与协调。",
+      "step4.title":"付款","step4.desc":"直接签约方案在合同确定后付款,试训方案在确定参加试训后付款。",
+      "eligibility.label":"适用对象","eligibility.text":"面向签约时年满18周岁以上的球员。",
+      "plans.h2":"方案与价格",
+      "plan1.title":"试训方案","plan1.tax":"(含税)","plan1.desc":"协助与俱乐部进行试训谈判(根据访谈内容,1~3支球队)及合同谈判。",
+      "plan2.badge":"推荐","plan2.title":"直接签约方案","plan2.tax":"(含税)","plan2.desc":"以不经过试训直接加盟为目标(如有困难可变更为试训方案)。提供合同谈判支持。",
+      "continued.label":"加盟后的持续支持","continued.suffix":"(可选)— 与球队的沟通支持","continued.rate":"月薪的3%",
+      "options.title":"附加服务","opt.label":"内容",
+      "opt1.name":"视频制作方案","opt1.desc":"制作球员介绍及比赛集锦视频。","opt1.tax":"(含税)",
+      "opt2.name":"个人网站制作方案","opt2.desc":"可用于争取赞助或作为作品集展示的个人网站。","opt2.tax":"(含税)",
+      "opt3.name":"出行支持","opt3.desc":"通过电话协助预订机票和酒店(预订本身需由您本人完成)。","opt3.free":"免费",
+      "payment.label":"付款方式","payment.credit":"信用卡","payment.transfer":"银行转账","payment.konbini":"便利店付款(通过Stripe)",
+      "results.h2":"案例与球员心声","results.sub":"实际获得支持的球员介绍与感言,将在准备就绪后陆续刊载于此。",
+      "result1.msg":"球员简介及转会前后情况将刊载于此。","result2.msg":"获得支持球员的感言将刊载于此。","result3.msg":"转会前后对比(转会俱乐部、目前状态)将刊载于此。",
+      "results.note":"刊载前需获得本人对履历、感言及照片使用的许可,将按获得许可的顺序陆续公开。",
+      "about.h2":"关于我们","about.role":"代表致辞",
+      "about.locales_label":"服务地区","about.locales_line1":"澳大利亚 / 新西兰 / 蒙古","about.locales_line2":"亚太地区全境",
+      "about.p1":"在日本,有许多球员真心渴望挑战海外赛场。然而,迈出这一步所需的环境与信息仍远远不够完善。",
+      "about.p2":"我们 Link×Football 正是为这样的球员而成立。凭借与澳大利亚、新西兰、蒙古等亚太地区俱乐部之间的牢固联系,我们真诚地与每一位球员并肩同行,支持其合同谈判。",
+      "about.p3":"只要您怀有真心想要挑战的决心,剩下的就交给我们全力以赴。让我们一起迈向海外的全新风景。",
+      "contact.h2":"联系我们","contact.cta_text":"欢迎通过以下任意渠道与我们联系咨询。","contact.cta_button":"通过LINE免费咨询",
+      "contact.line_label":"官方LINE","contact.threads_label":"官方Threads","contact.instagram_label":"官方Instagram","contact.whatsapp_detail":"发送消息","contact.email_label":"邮箱地址",
+      "footer.desc":"为认真挑战海外赛场的球员提供的职业生涯支持服务。支持前往澳大利亚、新西兰、蒙古等亚太地区俱乐部的转会。",
+      "footer.contact.email":"邮箱","footer.copyright":"版权所有。"
+    }
+  };
+
+  var langSelect = null; // legacy native <select> removed in favor of custom listbox
+
+  function applyLang(lang){
+    var dict = I18N[lang] || I18N.ja;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(dict[key] !== undefined) el.textContent = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+      var key = el.getAttribute('data-i18n-html');
+      if(dict[key] !== undefined) el.innerHTML = dict[key];
+    });
+    document.documentElement.setAttribute('lang', lang);
+    var meta = LANG_META[lang] || LANG_META.ja;
+    langTriggerFlag.textContent = meta.flag;
+    langTriggerName.textContent = meta.name;
+    langOptions.forEach(function(li){
+      li.setAttribute('aria-selected', li.getAttribute('data-lang') === lang ? 'true' : 'false');
+    });
+    try{ localStorage.setItem(STORAGE_KEY, lang); }catch(e){}
+  }
+
+  var initialLang = 'ja';
+  try{
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if(saved && I18N[saved]) initialLang = saved;
+  }catch(e){}
+  applyLang(initialLang);
 })();
 </script>
 </body>
