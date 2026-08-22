@@ -8,7 +8,7 @@
 <link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230E1113'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='900' font-size='24' fill='%23E2792E' text-anchor='middle'%3ELM%3C/text%3E%3C/svg%3E" rel="icon"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&amp;family=Noto+Sans+KR:wght@400;500;700;900&amp;family=Noto+Sans+Thai:wght@400;500;700;900&amp;family=Noto+Sans+SC:wght@400;500;700;900&amp;family=Noto+Sans:wght@400;500;700;900&amp;family=League+Spartan:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&amp;family=Noto+Sans+KR:wght@400;500;700;900&amp;family=Noto+Sans+Thai:wght@400;500;700;900&amp;family=Noto+Sans+SC:wght@400;500;700;900&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <style>
 /* ==============================================================
    LINK×MANAGEMENT — Design tokens
@@ -30,8 +30,8 @@
   --accent-soft:rgba(226,121,46,.14);
   --accent-ink:#1A0E06;
 
-  --font-jp:'Noto Sans JP', 'Noto Sans', 'Hiragino Sans', sans-serif;
-  --font-en:'League Spartan', sans-serif;
+  --font-jp:'Zen Kaku Gothic New', 'Manrope', 'Hiragino Sans', sans-serif;
+  --font-en:'Manrope', sans-serif;
 
   --container:1180px;
   --dur:.5s;
@@ -61,10 +61,10 @@ a{color:inherit;text-decoration:none;}
 ul{margin:0;padding:0;list-style:none;}
 h1,h2,h3,h4{
   font-family:var(--font-jp);
-  font-weight:900;
+  font-weight:700;
   line-height:1.4;
   margin:0;
-  letter-spacing:.01em;
+  letter-spacing:-0.01em;
 }
 p{margin:0;}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
@@ -208,12 +208,11 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 .header-right{display:flex;align-items:center;gap:clamp(.75rem,2vw,1.25rem);}
 .brand{display:flex;align-items:center;gap:.6rem;}
 .brand-logo-slot{
-  /* ロゴ画像を用意した際は、この中に
-     <img src="logo.svg" alt="LINK×MANAGEMENT" style="height:100%;width:auto;display:block;">
-     を配置すれば高さ32pxのコンテナに自動で収まります。 */
   height:32px;
+  width:auto;
   display:flex;align-items:center;
 }
+.brand-logo-slot img{max-width:none;}
 .brand-wordmark{
   font-family:var(--font-en);
   font-weight:800;
@@ -347,29 +346,35 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 /* ==============================================================
    Hero — full-bleed photo
    ============================================================== */
-.hero{position:relative;background:var(--bg);}
+.hero{position:relative;background:var(--bg);padding-block:0;}
 .hero-media{
   position:relative;
   aspect-ratio:4/3;
   max-height:52vh;
 }
-@media (min-width:640px){.hero-media{aspect-ratio:16/9;max-height:86vh;}}
-@media (min-width:1024px){.hero-media{aspect-ratio:21/10;}}
+/* Overlay-on-image only kicks in at true desktop widths (1024px+), where
+   the image is tall enough and CTA buttons fit in fewer rows. Below that
+   — including tablets like iPad — the copy flows normally below the
+   image instead, same as mobile. Overlaying at tablet widths was
+   overflowing past the top of a (relatively short) image and colliding
+   with the sticky header, since 5 CTA buttons + heading + lead text
+   don't reliably fit within the image's height at those widths. */
+@media (min-width:1024px){.hero-media{aspect-ratio:21/10;max-height:86vh;}}
 .hero-media::after{
   content:"";
   position:absolute;inset:0;
   z-index:1;
   background:linear-gradient(180deg, rgba(14,17,19,.05) 0%, rgba(14,17,19,.25) 70%, rgba(14,17,19,.55) 100%);
 }
-@media (min-width:640px){
+@media (min-width:1024px){
   .hero-media::after{
     background:linear-gradient(180deg, rgba(14,17,19,.15) 0%, rgba(14,17,19,.55) 55%, rgba(14,17,19,.96) 100%);
   }
 }
-/* Mobile: copy flows normally below the image (own dark background) —
-   avoids overlaying text on a short image where it could collide with
-   the sticky header. Tablet/desktop: copy overlays the bottom of the
-   (taller) image, as in the reference design. */
+/* Mobile & tablet: copy flows normally below the image (own dark
+   background) — avoids overlaying text where it could collide with the
+   sticky header. Desktop only: copy overlays the bottom of the (taller)
+   image, as in the reference design. */
 .hero-copy{
   position:static;
   z-index:2;
@@ -378,7 +383,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   max-width:var(--container);
   margin-inline:auto;
 }
-@media (min-width:640px){
+@media (min-width:1024px){
   .hero-copy{
     position:absolute;left:0;right:0;bottom:0;
     background:none;
@@ -387,9 +392,12 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 }
 .hero-copy .eyebrow{margin-bottom:1.2rem;}
 .hero h1{
-  font-size:clamp(2rem,5.6vw,3.6rem);
+  font-size:clamp(1.5rem,5.6vw,3.6rem);
   color:var(--ink);
-  max-width:16ch;
+  /* No max-width here: every language's headline already has an explicit
+     <br> placed at the intended 2-line break. A ch-based cap here was
+     tuned for Latin text and cut Japanese/CJK lines off far too early
+     (each full-width character is ~2ch), forcing an unwanted 3rd line. */
 }
 .hero .lead{
   margin-top:1.4rem;
@@ -401,6 +409,16 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 .hero-ctas{
   display:flex;flex-wrap:wrap;gap:.8rem;
   margin-top:2rem;
+}
+/* Below desktop, button widths vary by label length ("Threadsで相談する"
+   vs "メールで問い合わせる"), so flex-wrap pairs them unevenly — e.g. two
+   buttons filling one row, then a lone button starting the next row,
+   which reads like it's oddly stranded on one side. A fixed 2-column
+   grid keeps every row evenly paired regardless of label length. */
+@media (max-width:1023px){
+  .hero-ctas{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;}
+  .hero-ctas .btn{width:100%;justify-content:center;text-align:center;}
+  .hero-ctas .btn-accent{grid-column:1/-1;}
 }
 .btn{
   display:inline-flex;align-items:center;gap:.6em;
@@ -771,7 +789,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
   .results-grid{grid-template-columns:1fr;}
   .continued-support{flex-direction:column;align-items:flex-start;}
   .contact-cta{flex-direction:column;align-items:flex-start;}
-  .hero-ctas{gap:.6rem;}
+  .hero-ctas{gap:.55rem;}
   .btn{font-size:.85rem;padding:.8em 1.2em;}
   .footer-grid{grid-template-columns:1fr;gap:2rem;}
   .footer-bottom{flex-direction:column;}
@@ -784,7 +802,11 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 }
 
 @media (max-width:400px){
-  .brand-wordmark{font-size:1.12rem;}
+  /* Below ~400px, logo mark + full wordmark + language switcher +
+     hamburger no longer fit on one line. Keep the logo mark (brand
+     recognition) and drop the text wordmark rather than shrinking
+     everything down to illegibility. */
+  .brand-wordmark{display:none;}
 }
 
 
@@ -794,10 +816,10 @@ a:focus-visible,button:focus-visible,input:focus-visible{
    Google Fonts <link> in <head>); which one is active just follows
    <html lang="..">, which the language switcher JS updates.
    ============================================================== */
-html[lang="ko"]{ --font-jp:'Noto Sans KR', 'Noto Sans', sans-serif; }
-html[lang="th"]{ --font-jp:'Noto Sans Thai', 'Noto Sans', sans-serif; }
-html[lang="zh"]{ --font-jp:'Noto Sans SC', 'Noto Sans', sans-serif; }
-html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto Sans JP', sans-serif; }
+html[lang="ko"]{ --font-jp:'Noto Sans KR', 'Manrope', sans-serif; }
+html[lang="th"]{ --font-jp:'Noto Sans Thai', 'Manrope', sans-serif; }
+html[lang="zh"]{ --font-jp:'Noto Sans SC', 'Manrope', sans-serif; }
+html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'Manrope', 'Zen Kaku Gothic New', sans-serif; }
 </style>
 <link href="https://link-football.pages.dev/" rel="canonical"/><meta content="website" property="og:type"/><meta content="LINK×MANAGEMENT" property="og:site_name"/><meta content="LINK×MANAGEMENT | 海外サッカー移籍エージェント・契約交渉サポート" property="og:title"/><meta content="オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。" property="og:description"/><meta content="https://link-football.pages.dev/" property="og:url"/><meta content="https://link-football.pages.dev/og-image.jpg" property="og:image"/><meta content="ja_JP" property="og:locale"/><meta content="summary_large_image" name="twitter:card"/><meta content="LINK×MANAGEMENT | 海外サッカー移籍エージェント・契約交渉サポート" name="twitter:title"/><meta content="オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。" name="twitter:description"/><meta content="https://link-football.pages.dev/og-image.jpg" name="twitter:image"/><script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -878,15 +900,14 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 <div class="wrap">
 <a aria-label="LINK×MANAGEMENT トップへ" class="brand" href="#top">
 <span class="brand-logo-slot">
-<!-- ロゴ確定後: <img src="logo.svg" alt="LINK×MANAGEMENT" style="height:100%;width:auto;"> に差し替え可能 -->
-<span class="brand-wordmark">LINK<span class="x">×</span>MANAGEMENT</span>
+<img alt="LINK×MANAGEMENT" src="data:image/png;base64,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" style="height:100%;width:auto;display:block;"/>
 </span>
+<span class="brand-wordmark">LINK<span class="x">×</span>MANAGEMENT</span>
 </a>
 <div class="header-right">
 <nav aria-label="メインナビゲーション" class="nav-desktop">
 <a data-i18n="nav.service" href="#service">サービス</a>
 <a data-i18n="nav.plans" href="#plans">プラン</a>
-<a data-i18n="nav.results" href="#results">実績</a>
 <a data-i18n="nav.about" href="#about">運営者情報</a>
 <a class="nav-cta" data-i18n="nav.contact" href="#contact">無料相談</a>
 </nav>
@@ -909,7 +930,6 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 <nav aria-label="モバイルナビゲーション" class="nav-mobile" id="nav-mobile">
 <a data-i18n="nav.service" href="#service">サービス</a>
 <a data-i18n="nav.plans" href="#plans">プラン</a>
-<a data-i18n="nav.results" href="#results">実績</a>
 <a data-i18n="nav.about" href="#about">運営者情報</a>
 <a class="nav-cta" data-i18n="nav.contact" href="#contact">無料相談</a>
 </nav>
@@ -923,7 +943,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 <span class="media-slot__tag" style="left:1.25rem;bottom:auto;top:1.25rem;"><b>画像差替:</b> #hero-img / 選手のトレーニングや試合風景を推奨</span>
 </div>
 <div class="hero-copy">
-<span class="eyebrow">Career Support Agency</span>
+<span class="eyebrow">Career Support</span>
 <h1 data-i18n-html="hero.h1">海外を目指す選手の為の<br/>本気のサポート</h1>
 <p class="lead" data-i18n="hero.lead">LINK×MANAGEMENTは、海外でのプレーを目指す選手の契約交渉をサポートします。選手個人に対して、希望する選手には以下のような個別サポートもご提供しています。それぞれ専門分野に分かれた複数人体制で対応します。</p>
 <div class="hero-ctas">
@@ -937,17 +957,17 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 <a class="btn btn-outline" data-i18n="hero.cta.email" href="mailto:linkfootball.jp@gmail.com">メールで問い合わせる</a>
 </div>
 </div>
-<div class="ticker">
+</section><div class="ticker">
 <div class="wrap">
 <span class="ticker-label">
 <svg fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11Z"></path><circle cx="12" cy="10" r="2.6"></circle></svg>
 <span data-i18n="ticker.label">対応地域</span>
 </span>
 <ul class="region-tags">
-<li data-i18n="ticker.tag.au">Australia</li>
-<li data-i18n="ticker.tag.nz">New Zealand</li>
-<li data-i18n="ticker.tag.mn">Mongolia</li>
-<li data-i18n="ticker.tag.asia">Asia, Oceania &amp; Beyond</li>
+<li data-i18n="ticker.tag.au">オーストラリア</li>
+<li data-i18n="ticker.tag.nz">ニュージーランド</li>
+<li data-i18n="ticker.tag.mn">モンゴル</li>
+<li data-i18n="ticker.tag.asia">アジア・オセアニア他</li>
 </ul>
 <a class="ticker-link" href="#service">
 <span data-i18n="ticker.link">サービスを見る</span>
@@ -955,7 +975,6 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 </a>
 </div>
 </div>
-</section>
 <!-- ============================================================
      2. Service
      ============================================================ -->
@@ -965,8 +984,8 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 <span class="eyebrow">Service</span>
 <h2 data-i18n="service.h2">なぜLINK×MANAGEMENTなのか</h2>
 </div>
-<p class="service-intro" data-i18n="service.intro">アジア・オセアニア地域(オーストラリア/ニュージーランド/モンゴル)でプレーした経験から強いコネクションがあり、多数の実績を活かし低価格で契約交渉を迅速にサポートいたします。契約交渉だけでなく、ホームページ作成・食事サポート・英会話指導まで、それぞれの専門分野に分かれた複数人体制でサポートします(食事サポートは管理栄養士、英会話は英会話講師が担当)。</p>
-<h3 class="subblock-title" data-i18n="support.title">4つのサポート</h3><div class="option-table"><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support1.name">契約交渉サポート</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support1.desc">海外で活躍したい選手への移籍の交渉サポート</span></div><div class="price">—</div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support2.name">ホームページ作成(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support2.desc">スポンサー獲得やポートフォリオとして使えるホームページを作成</span></div><div class="price">¥50,000〜80,000<span class="tax" data-i18n="opt2.tax">(税込)</span></div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support3.name">食事サポート(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support3.desc">管理栄養士による食事指導</span></div><div class="price"><span data-i18n="status.pending">検討中</span></div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support4.name">英会話個別指導(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support4.desc">マンツーマンでの英会話レッスン</span></div><div class="price"><span data-i18n="status.pending">検討中</span></div></div></div><h3 class="subblock-title" data-i18n="service.flow_title">サポートの流れ</h3>
+<p class="service-intro" data-i18n="service.intro">アジア・オセアニア地域でプレーした経験から強いコネクションがあり、多数の実績を活かし低価格で契約交渉を迅速にサポートいたします。契約交渉だけでなく、ホームページ作成・食事サポート・英会話指導まで、それぞれの専門分野に分かれた複数人体制でサポートします(食事サポートは管理栄養士、英会話は英会話講師が担当)。</p>
+<h3 class="subblock-title" data-i18n="support.title">4つのサポート</h3><div class="option-table"><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support1.name">契約交渉サポート</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support1.desc">海外で活躍したい選手への移籍の交渉サポート</span></div><div class="price">¥70,000〜100,000</div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support2.name">ホームページ作成(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support2.desc">スポンサー獲得やポートフォリオとして使えるホームページを作成</span></div><div class="price">¥50,000〜80,000<span class="tax" data-i18n="opt2.tax">(税込)</span></div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support3.name">食事サポート(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support3.desc">管理栄養士による食事指導(1週間のトライアル可能)</span></div><div class="price">¥5,000/月</div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support4.name">英会話個別指導(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support4.desc">マンツーマンでの英会話レッスン(回数券あり・無料体験あり)</span></div><div class="price">¥2,000/回</div></div></div><h3 class="subblock-title" data-i18n="service.flow_title">サポートの流れ</h3>
 <div class="feature-list">
 <div class="feature">
 <div class="feature-media">
@@ -1038,10 +1057,6 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 </div>
 <div class="plan-grid">
 <div class="plan-card">
-<div class="media-slot cut">
-<img alt="練習参加プランのイメージ" class="media-slot__ph" data-i18n-alt="img.plan1" id="plan1-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 250'&gt;&lt;rect width='400' height='250' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='p1' width='24' height='24' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='24' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='400' height='250' fill='url(%23p1)'/&gt;&lt;g transform='translate(200,125)' fill='none' stroke='%23E2792E' stroke-opacity='0.45' stroke-width='2.5'&gt;&lt;rect x='-38' y='-26' width='76' height='52' rx='4'/&gt;&lt;circle cx='0' cy='0' r='15'/&gt;&lt;rect x='14' y='-34' width='18' height='10' rx='2'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
-<span class="media-slot__tag"><b>差替:</b> #plan1-img / 練習・トライアル風景</span>
-</div>
 <div class="plan-body">
 <h3 data-i18n="plan1.title">練習参加プラン</h3>
 <div class="price"><span class="yen">¥</span>70,000<span class="tax" data-i18n="plan1.tax">(税込)</span></div>
@@ -1049,21 +1064,12 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 </div>
 </div>
 <div class="plan-card">
-<div class="media-slot cut">
-<img alt="本契約プランのイメージ" class="media-slot__ph" data-i18n-alt="img.plan2" id="plan2-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 250'&gt;&lt;rect width='400' height='250' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='p2' width='24' height='24' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='24' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='400' height='250' fill='url(%23p2)'/&gt;&lt;g transform='translate(200,125)' fill='none' stroke='%23E2792E' stroke-opacity='0.45' stroke-width='2.5'&gt;&lt;rect x='-38' y='-26' width='76' height='52' rx='4'/&gt;&lt;circle cx='0' cy='0' r='15'/&gt;&lt;rect x='14' y='-34' width='18' height='10' rx='2'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
-<span class="media-slot__tag"><b>差替:</b> #plan2-img / 契約・加入シーン</span>
-</div>
 <div class="plan-body">
-<span class="plan-badge" data-i18n="plan2.badge">おすすめ</span>
 <h3 data-i18n="plan2.title">本契約プラン</h3>
 <div class="price"><span class="yen">¥</span>100,000<span class="tax" data-i18n="plan2.tax">(税込)</span></div>
 <div class="desc" data-i18n="plan2.desc">練習を経ずに直接加入を目指します(難しい場合は練習参加プランへの変更が可能です)。契約交渉を行います。</div>
 </div>
 </div>
-</div>
-<div class="continued-support">
-<div class="t"><strong data-i18n="continued.label">加入後の継続サポート</strong><span data-i18n="continued.suffix">(希望者のみ)— チームとのコミュニケーションサポート</span></div>
-<div class="rate" data-i18n="continued.rate">月間給料の 3%</div>
 </div>
 <h3 class="subblock-title" data-i18n="options.title">オプション</h3>
 <div class="option-table">
@@ -1082,7 +1088,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 <div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt3.desc">航空券やホテルの予約を電話にてサポート(予約自体はご自身で行っていただきます)</span></div>
 <div class="price" data-i18n="opt3.free">無料</div>
 </div>
-<div class="option-row"><div><span class="cell-label">Option</span><span class="name" data-i18n="opt4.name">食事サポート</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt4.desc">管理栄養士による食事指導</span></div><div class="price"><span data-i18n="status.pending">検討中</span></div></div><div class="option-row"><div><span class="cell-label">Option</span><span class="name" data-i18n="opt5.name">英会話個別指導</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt5.desc">マンツーマンでの英会話レッスン</span></div><div class="price"><span data-i18n="status.pending">検討中</span></div></div></div>
+<div class="option-row"><div><span class="cell-label">Option</span><span class="name" data-i18n="opt4.name">食事サポート</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt4.desc">管理栄養士による食事指導(1週間のトライアル可能)</span></div><div class="price">¥5,000/月</div></div><div class="option-row"><div><span class="cell-label">Option</span><span class="name" data-i18n="opt5.name">英会話個別指導</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt5.desc">マンツーマンでの英会話レッスン(回数券あり・無料体験あり)</span></div><div class="price">¥2,000/回</div></div></div>
 <div class="payment-methods">
 <span class="label" data-i18n="payment.label">お支払い方法</span>
 <ul>
@@ -1096,48 +1102,6 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 <!-- ============================================================
      4. Results / voices — empty state
      ============================================================ -->
-<section id="results">
-<div class="wrap">
-<div class="section-head">
-<span class="eyebrow">Voices</span>
-<h2 data-i18n="results.h2">実績・選手の声</h2>
-<p class="sub" data-i18n="results.sub">実際にサポートした選手のご紹介・コメントを、準備が整い次第この枠に掲載いたします。</p>
-</div>
-<div class="results-grid">
-<div class="result-card">
-<div class="media-slot cut">
-<img alt="サポートした選手のポートレート" class="media-slot__ph" data-i18n-alt="img.result" id="result1-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 400'&gt;&lt;rect width='320' height='400' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='r1' width='22' height='22' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='22' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='320' height='400' fill='url(%23r1)'/&gt;&lt;g transform='translate(160,200)' fill='none' stroke='%23E2792E' stroke-opacity='0.4' stroke-width='2.5'&gt;&lt;circle cx='0' cy='-30' r='26'/&gt;&lt;path d='M-46,54 C-46,4 46,4 46,54'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
-<span class="media-slot__tag"><b>差替:</b> #result1-img</span>
-</div>
-<div class="result-body">
-<span class="quote-mark">"</span>
-<p class="msg" data-i18n="result1.msg">選手プロフィール・移籍前後の状況を掲載予定です。</p>
-</div>
-</div>
-<div class="result-card">
-<div class="media-slot cut">
-<img alt="サポートした選手のポートレート" class="media-slot__ph" data-i18n-alt="img.result" id="result2-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 400'&gt;&lt;rect width='320' height='400' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='r2' width='22' height='22' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='22' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='320' height='400' fill='url(%23r2)'/&gt;&lt;g transform='translate(160,200)' fill='none' stroke='%23E2792E' stroke-opacity='0.4' stroke-width='2.5'&gt;&lt;circle cx='0' cy='-30' r='26'/&gt;&lt;path d='M-46,54 C-46,4 46,4 46,54'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
-<span class="media-slot__tag"><b>差替:</b> #result2-img</span>
-</div>
-<div class="result-body">
-<span class="quote-mark">"</span>
-<p class="msg" data-i18n="result2.msg">サポートを受けた感想を掲載予定です。</p>
-</div>
-</div>
-<div class="result-card">
-<div class="media-slot cut">
-<img alt="サポートした選手のポートレート" class="media-slot__ph" data-i18n-alt="img.result" id="result3-img" loading="lazy" src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 400'&gt;&lt;rect width='320' height='400' fill='%23171B1E'/&gt;&lt;defs&gt;&lt;pattern id='r3' width='22' height='22' patternTransform='rotate(45)' patternUnits='userSpaceOnUse'&gt;&lt;line x1='0' y1='0' x2='0' y2='22' stroke='%23E2792E' stroke-opacity='0.12' stroke-width='2'/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect width='320' height='400' fill='url(%23r3)'/&gt;&lt;g transform='translate(160,200)' fill='none' stroke='%23E2792E' stroke-opacity='0.4' stroke-width='2.5'&gt;&lt;circle cx='0' cy='-30' r='26'/&gt;&lt;path d='M-46,54 C-46,4 46,4 46,54'/&gt;&lt;/g&gt;&lt;/svg&gt;"/>
-<span class="media-slot__tag"><b>差替:</b> #result3-img</span>
-</div>
-<div class="result-body">
-<span class="quote-mark">"</span>
-<p class="msg" data-i18n="result3.msg">Before / After(移籍先・活動状況)を掲載予定です。</p>
-</div>
-</div>
-</div>
-<p class="results-note" data-i18n="results.note">掲載には本人の経歴・コメント・写真使用許可の確認が必要なため、確認が取れた選手から順次公開いたします。</p>
-</div>
-</section>
 <!-- ============================================================
      5. About / founder
      ============================================================ -->
@@ -1153,17 +1117,11 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 <span class="media-slot__tag"><b>差替:</b> #about-img / 代表者または現地クラブ視察の写真</span>
 </div>
 <div class="about-body">
-<span class="role" data-i18n="about.role">代表挨拶</span>
 <div class="name">LINK×MANAGEMENT</div>
-<div class="locales">
-<span data-i18n="about.locales_label">対応地域</span><br/>
-<span data-i18n="about.locales_line1">オーストラリア / ニュージーランド / モンゴル</span><br/>
-<span data-i18n="about.locales_line2">アジア・オセアニア全域</span>
-</div>
 <div class="about-message">
 <p data-i18n="about.p1">日本には、本気で海外に挑戦したいと思っている選手がたくさんいます。しかし、その一歩を踏み出す環境や情報は、まだまだ十分に整っていません。</p>
 <p data-i18n="about.p2">私たちLINK×MANAGEMENTは、そんな選手たちのために立ち上がりました。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニアのクラブとの強いつながりを活かし、一人ひとりに本気で向き合いながら契約交渉をサポートします。</p>
-<p data-i18n="about.p3">「本気で挑戦したい」その想いさえあれば、あとは私たちが全力で後押しします。一緒に、海外という新しい景色を目指しましょう。</p>
+<p data-i18n="about.p3">さらに、契約交渉だけでなく、ホームページ作成・食事サポート・英会話指導まで、それぞれの分野の専門家が揃った体制で選手のキャリアを総合的に支えていきます。</p><p data-i18n="about.p4">「本気で挑戦したい」その想いさえあれば、あとは私たちが全力で後押しします。</p>
 </div>
 </div>
 </div>
@@ -1221,14 +1179,12 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
 <div class="footer-grid">
 <div class="footer-brand">
 <span class="brand-wordmark">LINK<span class="x">×</span>MANAGEMENT</span>
-<p data-i18n="footer.desc">本気で海外を目指す選手のためのキャリアサポートサービス。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニア地域への移籍をサポートします。</p>
 </div>
 <div class="footer-col">
 <h4>Menu</h4>
 <ul>
 <li><a data-i18n="nav.service" href="#service">サービス</a></li>
 <li><a data-i18n="nav.plans" href="#plans">プラン</a></li>
-<li><a data-i18n="nav.results" href="#results">実績</a></li>
 <li><a data-i18n="nav.about" href="#about">運営者情報</a></li>
 </ul>
 </div>
@@ -1355,13 +1311,13 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "hero.cta.whatsapp": "WhatsAppで相談する",
     "hero.cta.email": "メールで問い合わせる",
     "ticker.label": "対応地域",
-    "ticker.tag.au": "Australia",
-    "ticker.tag.nz": "New Zealand",
-    "ticker.tag.mn": "Mongolia",
-    "ticker.tag.asia": "Asia, Oceania & Beyond",
+    "ticker.tag.au": "オーストラリア",
+    "ticker.tag.nz": "ニュージーランド",
+    "ticker.tag.mn": "モンゴル",
+    "ticker.tag.asia": "アジア・オセアニア他",
     "ticker.link": "サービスを見る",
     "service.h2": "なぜLINK×MANAGEMENTなのか",
-    "service.intro": "アジア・オセアニア地域(オーストラリア/ニュージーランド/モンゴル)でプレーした経験から強いコネクションがあり、多数の実績を活かし低価格で契約交渉を迅速にサポートいたします。契約交渉だけでなく、ホームページ作成・食事サポート・英会話指導まで、それぞれの専門分野に分かれた複数人体制でサポートします(食事サポートは管理栄養士、英会話は英会話講師が担当)。",
+    "service.intro": "アジア・オセアニア地域でプレーした経験から強いコネクションがあり、多数の実績を活かし低価格で契約交渉を迅速にサポートいたします。契約交渉だけでなく、ホームページ作成・食事サポート・英会話指導まで、それぞれの専門分野に分かれた複数人体制でサポートします(食事サポートは管理栄養士、英会話は英会話講師が担当)。",
     "service.flow_title": "サポートの流れ",
     "step1.title": "お問い合わせ・ヒアリング",
     "step1.desc": "現在の状況や希望する国・レベル感を伺います。",
@@ -1412,7 +1368,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "about.locales_line2": "アジア・オセアニア全域",
     "about.p1": "日本には、本気で海外に挑戦したいと思っている選手がたくさんいます。しかし、その一歩を踏み出す環境や情報は、まだまだ十分に整っていません。",
     "about.p2": "私たちLINK×MANAGEMENTは、そんな選手たちのために立ち上がりました。オーストラリア・ニュージーランド・モンゴルをはじめとするアジア・オセアニアのクラブとの強いつながりを活かし、一人ひとりに本気で向き合いながら契約交渉をサポートします。",
-    "about.p3": "「本気で挑戦したい」その想いさえあれば、あとは私たちが全力で後押しします。一緒に、海外という新しい景色を目指しましょう。",
+    "about.p3": "さらに、契約交渉だけでなく、ホームページ作成・食事サポート・英会話指導まで、それぞれの分野の専門家が揃った体制で選手のキャリアを総合的に支えていきます。",
     "contact.h2": "お問い合わせ",
     "contact.cta_text": "ご相談は下記いずれかの窓口よりお気軽にご連絡ください。",
     "contact.cta_button": "公式LINEで無料相談する",
@@ -1439,14 +1395,15 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "support2.name": "ホームページ作成(希望者)",
     "support2.desc": "スポンサー獲得やポートフォリオとして使えるホームページを作成",
     "support3.name": "食事サポート(希望者)",
-    "support3.desc": "管理栄養士による食事指導",
+    "support3.desc": "管理栄養士による食事指導(1週間のトライアル可能)",
     "support4.name": "英会話個別指導(希望者)",
-    "support4.desc": "マンツーマンでの英会話レッスン",
+    "support4.desc": "マンツーマンでの英会話レッスン(回数券あり・無料体験あり)",
     "opt4.name": "食事サポート",
-    "opt4.desc": "管理栄養士による食事指導",
+    "opt4.desc": "管理栄養士による食事指導(1週間のトライアル可能)",
     "opt5.name": "英会話個別指導",
-    "opt5.desc": "マンツーマンでの英会話レッスン",
-    "status.pending": "検討中"
+    "opt5.desc": "マンツーマンでの英会話レッスン(回数券あり・無料体験あり)",
+    "status.pending": "検討中",
+    "about.p4": "「本気で挑戦したい」その想いさえあれば、あとは私たちが全力で後押しします。"
   },
   "en": {
     "nav.service": "Service",
@@ -1469,7 +1426,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "ticker.tag.asia": "Asia, Oceania & Beyond",
     "ticker.link": "See our services",
     "service.h2": "Why LINK×MANAGEMENT",
-    "service.intro": "Having played in Australia, New Zealand, and Mongolia ourselves, we've built strong connections across Asia and Oceania. We draw on a proven track record to support contract negotiations quickly and affordably. Beyond contract negotiation, we also support website creation, meal guidance, and English coaching — each handled by its own specialist (a registered dietitian for meal support, an English coach for lessons).",
+    "service.intro": "Having played across Asia and Oceania ourselves, we've built strong connections in the region. We draw on a proven track record to support contract negotiations quickly and affordably. Beyond contract negotiation, we also support website creation, meal guidance, and English coaching — each handled by its own specialist (a registered dietitian for meal support, an English coach for lessons).",
     "service.flow_title": "How it works",
     "step1.title": "Inquiry & interview",
     "step1.desc": "We'll ask about your current situation and which country or level you're aiming for.",
@@ -1520,7 +1477,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "about.locales_line2": "Across Asia & Oceania",
     "about.p1": "Many players in Japan are serious about taking on the challenge of playing overseas. But the environment and information to take that first step are still far from adequate.",
     "about.p2": "LINK×MANAGEMENT was founded for exactly these players. Drawing on our strong ties to clubs across Asia and Oceania — including Australia, New Zealand, and Mongolia — we work closely with each player to support their contract negotiations.",
-    "about.p3": "If you're serious about taking on the challenge, that's all it takes — we'll put everything we have behind you. Let's aim for a new horizon overseas, together.",
+    "about.p3": "Beyond contract negotiations, we also support website creation, meal guidance, and English coaching — with specialists in each field working together to support a player's career as a whole.",
     "contact.h2": "Contact",
     "contact.cta_text": "Feel free to reach out through any of the channels below.",
     "contact.cta_button": "Free consultation on LINE",
@@ -1547,14 +1504,15 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "support2.name": "Website Creation (optional)",
     "support2.desc": "A website you can use for sponsorship pitches or as a portfolio.",
     "support3.name": "Meal Support (optional)",
-    "support3.desc": "Meal guidance from a registered dietitian.",
+    "support3.desc": "Meal guidance from a registered dietitian (a one-week trial is available).",
     "support4.name": "Private English Coaching (optional)",
-    "support4.desc": "One-on-one English conversation lessons.",
+    "support4.desc": "One-on-one English conversation lessons (lesson-ticket packs available; free trial lesson available).",
     "opt4.name": "Meal Support",
-    "opt4.desc": "Meal guidance from a registered dietitian.",
+    "opt4.desc": "Meal guidance from a registered dietitian (a one-week trial is available).",
     "opt5.name": "Private English Coaching",
-    "opt5.desc": "One-on-one English conversation lessons.",
-    "status.pending": "TBD"
+    "opt5.desc": "One-on-one English conversation lessons (lesson-ticket packs available; free trial lesson available).",
+    "status.pending": "TBD",
+    "about.p4": "If you're serious about taking on the challenge, that's all it takes — we'll put everything we have behind you."
   },
   "pt": {
     "nav.service": "Serviços",
@@ -1577,7 +1535,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "ticker.tag.asia": "Ásia, Oceania e Além",
     "ticker.link": "Ver serviços",
     "service.h2": "Por que a LINK×MANAGEMENT",
-    "service.intro": "Por termos jogado na Austrália, Nova Zelândia e Mongólia, temos conexões sólidas na região. Usamos nossa experiência comprovada para apoiar negociações de contrato de forma rápida e acessível. Além da negociação de contratos, também oferecemos apoio na criação de site, orientação alimentar e aulas de inglês — cada um conduzido por um especialista (nutricionista para o suporte alimentar e professor de inglês para as aulas).",
+    "service.intro": "Por termos jogado na região da Ásia e Oceania, temos conexões sólidas na área. Usamos nossa experiência comprovada para apoiar negociações de contrato de forma rápida e acessível. Além da negociação de contratos, também oferecemos apoio na criação de site, orientação alimentar e aulas de inglês — cada um conduzido por um especialista (nutricionista para o suporte alimentar e professor de inglês para as aulas).",
     "service.flow_title": "Como funciona",
     "step1.title": "Contato e entrevista",
     "step1.desc": "Conversamos sobre sua situação atual e o país ou nível que você deseja alcançar.",
@@ -1628,7 +1586,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "about.locales_line2": "Toda a Ásia e Oceania",
     "about.p1": "No Japão, muitos jogadores têm o desejo sério de encarar o desafio do futebol no exterior. Mas o ambiente e as informações para dar esse primeiro passo ainda são insuficientes.",
     "about.p2": "A LINK×MANAGEMENT nasceu para esses jogadores. Com nossos fortes vínculos com clubes da Ásia e Oceania — incluindo Austrália, Nova Zelândia e Mongólia — acompanhamos cada jogador de perto nas negociações de contrato.",
-    "about.p3": "Se você tem a vontade séria de encarar esse desafio, é só isso que precisa: nós daremos o nosso máximo ao seu lado. Vamos juntos em busca de um novo horizonte no exterior.",
+    "about.p3": "Além disso, oferecemos não apenas a negociação de contratos, mas também apoio na criação de sites, orientação alimentar e aulas de inglês — com especialistas em cada área trabalhando juntos para apoiar integralmente a carreira do jogador.",
     "contact.h2": "Contato",
     "contact.cta_text": "Fique à vontade para falar conosco por qualquer um dos canais abaixo.",
     "contact.cta_button": "Consulta gratuita pelo LINE",
@@ -1655,14 +1613,15 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "support2.name": "Criação de Site (opcional)",
     "support2.desc": "Um site que pode ser usado para buscar patrocínio ou como portfólio.",
     "support3.name": "Suporte Alimentar (opcional)",
-    "support3.desc": "Orientação alimentar por nutricionista.",
+    "support3.desc": "Orientação alimentar por nutricionista (teste de uma semana disponível).",
     "support4.name": "Aulas Particulares de Inglês (opcional)",
-    "support4.desc": "Aulas de inglês individuais, um a um.",
+    "support4.desc": "Aulas de inglês individuais, um a um (pacotes de aulas disponíveis; aula de teste gratuita disponível).",
     "opt4.name": "Suporte Alimentar",
-    "opt4.desc": "Orientação alimentar por nutricionista.",
+    "opt4.desc": "Orientação alimentar por nutricionista (teste de uma semana disponível).",
     "opt5.name": "Aulas Particulares de Inglês",
-    "opt5.desc": "Aulas de inglês individuais, um a um.",
-    "status.pending": "A definir"
+    "opt5.desc": "Aulas de inglês individuais, um a um (pacotes de aulas disponíveis; aula de teste gratuita disponível).",
+    "status.pending": "A definir",
+    "about.p4": "Se você tem a vontade séria de encarar esse desafio, é só isso que precisa: nós daremos o nosso máximo ao seu lado."
   },
   "mn": {
     "nav.service": "Үйлчилгээ",
@@ -1685,7 +1644,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "ticker.tag.asia": "Ази, Номхон далай ба цаашид",
     "ticker.link": "Үйлчилгээг үзэх",
     "service.h2": "Яагаад LINK×MANAGEMENT вэ",
-    "service.intro": "Бид өөрсдөө Австрали, Шинэ Зеланд, Монголд тоглож байсан туршлагатай тул тухайн бүс нутагт бат бэх холбоо харилцаатай. Тогтвортой туршлага дээрээ тулгуурлан гэрээний хэлэлцээрийг хямд, шуурхай дэмждэг. Гэрээний хэлэлцээрээс гадна вэбсайт бэлтгэх, хоол хүнсний дэмжлэг, англи хэлний хичээл хүртэл — тус бүрийг өөрийн мэргэжилтэн хариуцна (хоолны дэмжлэгийг мэргэжлийн тэжээллэгч, англи хэлийг багш хариуцна).",
+    "service.intro": "Бид өөрсдөө Ази, Номхон далайн бүс нутагт тоглож байсан туршлагатай тул тухайн бүс нутагт бат бэх холбоо харилцаатай. Тогтвортой туршлага дээрээ тулгуурлан гэрээний хэлэлцээрийг хямд, шуурхай дэмждэг. Гэрээний хэлэлцээрээс гадна вэбсайт бэлтгэх, хоол хүнсний дэмжлэг, англи хэлний хичээл хүртэл — тус бүрийг өөрийн мэргэжилтэн хариуцна (хоолны дэмжлэгийг мэргэжлийн тэжээллэгч, англи хэлийг багш хариуцна).",
     "service.flow_title": "Дэмжлэгийн явц",
     "step1.title": "Асуулга, ярилцлага",
     "step1.desc": "Одоогийн байдал болон зорьж буй улс, түвшингийн талаар асууна.",
@@ -1736,7 +1695,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "about.locales_line2": "Ази, Номхон далайн бүс нутаг бүхэлдээ",
     "about.p1": "Японд гадаадад тоглохыг чин сэтгэлээсээ хүсдэг тоглогч олон бий. Гэвч түүнийг эхлүүлэх орчин, мэдээлэл хараахан хангалттай бүрдээгүй байна.",
     "about.p2": "Бид, LINK×MANAGEMENT, яг ийм тоглогчдын төлөө байгуулагдсан. Австрали, Шинэ Зеланд, Монгол зэрэг Ази, Номхон далайн бүсийн клубуудтай бат бэх холбоогоо ашиглан, тоглогч бүртэй чин сэтгэлээсээ хамтран гэрээний хэлэлцээрийг дэмждэг.",
-    "about.p3": "Чин сэтгэлээсээ туршихыг хүсч байвал таны хүсэл л хангалттай — үлдсэнийг нь бид бүх хүчээрээ дэмжинэ. Хамтдаа гадаад дахь шинэ ертөнц рүү зорьцгооё.",
+    "about.p3": "Мөн гэрээний хэлэлцээрээс гадна вэбсайт бэлтгэх, хоол хүнсний дэмжлэг, англи хэлний сургалт хүртэл — тус бүрийн мэргэжилтнүүд нэгдэн тоглогчийн карьерыг бүхэлд нь дэмждэг.",
     "contact.h2": "Холбоо барих",
     "contact.cta_text": "Доорх сувгуудын дурын нэгээр чөлөөтэй холбогдоорой.",
     "contact.cta_button": "LINE-аар үнэгүй зөвлөгөө авах",
@@ -1763,14 +1722,15 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "support2.name": "Вэбсайт бэлтгэх (хүсэлтэй бол)",
     "support2.desc": "Ивээн тэтгэгч олох, портфолио болгон ашиглах вэбсайт бэлтгэнэ.",
     "support3.name": "Хоолны дэмжлэг (хүсэлтэй бол)",
-    "support3.desc": "Мэргэжлийн тэжээллэгчийн хоолны зөвлөгөө.",
+    "support3.desc": "Мэргэжлийн тэжээллэгчийн хоолны зөвлөгөө (1 долоо хоногийн туршилт хийх боломжтой).",
     "support4.name": "Хувийн англи хэлний хичээл (хүсэлтэй бол)",
-    "support4.desc": "Нэг нэгтэй англи хэлний ярианы хичээл.",
+    "support4.desc": "Нэг нэгтэй англи хэлний ярианы хичээл (эрхийн дэвтэр байдаг, үнэгүй туршилтын хичээл бий).",
     "opt4.name": "Хоолны дэмжлэг",
-    "opt4.desc": "Мэргэжлийн тэжээллэгчийн хоолны зөвлөгөө.",
+    "opt4.desc": "Мэргэжлийн тэжээллэгчийн хоолны зөвлөгөө (1 долоо хоногийн туршилт хийх боломжтой).",
     "opt5.name": "Хувийн англи хэлний хичээл",
-    "opt5.desc": "Нэг нэгтэй англи хэлний ярианы хичээл.",
-    "status.pending": "Тодорхойгүй байгаа"
+    "opt5.desc": "Нэг нэгтэй англи хэлний ярианы хичээл (эрхийн дэвтэр байдаг, үнэгүй туршилтын хичээл бий).",
+    "status.pending": "Тодорхойгүй байгаа",
+    "about.p4": "Чин сэтгэлээсээ туршихыг хүсч байвал таны хүсэл л хангалттай — үлдсэнийг нь бид бүх хүчээрээ дэмжинэ."
   },
   "ko": {
     "nav.service": "서비스",
@@ -1793,7 +1753,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "ticker.tag.asia": "아시아·오세아니아 외",
     "ticker.link": "서비스 보기",
     "service.h2": "LINK×MANAGEMENT을 선택하는 이유",
-    "service.intro": "호주·뉴질랜드·몽골에서 직접 뛰었던 경험을 바탕으로 강력한 네트워크를 보유하고 있으며, 다수의 실적을 바탕으로 합리적인 비용으로 신속하게 계약 협상을 지원합니다. 계약 협상뿐 아니라 홈페이지 제작, 식단 관리, 영어 회화 지도까지 각 분야 전문 인력이 나누어 담당합니다(식단 관리는 관리영양사, 영어 회화는 전문 강사가 담당).",
+    "service.intro": "아시아·오세아니아 지역에서 직접 뛰었던 경험을 바탕으로 강력한 네트워크를 보유하고 있으며, 다수의 실적을 바탕으로 합리적인 비용으로 신속하게 계약 협상을 지원합니다. 계약 협상뿐 아니라 홈페이지 제작, 식단 관리, 영어 회화 지도까지 각 분야 전문 인력이 나누어 담당합니다(식단 관리는 관리영양사, 영어 회화는 전문 강사가 담당).",
     "service.flow_title": "지원 절차",
     "step1.title": "문의 및 인터뷰",
     "step1.desc": "현재 상황과 희망하는 국가·레벨을 확인합니다.",
@@ -1844,7 +1804,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "about.locales_line2": "아시아·오세아니아 전역",
     "about.p1": "일본에는 진심으로 해외 진출에 도전하고 싶어 하는 선수가 많습니다. 하지만 그 첫걸음을 내딛을 환경과 정보는 아직 충분하지 않습니다.",
     "about.p2": "저희 LINK×MANAGEMENT은 바로 그런 선수들을 위해 시작되었습니다. 호주·뉴질랜드·몽골을 비롯한 아시아·오세아니아 클럽과의 강력한 네트워크를 바탕으로, 선수 한 명 한 명과 진심으로 마주하며 계약 협상을 지원합니다.",
-    "about.p3": "진심으로 도전하고 싶다는 마음만 있다면 그걸로 충분합니다. 나머지는 저희가 전력을 다해 도와드리겠습니다. 함께 해외라는 새로운 무대를 향해 나아갑시다.",
+    "about.p3": "나아가 계약 협상뿐만 아니라 홈페이지 제작, 식단 관리, 영어 회화 지도까지 각 분야 전문가들이 모여 선수의 커리어를 종합적으로 지원합니다.",
     "contact.h2": "문의하기",
     "contact.cta_text": "아래 채널 중 편하신 방법으로 편하게 연락 주세요.",
     "contact.cta_button": "LINE으로 무료 상담하기",
@@ -1871,14 +1831,15 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "support2.name": "홈페이지 제작(희망자)",
     "support2.desc": "스폰서 확보나 포트폴리오로 활용할 수 있는 홈페이지를 제작합니다.",
     "support3.name": "식단 관리(희망자)",
-    "support3.desc": "관리영양사의 식단 지도입니다.",
+    "support3.desc": "관리영양사의 식단 지도입니다(1주일 체험 가능).",
     "support4.name": "영어 회화 개인지도(희망자)",
-    "support4.desc": "1:1 맞춤형 영어 회화 레슨입니다.",
+    "support4.desc": "1:1 맞춤형 영어 회화 레슨입니다(회수권 있음·무료 체험 가능).",
     "opt4.name": "식단 관리",
-    "opt4.desc": "관리영양사의 식단 지도입니다.",
+    "opt4.desc": "관리영양사의 식단 지도입니다(1주일 체험 가능).",
     "opt5.name": "영어 회화 개인지도",
-    "opt5.desc": "1:1 맞춤형 영어 회화 레슨입니다.",
-    "status.pending": "협의 중"
+    "opt5.desc": "1:1 맞춤형 영어 회화 레슨입니다(회수권 있음·무료 체험 가능).",
+    "status.pending": "협의 중",
+    "about.p4": "\"진심으로 도전하고 싶다\"는 마음만 있다면 그걸로 충분합니다. 나머지는 저희가 전력을 다해 도와드리겠습니다."
   },
   "th": {
     "nav.service": "บริการ",
@@ -1901,7 +1862,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "ticker.tag.asia": "เอเชีย-โอเชียเนียและอื่นๆ",
     "ticker.link": "ดูบริการของเรา",
     "service.h2": "ทำไมต้อง LINK×MANAGEMENT",
-    "service.intro": "ด้วยประสบการณ์ที่เราเคยลงเล่นในออสเตรเลีย นิวซีแลนด์ และมองโกเลียด้วยตัวเอง เราจึงมีเครือข่ายที่แข็งแกร่งในภูมิภาคนี้ และใช้ผลงานที่ผ่านมาสนับสนุนการเจรจาสัญญาอย่างรวดเร็วในราคาที่เข้าถึงได้ นอกจากการเจรจาสัญญาแล้ว เรายังสนับสนุนการทำเว็บไซต์ การดูแลด้านโภชนาการ และการสอนภาษาอังกฤษ โดยแต่ละด้านมีผู้เชี่ยวชาญเฉพาะทางดูแล (โภชนาการดูแลโดยนักกำหนดอาหาร ภาษาอังกฤษดูแลโดยครูสอนภาษา)",
+    "service.intro": "ด้วยประสบการณ์ที่เราเคยลงเล่นในภูมิภาคเอเชีย-โอเชียเนียด้วยตัวเอง เราจึงมีเครือข่ายที่แข็งแกร่งในภูมิภาคนี้ และใช้ผลงานที่ผ่านมาสนับสนุนการเจรจาสัญญาอย่างรวดเร็วในราคาที่เข้าถึงได้ นอกจากการเจรจาสัญญาแล้ว เรายังสนับสนุนการทำเว็บไซต์ การดูแลด้านโภชนาการ และการสอนภาษาอังกฤษ โดยแต่ละด้านมีผู้เชี่ยวชาญเฉพาะทางดูแล (โภชนาการดูแลโดยนักกำหนดอาหาร ภาษาอังกฤษดูแลโดยครูสอนภาษา)",
     "service.flow_title": "ขั้นตอนการให้บริการ",
     "step1.title": "สอบถามและสัมภาษณ์",
     "step1.desc": "เราจะสอบถามสถานการณ์ปัจจุบันและประเทศ/ระดับที่คุณต้องการ",
@@ -1952,7 +1913,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "about.locales_line2": "ทั่วภูมิภาคเอเชีย-โอเชียเนีย",
     "about.p1": "ในญี่ปุ่นมีนักฟุตบอลจำนวนมากที่ตั้งใจจริงอยากท้าทายตัวเองในต่างประเทศ แต่สภาพแวดล้อมและข้อมูลสำหรับก้าวแรกนั้นยังไม่เพียงพอ",
     "about.p2": "LINK×MANAGEMENT ก่อตั้งขึ้นเพื่อนักฟุตบอลเหล่านี้โดยเฉพาะ เราใช้เครือข่ายที่แข็งแกร่งกับสโมสรในเอเชีย-โอเชียเนีย รวมถึงออสเตรเลีย นิวซีแลนด์ และมองโกเลีย เพื่อสนับสนุนการเจรจาสัญญาอย่างจริงใจกับนักฟุตบอลแต่ละคน",
-    "about.p3": "แค่คุณมีความตั้งใจจริงที่จะท้าทายตัวเอง ที่เหลือเราจะสนับสนุนอย่างสุดความสามารถ มาก้าวไปสู่ทิวทัศน์ใหม่ในต่างแดนไปด้วยกัน",
+    "about.p3": "นอกจากนี้ เรายังสนับสนุนไม่เพียงแค่การเจรจาสัญญา แต่รวมถึงการทำเว็บไซต์ การดูแลด้านโภชนาการ และการสอนภาษาอังกฤษ โดยผู้เชี่ยวชาญในแต่ละด้านร่วมมือกันสนับสนุนเส้นทางอาชีพของนักฟุตบอลอย่างรอบด้าน",
     "contact.h2": "ติดต่อเรา",
     "contact.cta_text": "สามารถติดต่อสอบถามได้ตามช่องทางด้านล่างนี้",
     "contact.cta_button": "ปรึกษาฟรีผ่าน LINE",
@@ -1979,14 +1940,15 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "support2.name": "การทำเว็บไซต์ (สำหรับผู้ที่ต้องการ)",
     "support2.desc": "เว็บไซต์ที่ใช้หาสปอนเซอร์หรือเป็นพอร์ตโฟลิโอ",
     "support3.name": "การสนับสนุนด้านโภชนาการ (สำหรับผู้ที่ต้องการ)",
-    "support3.desc": "คำแนะนำด้านโภชนาการโดยนักกำหนดอาหาร",
+    "support3.desc": "คำแนะนำด้านโภชนาการโดยนักกำหนดอาหาร (ทดลองได้ 1 สัปดาห์)",
     "support4.name": "การสอนภาษาอังกฤษแบบตัวต่อตัว (สำหรับผู้ที่ต้องการ)",
-    "support4.desc": "บทเรียนสนทนาภาษาอังกฤษแบบตัวต่อตัว",
+    "support4.desc": "บทเรียนสนทนาภาษาอังกฤษแบบตัวต่อตัว (มีบัตรคูปองหลายครั้ง มีบทเรียนทดลองฟรี)",
     "opt4.name": "การสนับสนุนด้านโภชนาการ",
-    "opt4.desc": "คำแนะนำด้านโภชนาการโดยนักกำหนดอาหาร",
+    "opt4.desc": "คำแนะนำด้านโภชนาการโดยนักกำหนดอาหาร (ทดลองได้ 1 สัปดาห์)",
     "opt5.name": "การสอนภาษาอังกฤษแบบตัวต่อตัว",
-    "opt5.desc": "บทเรียนสนทนาภาษาอังกฤษแบบตัวต่อตัว",
-    "status.pending": "อยู่ระหว่างพิจารณา"
+    "opt5.desc": "บทเรียนสนทนาภาษาอังกฤษแบบตัวต่อตัว (มีบัตรคูปองหลายครั้ง มีบทเรียนทดลองฟรี)",
+    "status.pending": "อยู่ระหว่างพิจารณา",
+    "about.p4": "แค่คุณมีความตั้งใจจริงที่จะท้าทายตัวเอง ที่เหลือเราจะสนับสนุนอย่างสุดความสามารถ"
   },
   "zh": {
     "nav.service": "服务内容",
@@ -2009,7 +1971,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "ticker.tag.asia": "亚太及更多地区",
     "ticker.link": "查看服务内容",
     "service.h2": "为什么选择 LINK×MANAGEMENT",
-    "service.intro": "凭借我们在澳大利亚、新西兰、蒙古的亲身踢球经验,我们在当地拥有牢固的人脉网络。凭借丰富的实绩,以更低的价格快速支持合同谈判。除合同谈判外,我们还提供网站制作、饮食支持、英语口语指导等服务,分别由各领域专业人员负责(饮食支持由注册营养师负责,英语指导由英语教练负责)。",
+    "service.intro": "凭借我们在亚太地区的亲身踢球经验,我们在当地拥有牢固的人脉网络。凭借丰富的实绩,以更低的价格快速支持合同谈判。除合同谈判外,我们还提供网站制作、饮食支持、英语口语指导等服务,分别由各领域专业人员负责(饮食支持由注册营养师负责,英语指导由英语教练负责)。",
     "service.flow_title": "服务流程",
     "step1.title": "咨询与访谈",
     "step1.desc": "了解您目前的状况以及希望前往的国家、水平等级。",
@@ -2060,7 +2022,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "about.locales_line2": "亚太地区全境",
     "about.p1": "在日本,有许多球员真心渴望挑战海外赛场。然而,迈出这一步所需的环境与信息仍远远不够完善。",
     "about.p2": "我们 LINK×MANAGEMENT 正是为这样的球员而成立。凭借与澳大利亚、新西兰、蒙古等亚太地区俱乐部之间的牢固联系,我们真诚地与每一位球员并肩同行,支持其合同谈判。",
-    "about.p3": "只要您怀有真心想要挑战的决心,剩下的就交给我们全力以赴。让我们一起迈向海外的全新风景。",
+    "about.p3": "此外,我们不仅提供合同谈判支持,还提供网站制作、饮食支持、英语指导等服务,由各领域专业人士组成的团队全方位支持球员的职业生涯。",
     "contact.h2": "联系我们",
     "contact.cta_text": "欢迎通过以下任意渠道与我们联系咨询。",
     "contact.cta_button": "通过LINE免费咨询",
@@ -2087,14 +2049,15 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "support2.name": "网站制作(可选)",
     "support2.desc": "可用于争取赞助或作为作品集展示的个人网站。",
     "support3.name": "饮食支持(可选)",
-    "support3.desc": "由注册营养师提供饮食指导。",
+    "support3.desc": "由注册营养师提供饮食指导(可试用一周)。",
     "support4.name": "英语一对一指导(可选)",
-    "support4.desc": "一对一英语口语课程。",
+    "support4.desc": "一对一英语口语课程(可购买课时套餐;提供免费体验课)。",
     "opt4.name": "饮食支持",
-    "opt4.desc": "由注册营养师提供饮食指导。",
+    "opt4.desc": "由注册营养师提供饮食指导(可试用一周)。",
     "opt5.name": "英语一对一指导",
-    "opt5.desc": "一对一英语口语课程。",
-    "status.pending": "待定"
+    "opt5.desc": "一对一英语口语课程(可购买课时套餐;提供免费体验课)。",
+    "status.pending": "待定",
+    "about.p4": "只要您怀有真心想要挑战的决心,剩下的就交给我们全力以赴。"
   },
   "es": {
     "nav.service": "Servicios",
@@ -2117,7 +2080,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "ticker.tag.asia": "Asia, Oceanía y Más",
     "ticker.link": "Ver servicios",
     "service.h2": "Por qué LINK×MANAGEMENT",
-    "service.intro": "Al haber jugado nosotros mismos en Australia, Nueva Zelanda y Mongolia, contamos con conexiones sólidas en la región. Utilizamos nuestra trayectoria comprobada para apoyar negociaciones de contrato de forma rápida y accesible. Además de la negociación de contratos, también apoyamos la creación de sitios web, la orientación alimentaria y clases de inglés — cada una a cargo de un especialista (un nutricionista para el apoyo alimentario y un profesor de inglés para las clases).",
+    "service.intro": "Al haber jugado nosotros mismos en la región de Asia y Oceanía, contamos con conexiones sólidas en la zona. Utilizamos nuestra trayectoria comprobada para apoyar negociaciones de contrato de forma rápida y accesible. Además de la negociación de contratos, también apoyamos la creación de sitios web, la orientación alimentaria y clases de inglés — cada una a cargo de un especialista (un nutricionista para el apoyo alimentario y un profesor de inglés para las clases).",
     "service.flow_title": "Cómo funciona",
     "step1.title": "Consulta y entrevista",
     "step1.desc": "Conversamos sobre tu situación actual y el país o nivel al que aspiras.",
@@ -2168,7 +2131,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "about.locales_line2": "En toda Asia y Oceanía",
     "about.p1": "Muchos jugadores en Japón desean seriamente asumir el desafío de jugar en el extranjero. Pero el entorno y la información para dar ese primer paso siguen siendo insuficientes.",
     "about.p2": "LINK×MANAGEMENT fue fundada precisamente para estos jugadores. Aprovechando nuestros fuertes vínculos con clubes de toda Asia y Oceanía — incluyendo Australia, Nueva Zelanda y Mongolia — trabajamos de cerca con cada jugador para apoyar sus negociaciones de contrato.",
-    "about.p3": "Si tienes la determinación seria de asumir el desafío, eso es todo lo que necesitas — nosotros pondremos todo de nuestra parte. Busquemos juntos un nuevo horizonte en el extranjero.",
+    "about.p3": "Además, no solo apoyamos la negociación de contratos, sino también la creación de sitios web, la orientación alimentaria y las clases de inglés — con especialistas en cada área trabajando juntos para apoyar integralmente la carrera del jugador.",
     "contact.h2": "Contacto",
     "contact.cta_text": "No dudes en contactarnos por cualquiera de los siguientes canales.",
     "contact.cta_button": "Consulta gratuita por LINE",
@@ -2195,14 +2158,15 @@ html[lang="en"], html[lang="pt"], html[lang="mn"]{ --font-jp:'Noto Sans', 'Noto 
     "support2.name": "Creación de Sitio Web (opcional)",
     "support2.desc": "Un sitio web que puedes usar para buscar patrocinio o como portafolio.",
     "support3.name": "Apoyo Alimentario (opcional)",
-    "support3.desc": "Orientación alimentaria a cargo de un nutricionista certificado.",
+    "support3.desc": "Orientación alimentaria a cargo de un nutricionista certificado (prueba de una semana disponible).",
     "support4.name": "Clases Particulares de Inglés (opcional)",
-    "support4.desc": "Clases de conversación en inglés uno a uno.",
+    "support4.desc": "Clases de conversación en inglés uno a uno (paquetes de clases disponibles; clase de prueba gratuita disponible).",
     "opt4.name": "Apoyo Alimentario",
-    "opt4.desc": "Orientación alimentaria a cargo de un nutricionista certificado.",
+    "opt4.desc": "Orientación alimentaria a cargo de un nutricionista certificado (prueba de una semana disponible).",
     "opt5.name": "Clases Particulares de Inglés",
-    "opt5.desc": "Clases de conversación en inglés uno a uno.",
-    "status.pending": "Por definir"
+    "opt5.desc": "Clases de conversación en inglés uno a uno (paquetes de clases disponibles; clase de prueba gratuita disponible).",
+    "status.pending": "Por definir",
+    "about.p4": "Si tienes la determinación seria de asumir el desafío, eso es todo lo que necesitas — nosotros pondremos todo de nuestra parte."
   }
 };
 
