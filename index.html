@@ -813,6 +813,28 @@ html[lang="ko"]{ --font-jp:'Noto Sans KR', 'Manrope', sans-serif; }
 html[lang="th"]{ --font-jp:'Noto Sans Thai', 'Manrope', sans-serif; }
 html[lang="zh"]{ --font-jp:'Noto Sans SC', 'Manrope', sans-serif; }
 html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'Manrope', 'Zen Kaku Gothic New', sans-serif; }
+
+.lp-link{
+  display:inline-flex;align-items:center;gap:.4em;
+  text-decoration:none;
+}
+.lp-link .name{
+  border-bottom:1px solid var(--line-strong);
+  transition:border-color .2s var(--ease), color .2s var(--ease);
+}
+.lp-link:hover .name{color:var(--accent);border-color:var(--accent);}
+.lp-link::after{
+  content:"";
+  width:.9em;height:.9em;flex-shrink:0;
+  background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/contain no-repeat;
+  color:var(--ink-faint);
+  opacity:0;
+  transform:translateX(-3px);
+  transition:opacity .2s var(--ease), transform .2s var(--ease);
+}
+.lp-link:hover::after{opacity:1;transform:translateX(0);color:var(--accent);}
 </style>
 <link href="https://link-management.pages.dev/" rel="canonical"/><meta content="website" property="og:type"/><meta content="LINK×MANAGEMENT" property="og:site_name"/><meta content="LINK×MANAGEMENT | 海外サッカー移籍エージェント・契約交渉サポート" property="og:title"/><meta content="オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。" property="og:description"/><meta content="https://link-management.pages.dev/" property="og:url"/><meta content="https://link-management.pages.dev/og-image.jpg" property="og:image"/><meta content="ja_JP" property="og:locale"/><meta content="summary_large_image" name="twitter:card"/><meta content="LINK×MANAGEMENT | 海外サッカー移籍エージェント・契約交渉サポート" name="twitter:title"/><meta content="オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。" name="twitter:description"/><meta content="https://link-management.pages.dev/og-image.jpg" name="twitter:image"/><script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -1068,7 +1090,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'M
 <h2 data-i18n="service.h2">なぜLINK×MANAGEMENTなのか</h2>
 </div>
 <p class="service-intro" data-i18n="service.intro">アジア・オセアニア地域でプレーした経験から強いコネクションがあり、多数の実績を活かし低価格で契約交渉を迅速にサポートいたします。契約交渉だけでなく、動画作成・ホームページ作成・食事サポート・英会話指導まで、それぞれの専門分野に分かれた複数人体制でサポートします(食事サポートは管理栄養士、英会話は英会話講師が担当)。</p>
-<h3 class="subblock-title" data-i18n="support.title">5つのサポート</h3><div class="option-table"><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support1.name">契約交渉サポート</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support1.desc">海外で活躍したい選手への移籍の交渉サポート</span></div><div class="price" data-i18n="support1.price">¥70,000〜100,000</div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support2.name">ホームページ作成(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support2.desc">スポンサー獲得やポートフォリオとして使えるホームページを作成</span></div><div class="price">¥50,000〜80,000<span class="tax" data-i18n="opt2.tax">(税込)</span></div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support0.name">動画作成プラン</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support0.desc">選手紹介・プレー動画の作成</span></div><div class="price">¥5,000<span class="tax" data-i18n="opt1.tax">(税込)</span></div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support3.name">食事サポート(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support3.desc">管理栄養士による食事指導(1週間のトライアル可能)</span></div><div class="price" data-i18n="support3.price">¥5,000/月</div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support4.name">英会話個別指導(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support4.desc">マンツーマンでの英会話レッスン(回数券あり・無料体験あり)</span></div><div class="price" data-i18n="support4.price">¥2,000/回</div></div></div><h3 class="subblock-title" data-i18n="service.flow_title">サポートの流れ</h3>
+<h3 class="subblock-title" data-i18n="support.title">5つのサポート</h3><div class="option-table"><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support1.name">契約交渉サポート</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support1.desc">海外で活躍したい選手への移籍の交渉サポート</span></div><div class="price"></div></div><div class="option-row"><div><span class="cell-label">Support</span><a class="lp-link" href="/website/"><span class="name" data-i18n="support2.name">ホームページ作成(希望者)</span></a></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support2.desc">スポンサー獲得やポートフォリオとして使えるホームページを作成</span></div><div class="price">¥50,000〜80,000<span class="tax" data-i18n="opt2.tax">(税込)</span></div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support0.name">動画作成プラン</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support0.desc">選手紹介・プレー動画の作成</span></div><div class="price">¥5,000<span class="tax" data-i18n="opt1.tax">(税込)</span></div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support3.name">食事サポート(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support3.desc">管理栄養士による食事指導(1週間のトライアル可能)</span></div><div class="price" data-i18n="support3.price">¥5,000/月</div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support4.name">英会話個別指導(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support4.desc">マンツーマンでの英会話レッスン(回数券あり・無料体験あり)</span></div><div class="price" data-i18n="support4.price">¥2,000/回</div></div></div><h3 class="subblock-title" data-i18n="service.flow_title">サポートの流れ</h3>
 <div class="feature-list">
 <div class="feature">
 <div class="feature-media">
@@ -1138,14 +1160,14 @@ html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'M
 <div class="plan-card">
 <div class="plan-body">
 <h3 data-i18n="plan1.title">練習参加プラン</h3>
-<div class="price"><span class="yen" data-i18n="plan1.currency">¥</span><span data-i18n="plan1.amount">70,000</span><span class="tax" data-i18n="plan1.tax">(税込)</span></div>
+
 <div class="desc" data-i18n="plan1.desc">クラブへの練習参加・トライアル交渉(ヒアリングに基づき1〜3チーム)、契約交渉を行います。</div>
 </div>
 </div>
 <div class="plan-card">
 <div class="plan-body">
 <h3 data-i18n="plan2.title">本契約プラン</h3>
-<div class="price"><span class="yen" data-i18n="plan2.currency">¥</span><span data-i18n="plan2.amount">100,000</span><span class="tax" data-i18n="plan2.tax">(税込)</span></div>
+
 <div class="desc" data-i18n="plan2.desc">練習を経ずに直接加入を目指します(難しい場合は練習参加プランへの変更が可能です)。契約交渉を行います。</div>
 </div>
 </div>
@@ -1158,7 +1180,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'M
 <div class="price">¥5,000<span class="tax" data-i18n="opt1.tax">(税込)</span></div>
 </div>
 <div class="option-row">
-<div><span class="cell-label">Option</span><span class="name" data-i18n="opt2.name">個人用ホームページ作成プラン</span></div>
+<div><span class="cell-label">Option</span><a class="lp-link" href="/website/"><span class="name" data-i18n="opt2.name">個人用ホームページ作成プラン</span></a></div>
 <div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt2.desc">スポンサー獲得やポートフォリオとして使えるホームページを作成</span></div>
 <div class="price">¥50,000〜80,000<span class="tax" data-i18n="opt2.tax">(税込)</span></div>
 </div>
