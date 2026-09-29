@@ -851,6 +851,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'M
 
 /* ---- Intro loader ---- */
 .intro{display:none;}
+.motion.no-intro .intro{display:none !important;}
 .motion .intro{
   display:flex;
   position:fixed;inset:0;z-index:1000;
@@ -1122,8 +1123,18 @@ html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'M
 .motion.rm [data-media] .media-slot__ph{translate:0 0;}
 .motion.rm [data-media].is-in .media-slot__ph{animation:mediaIn 1.6s var(--ease-out) var(--d,0ms) forwards;animation-timeline:auto;}
 .motion.rm .marquee__sep{animation:none;}
+
+/* ---- Support rows link to detail pages: whole row is clickable ---- */
+@view-transition{navigation:auto;}
+.option-row:has(.lp-link){cursor:pointer;transition:background .3s var(--ease);}
+.option-row:has(.lp-link):hover{background:var(--bg-2);}
+.option-row > div:has(.lp-link){position:static;}
+.option-row .lp-link::before{content:"";position:absolute;inset:0;z-index:2;}
+.option-row .lp-link::after{opacity:.55;transform:none;}
+.option-row:hover .lp-link::after{opacity:1;color:var(--accent);transform:translateX(3px);}
+.option-row:hover .lp-link .name{color:var(--accent);border-color:var(--accent);}
 </style>
-<script>(function(){var r=document.documentElement;r.classList.add('motion');if(matchMedia('(prefers-reduced-motion: reduce)').matches)r.classList.add('rm');setTimeout(function(){r.classList.add('is-loaded');},3000);})();</script>
+<script>(function(){var r=document.documentElement;r.classList.add('motion');if(matchMedia('(prefers-reduced-motion: reduce)').matches)r.classList.add('rm');try{if(sessionStorage.getItem('lm_intro')){r.classList.add('no-intro');setTimeout(function(){r.classList.add('is-loaded');},60);}sessionStorage.setItem('lm_intro','1');}catch(e){}setTimeout(function(){r.classList.add('is-loaded');},3000);})();</script>
 <link href="https://link-management.pages.dev/" rel="canonical"/><meta content="website" property="og:type"/><meta content="LINK×MANAGEMENT" property="og:site_name"/><meta content="LINK×MANAGEMENT | 海外サッカー移籍エージェント・契約交渉サポート" property="og:title"/><meta content="オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。" property="og:description"/><meta content="https://link-management.pages.dev/" property="og:url"/><meta content="https://link-management.pages.dev/og-image.jpg" property="og:image"/><meta content="ja_JP" property="og:locale"/><meta content="summary_large_image" name="twitter:card"/><meta content="LINK×MANAGEMENT | 海外サッカー移籍エージェント・契約交渉サポート" name="twitter:title"/><meta content="オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。" name="twitter:description"/><meta content="https://link-management.pages.dev/og-image.jpg" name="twitter:image"/><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -1384,7 +1395,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'M
 <h2 data-i18n="service.h2">なぜLINK×MANAGEMENTなのか</h2>
 </div>
 <p class="service-intro" data-i18n="service.intro">アジア・オセアニア地域でプレーした経験から強いコネクションがあり、多数の実績を活かし低価格で契約交渉を迅速にサポートいたします。契約交渉だけでなく、動画作成・ホームページ作成・食事サポート・英会話指導まで、それぞれの専門分野に分かれた複数人体制でサポートします(食事サポートは管理栄養士、英会話は英会話講師が担当)。</p>
-<h3 class="subblock-title" data-i18n="support.title">5つのサポート</h3><div class="option-table"><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support1.name">契約交渉サポート</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support1.desc">海外で活躍したい選手への移籍の交渉サポート</span></div><div class="price"></div></div><div class="option-row"><div><span class="cell-label">Support</span><a class="lp-link" href="/website/"><span class="name" data-i18n="support2.name">ホームページ作成(希望者)</span></a></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support2.desc">スポンサー獲得やポートフォリオとして使えるホームページを作成</span></div><div class="price">¥50,000〜80,000<span class="tax" data-i18n="opt2.tax">(税込)</span></div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support0.name">動画作成プラン</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support0.desc">選手紹介・プレー動画の作成</span></div><div class="price">¥5,000<span class="tax" data-i18n="opt1.tax">(税込)</span></div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support3.name">食事サポート(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support3.desc">管理栄養士による食事指導(1週間のトライアル可能)</span></div><div class="price" data-i18n="support3.price">¥5,000/月</div></div><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support4.name">英会話個別指導(希望者)</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support4.desc">マンツーマンでの英会話レッスン(回数券あり・無料体験あり)</span></div><div class="price" data-i18n="support4.price">¥2,000/回</div></div></div><h3 class="subblock-title" data-i18n="service.flow_title">サポートの流れ</h3>
+<h3 class="subblock-title" data-i18n="support.title">5つのサポート</h3><div class="option-table"><div class="option-row"><div><span class="cell-label">Support</span><a class="lp-link" href="/contract/"><span class="name" data-i18n="support1.name">契約交渉サポート</span></a></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support1.desc">海外で活躍したい選手への移籍の交渉サポート</span></div><div class="price"></div></div><div class="option-row"><div><span class="cell-label">Support</span><a class="lp-link" href="/website/"><span class="name" data-i18n="support2.name">ホームページ作成(希望者)</span></a></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support2.desc">スポンサー獲得やポートフォリオとして使えるホームページを作成</span></div><div class="price">¥50,000〜80,000<span class="tax" data-i18n="opt2.tax">(税込)</span></div></div><div class="option-row"><div><span class="cell-label">Support</span><a class="lp-link" href="/video/"><span class="name" data-i18n="support0.name">動画作成プラン</span></a></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support0.desc">選手紹介・プレー動画の作成</span></div><div class="price">¥5,000<span class="tax" data-i18n="opt1.tax">(税込)</span></div></div><div class="option-row"><div><span class="cell-label">Support</span><a class="lp-link" href="/nutrition/"><span class="name" data-i18n="support3.name">食事サポート(希望者)</span></a></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support3.desc">管理栄養士による食事指導(1週間のトライアル可能)</span></div><div class="price" data-i18n="support3.price">¥5,000/月</div></div><div class="option-row"><div><span class="cell-label">Support</span><a class="lp-link" href="/english/"><span class="name" data-i18n="support4.name">英会話個別指導(希望者)</span></a></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support4.desc">マンツーマンでの英会話レッスン(回数券あり・無料体験あり)</span></div><div class="price" data-i18n="support4.price">¥2,000/回</div></div></div><h3 class="subblock-title" data-i18n="service.flow_title">サポートの流れ</h3>
 <div class="feature-list">
 <div class="feature">
 <div class="feature-media">
@@ -1469,7 +1480,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'M
 <h3 class="subblock-title" data-i18n="options.title">オプション</h3>
 <div class="option-table">
 <div class="option-row">
-<div><span class="cell-label">Option</span><span class="name" data-i18n="opt1.name">動画作成プラン</span></div>
+<div><span class="cell-label">Option</span><a class="lp-link" href="/video/"><span class="name" data-i18n="opt1.name">動画作成プラン</span></a></div>
 <div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt1.desc">選手紹介・プレー動画の作成</span></div>
 <div class="price">¥5,000<span class="tax" data-i18n="opt1.tax">(税込)</span></div>
 </div>
@@ -1483,7 +1494,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'M
 <div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt3.desc">航空券やホテルの予約を電話にてサポート(予約自体はご自身で行っていただきます)</span></div>
 <div class="price" data-i18n="opt3.free">無料</div>
 </div>
-<div class="option-row"><div><span class="cell-label">Option</span><span class="name" data-i18n="opt4.name">食事サポート</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt4.desc">管理栄養士による食事指導(1週間のトライアル可能)</span></div><div class="price" data-i18n="opt4.price">¥5,000/月</div></div><div class="option-row"><div><span class="cell-label">Option</span><span class="name" data-i18n="opt5.name">英会話個別指導</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt5.desc">マンツーマンでの英会話レッスン(回数券あり・無料体験あり)</span></div><div class="price" data-i18n="opt5.price">¥2,000/回</div></div></div>
+<div class="option-row"><div><span class="cell-label">Option</span><a class="lp-link" href="/nutrition/"><span class="name" data-i18n="opt4.name">食事サポート</span></a></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt4.desc">管理栄養士による食事指導(1週間のトライアル可能)</span></div><div class="price" data-i18n="opt4.price">¥5,000/月</div></div><div class="option-row"><div><span class="cell-label">Option</span><a class="lp-link" href="/english/"><span class="name" data-i18n="opt5.name">英会話個別指導</span></a></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="opt5.desc">マンツーマンでの英会話レッスン(回数券あり・無料体験あり)</span></div><div class="price" data-i18n="opt5.price">¥2,000/回</div></div></div>
 <div class="payment-methods">
 <span class="label" data-i18n="payment.label">お支払い方法</span>
 <ul>
