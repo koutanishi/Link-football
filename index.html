@@ -39,7 +39,7 @@
 }
 
 @media (prefers-reduced-motion: reduce){
-  *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;}
+  html:not(.motion) *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important;}
 }
 
 *,*::before,*::after{box-sizing:border-box;}
@@ -840,7 +840,9 @@ html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'M
    MOTION LAYER
    既存デザイン(ダーク基調・オレンジアクセント・角カット)を保ったまま、
    モーションだけを重ねるレイヤー。html.motion が付いた時のみ有効なので、
-   JS無効時・prefers-reduced-motion 時は従来どおりの静的表示になります。
+   JS無効時は従来どおりの静的表示になります。
+   端末の「視差効果を減らす」(prefers-reduced-motion)がオンでも演出は出し、
+   酔いにつながりやすいパララックス・フィルム粒子・マーキーの加速だけを止めます(html.rm)。
    ============================================================== */
 :root{
   --ease-out:cubic-bezier(.16,1,.3,1);
@@ -1113,8 +1115,15 @@ html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'M
 @keyframes vtOut{to{opacity:0;filter:blur(6px);}}
 @keyframes vtIn{from{opacity:0;filter:blur(6px);translate:0 10px;}}
 
+
+/* ---- 「視差効果を減らす」オンの端末向け: 酔いやすい演出だけ止める ---- */
+.motion.rm body::after{display:none;}
+.motion.rm .hero-media #hero-img{animation:none;translate:0 0;}
+.motion.rm [data-media] .media-slot__ph{translate:0 0;}
+.motion.rm [data-media].is-in .media-slot__ph{animation:mediaIn 1.6s var(--ease-out) var(--d,0ms) forwards;animation-timeline:auto;}
+.motion.rm .marquee__sep{animation:none;}
 </style>
-<script>(function(){var r=document.documentElement;if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;r.classList.add('motion');setTimeout(function(){r.classList.add('is-loaded');},3000);})();</script>
+<script>(function(){var r=document.documentElement;r.classList.add('motion');if(matchMedia('(prefers-reduced-motion: reduce)').matches)r.classList.add('rm');setTimeout(function(){r.classList.add('is-loaded');},3000);})();</script>
 <link href="https://link-management.pages.dev/" rel="canonical"/><meta content="website" property="og:type"/><meta content="LINK×MANAGEMENT" property="og:site_name"/><meta content="LINK×MANAGEMENT | 海外サッカー移籍エージェント・契約交渉サポート" property="og:title"/><meta content="オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。" property="og:description"/><meta content="https://link-management.pages.dev/" property="og:url"/><meta content="https://link-management.pages.dev/og-image.jpg" property="og:image"/><meta content="ja_JP" property="og:locale"/><meta content="summary_large_image" name="twitter:card"/><meta content="LINK×MANAGEMENT | 海外サッカー移籍エージェント・契約交渉サポート" name="twitter:title"/><meta content="オーストラリア・ニュージーランド・モンゴルなどアジア・オセアニアへのサッカー海外移籍をサポート。トライアル交渉から契約交渉まで、本気で海外を目指す選手のためのキャリアエージェントサービスです。" name="twitter:description"/><meta content="https://link-management.pages.dev/og-image.jpg" name="twitter:image"/><script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -2910,7 +2919,7 @@ html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'M
     }
     if(track && group){
       if(Math.abs(dy) > 0.5) dir = dy > 0 ? 1 : -1;
-      var speed = 70 + Math.min(900, Math.abs(velocity) * 22);
+      var speed = root.classList.contains('rm') ? 50 : 70 + Math.min(900, Math.abs(velocity) * 22);
       var w = group.offsetWidth;
       mx -= speed * dir * dt;
       if(mx <= -w) mx += w;
