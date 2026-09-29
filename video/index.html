@@ -14,53 +14,61 @@
 <link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%230E1113'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='900' font-size='24' fill='%23E2792E' text-anchor='middle'%3ELM%3C/text%3E%3C/svg%3E" rel="icon"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&amp;family=Noto+Sans+KR:wght@400;500;700;900&amp;family=Noto+Sans+Thai:wght@400;500;700;900&amp;family=Noto+Sans+SC:wght@400;500;700;900&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="/assets/site.css" rel="stylesheet"/>
 <link href="/assets/support.css" rel="stylesheet"/>
-<script>(function(){var r=document.documentElement;r.classList.add('motion');if(matchMedia('(prefers-reduced-motion: reduce)').matches)r.classList.add('rm');setTimeout(function(){r.classList.add('is-loaded');},1500);})();</script>
+<script>(function(){var r=document.documentElement;try{var l=localStorage.getItem('lf_lang');if(l)r.setAttribute('lang',l);}catch(e){}r.classList.add('motion');if(matchMedia('(prefers-reduced-motion: reduce)').matches)r.classList.add('rm');setTimeout(function(){r.classList.add('is-loaded');},1500);})();</script>
 </head>
-<body>
-<a class="skip-link" href="#main">本文へスキップ</a>
+<body data-page="video" data-name-key="support0.name" data-lead-key="v.lead">
+<a class="skip-link" data-i18n="skip" href="#main">本文へスキップ</a>
 <div aria-hidden="true" class="scroll-progress"></div>
 <div aria-hidden="true" class="cursor is-hidden"></div><div aria-hidden="true" class="cursor-dot is-hidden"></div>
 <header class="site-header" id="top">
 <div class="wrap">
-<a aria-label="LINK×MANAGEMENT トップへ" class="brand" href="/">
+<a aria-label="LINK×MANAGEMENT" class="brand" href="/">
 <span class="brand-logo-slot"><img alt="LINK×MANAGEMENT" src="/assets/img/logo.png" style="height:100%;width:auto;display:block;"/></span>
 <span class="brand-wordmark">LINK<span class="x">×</span>MANAGEMENT</span>
 </a>
 <div class="header-right">
-<nav aria-label="メインナビゲーション" class="nav-desktop">
-<a href="/#service">サービス</a>
-<a href="/#plans">プラン</a>
-<a href="/#about">運営者情報</a>
-<a class="nav-cta" href="#contact">無料相談</a>
+<nav class="nav-desktop">
+<a data-i18n="nav.service" href="/#service">サービス</a>
+<a data-i18n="nav.plans" href="/#plans">プラン</a>
+<a data-i18n="nav.about" href="/#about">運営者情報</a>
+<a class="nav-cta" data-i18n="nav.contact" href="#contact">無料相談</a>
 </nav>
-<button aria-controls="nav-mobile" aria-expanded="false" aria-label="メニューを開く" class="menu-toggle"><span></span><span></span><span></span></button>
+<div class="lang-switch">
+<button aria-controls="lang-listbox" aria-expanded="false" aria-haspopup="listbox" class="lang-trigger" id="lang-trigger" type="button">
+<span class="lang-trigger__flag" id="lang-trigger-flag">🇯🇵</span>
+<span class="lang-trigger__name" id="lang-trigger-name">日本語</span>
+<svg class="lang-trigger__chevron" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg>
+</button>
+<ul aria-label="Language / 言語を選択" class="lang-listbox" hidden="" id="lang-listbox" role="listbox" tabindex="-1"><li aria-selected="true" data-lang="ja" role="option" tabindex="-1"><span class="flag">🇯🇵</span><span class="name">日本語</span></li><li aria-selected="false" data-lang="en" role="option" tabindex="-1"><span class="flag">🇺🇸</span><span class="name">English</span></li><li aria-selected="false" data-lang="pt" role="option" tabindex="-1"><span class="flag">🇧🇷</span><span class="name">Português</span></li><li aria-selected="false" data-lang="mn" role="option" tabindex="-1"><span class="flag">🇲🇳</span><span class="name">Монгол</span></li><li aria-selected="false" data-lang="ko" role="option" tabindex="-1"><span class="flag">🇰🇷</span><span class="name">한국어</span></li><li aria-selected="false" data-lang="th" role="option" tabindex="-1"><span class="flag">🇹🇭</span><span class="name">ไทย</span></li><li aria-selected="false" data-lang="zh" role="option" tabindex="-1"><span class="flag">🇨🇳</span><span class="name">中文</span></li><li aria-selected="false" data-lang="es" role="option" tabindex="-1"><span class="flag">🇪🇸</span><span class="name">Español</span></li></ul>
+</div>
+<button aria-controls="nav-mobile" aria-expanded="false" aria-label="Menu" class="menu-toggle"><span></span><span></span><span></span></button>
 </div>
 </div>
 </header>
-<nav aria-label="モバイルナビゲーション" class="nav-mobile" id="nav-mobile">
-<a href="/">トップ</a>
-<a href="/#service">サービス</a>
-<a href="/#plans">プラン</a>
-<a href="/#about">運営者情報</a>
-<a class="nav-cta" href="#contact">無料相談</a>
+<nav class="nav-mobile" id="nav-mobile">
+<a data-i18n="nav.top" href="/">トップ</a>
+<a data-i18n="nav.service" href="/#service">サービス</a>
+<a data-i18n="nav.plans" href="/#plans">プラン</a>
+<a data-i18n="nav.about" href="/#about">運営者情報</a>
+<a class="nav-cta" data-i18n="nav.contact" href="#contact">無料相談</a>
 </nav>
 <main id="main">
 <section class="s-hero">
 <span aria-hidden="true" class="s-hero__bgword">Highlights</span>
 <div class="wrap">
-<nav aria-label="パンくずリスト" class="crumb"><a href="/">Top</a><span aria-hidden="true">/</span><a href="/#service">Service</a><span aria-hidden="true">/</span><span aria-current="page">動画作成プラン</span></nav>
+<nav class="crumb"><a href="/">Top</a><span aria-hidden="true">/</span><a href="/#service">Service</a><span aria-hidden="true">/</span><span aria-current="page" data-i18n="support0.name">動画作成プラン</span></nav>
 <div class="s-hero__grid">
 <div class="s-hero__copy">
 <span class="eyebrow">Support 03 · Video Production</span>
-<h1>プレーが伝わる<br>選手紹介動画</h1>
-<p class="lead">選手紹介・プレー動画を作成します。海外クラブへのアピールやSNSでの発信に使える映像にまとめます。</p>
-<div class="price-tag"><span class="k">Price</span><span class="v">¥5,000<small>(税込)</small></span></div>
+<h1 data-i18n-html="v.h1">プレーが伝わる<br>選手紹介動画</h1>
+<p class="lead" data-i18n="v.lead">選手紹介・プレー動画を作成します。海外クラブへのアピールやSNSでの発信に使える映像にまとめます。</p>
+<div class="price-tag"><span class="k">Price</span><span class="v">¥5,000<small data-i18n="opt1.tax">(税込)</small></span></div>
 <div class="s-hero__ctas">
-<a class="btn btn-accent" href="https://lin.ee/6agJDsY" rel="noopener" target="_blank"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 11.5c0 4.7-4.7 8.5-9.5 8.5-1 0-2-.15-2.9-.45L4 21l1.1-3.8C3.8 15.9 3 13.8 3 11.5 3 6.8 7.7 3 12.5 3S21 6.8 21 11.5Z"></path></svg><span>公式LINEで相談する</span></a>
-<a class="btn btn-outline" href="#contact">ほかの窓口で相談する</a>
+<a class="btn btn-accent" href="https://lin.ee/6agJDsY" rel="noopener" target="_blank"><svg fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path d="M21 11.5c0 4.7-4.7 8.5-9.5 8.5-1 0-2-.15-2.9-.45L4 21l1.1-3.8C3.8 15.9 3 13.8 3 11.5 3 6.8 7.7 3 12.5 3S21 6.8 21 11.5Z"></path></svg><span data-i18n="hero.cta.line">公式LINEで相談する</span></a>
+<a class="btn btn-outline" data-i18n="btn.other" href="#contact">ほかの窓口で相談する</a>
 </div>
 </div>
 <div class="visual" aria-hidden="true"><div class="visual__in"><div class="visual__grid"></div>
@@ -73,37 +81,24 @@
 </div>
 </section>
 <div aria-hidden="true" class="marquee"><div class="marquee__track"><div class="marquee__group"><span class="marquee__item">Highlights</span><span class="marquee__sep">×</span><span class="marquee__item">Player Profile</span><span class="marquee__sep">×</span><span class="marquee__item">Showreel</span><span class="marquee__sep">×</span><span class="marquee__item">Play Video</span><span class="marquee__sep">×</span></div><div class="marquee__group"><span class="marquee__item">Highlights</span><span class="marquee__sep">×</span><span class="marquee__item">Player Profile</span><span class="marquee__sep">×</span><span class="marquee__item">Showreel</span><span class="marquee__sep">×</span><span class="marquee__item">Play Video</span><span class="marquee__sep">×</span></div></div></div>
-<section id="for">
-<div class="wrap">
-<div class="section-head"><span class="eyebrow">For You</span><h2>こんな選手におすすめです</h2></div>
-<div class="fit-grid"><div class="fit-card"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17"></rect><path d="M8 12.5l3 3 5-6"></path></svg><p>海外クラブに送るプレー動画がまだない</p></div><div class="fit-card"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17"></rect><path d="M8 12.5l3 3 5-6"></path></svg><p>試合や練習の映像はあるが、編集できていない</p></div><div class="fit-card"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17"></rect><path d="M8 12.5l3 3 5-6"></path></svg><p>SNSやホームページで自分のプレーを発信したい</p></div></div>
-</div>
-</section>
-<section class="bleed-alt" id="detail">
-<div class="wrap">
-<div class="section-head"><span class="eyebrow">Detail</span><h2>動画の内容</h2><p class="sub">選手紹介とプレー動画を、用途に合わせてまとめます。</p></div>
-<div class="inc-grid"><div class="inc-card"><span class="k">Profile</span><h3>選手紹介</h3><p>名前やポジションなど、あなたがどんな選手かが伝わる紹介パートをつくります。</p></div><div class="inc-card"><span class="k">Highlights</span><h3>プレー動画</h3><p>試合や練習の映像から、あなたの持ち味が伝わるプレーをまとめます。</p></div><div class="inc-card"><span class="k">Use</span><h3>アピール・発信に活用</h3><p>クラブへのアピールや、SNS・ホームページでの発信に使えます。</p></div><div class="inc-card"><span class="k">Combo</span><h3>ホームページ作成と組み合わせ</h3><p>完成した動画は、ホームページ作成で作るページに掲載することもできます。</p></div></div>
-
-</div>
-</section>
-<section id="flow">
-<div class="wrap">
-<div class="section-head"><span class="eyebrow">Flow</span><h2>ご利用の流れ</h2></div>
-<ol class="flow" style="--n:4"><li><span class="num">STEP.01</span><h3>ご相談</h3><p>動画の用途や、見せたいプレーを伺います。</p></li><li><span class="num">STEP.02</span><h3>素材のお預かり</h3><p>試合や練習の映像をお預かりします。</p></li><li><span class="num">STEP.03</span><h3>編集・ご確認</h3><p>編集した動画をご確認いただき、修正を反映します。</p></li><li><span class="num">STEP.04</span><h3>納品</h3><p>完成した動画をお渡しします。</p></li></ol>
-</div>
-</section>
-<section class="bleed-alt" id="price"><div class="wrap">
-<div class="section-head"><span class="eyebrow">Price</span><h2>料金・ご利用条件</h2></div>
-<div class="option-table"><div class="option-row"><div><span class="cell-label">Support</span><span class="name">動画作成プラン</span></div><div><span class="cell-label">内容</span><span class="content">選手紹介・プレー動画の作成</span></div><div class="price">¥5,000<span class="tax">(税込)</span></div></div></div>
-
-<div class="payment-methods"><span class="label">お支払い方法</span><ul><li>クレジットカード</li><li>銀行振込</li><li>コンビニ決済(Stripe決済)</li></ul></div>
+<section id="for"><div class="wrap">
+<div class="section-head"><span class="eyebrow">For You</span><h2 data-i18n="sec.for">こんな選手におすすめです</h2></div>
+<div class="fit-grid"><div class="fit-card"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17"></rect><path d="M8 12.5l3 3 5-6"></path></svg><p data-i18n="v.fit1">海外クラブに送るプレー動画がまだない</p></div><div class="fit-card"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17"></rect><path d="M8 12.5l3 3 5-6"></path></svg><p data-i18n="v.fit2">試合や練習の映像はあるが、編集できていない</p></div><div class="fit-card"><svg aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17"></rect><path d="M8 12.5l3 3 5-6"></path></svg><p data-i18n="v.fit3">SNSやホームページで自分のプレーを発信したい</p></div></div>
 </div></section>
-<section id="related">
-<div class="wrap">
-<div class="section-head"><span class="eyebrow">Other Support</span><h2>ほかのサポート</h2><p class="sub">契約交渉だけでなく、専門分野ごとの担当者がつく体制で選手のキャリアを支えます。</p></div>
-<div class="rel-grid"><a class="rel-card" href="/contract/"><span class="k">Support 01</span><span class="n">契約交渉サポート</span><span class="d">海外クラブへの移籍・契約交渉をサポート</span><span class="go">詳しく見る<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><a class="rel-card" href="/website/"><span class="k">Support 02</span><span class="n">ホームページ作成</span><span class="d">スポンサー獲得やポートフォリオに使える選手のホームページ</span><span class="go">詳しく見る<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><a class="rel-card" href="/nutrition/"><span class="k">Support 04</span><span class="n">食事サポート</span><span class="d">管理栄養士による食事指導</span><span class="go">詳しく見る<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><a class="rel-card" href="/english/"><span class="k">Support 05</span><span class="n">英会話個別指導</span><span class="d">マンツーマンの英会話レッスン</span><span class="go">詳しく見る<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a></div>
-</div>
-</section>
+<section class="bleed-alt" id="detail"><div class="wrap">
+<div class="section-head"><span class="eyebrow">Detail</span><h2 data-i18n="v.inc.h2">動画の内容</h2><p class="sub" data-i18n="v.inc.sub">選手紹介とプレー動画を、用途に合わせてまとめます。</p></div>
+<div class="inc-grid"><div class="inc-card"><span class="k">Profile</span><h3 data-i18n="v.inc1.h">選手紹介</h3><p data-i18n="v.inc1.p">名前やポジションなど、あなたがどんな選手かが伝わる紹介パートをつくります。</p></div><div class="inc-card"><span class="k">Highlights</span><h3 data-i18n="v.inc2.h">プレー動画</h3><p data-i18n="v.inc2.p">試合や練習の映像から、あなたの持ち味が伝わるプレーをまとめます。</p></div><div class="inc-card"><span class="k">Use</span><h3 data-i18n="v.inc3.h">アピール・発信に活用</h3><p data-i18n="v.inc3.p">クラブへのアピールや、SNS・ホームページでの発信に使えます。</p></div><div class="inc-card"><span class="k">Combo</span><h3 data-i18n="v.inc4.h">ホームページ作成と組み合わせ</h3><p data-i18n="v.inc4.p">完成した動画は、ホームページ作成で作るページに掲載することもできます。</p></div></div>
+
+</div></section>
+<section id="flow"><div class="wrap">
+<div class="section-head"><span class="eyebrow">Flow</span><h2 data-i18n="sec.flow">ご利用の流れ</h2></div>
+<ol class="flow" style="--n:4"><li><span class="num">STEP.01</span><h3 data-i18n="flow.consult">ご相談</h3><p data-i18n="v.flow1.p">動画の用途や、見せたいプレーを伺います。</p></li><li><span class="num">STEP.02</span><h3 data-i18n="v.flow2.h">素材のお預かり</h3><p data-i18n="v.flow2.p">試合や練習の映像をお預かりします。</p></li><li><span class="num">STEP.03</span><h3 data-i18n="v.flow3.h">編集・ご確認</h3><p data-i18n="v.flow3.p">編集した動画をご確認いただき、修正を反映します。</p></li><li><span class="num">STEP.04</span><h3 data-i18n="v.flow4.h">納品</h3><p data-i18n="v.flow4.p">完成した動画をお渡しします。</p></li></ol>
+</div></section>
+<section class="bleed-alt" id="price"><div class="wrap"><div class="section-head"><span class="eyebrow">Price</span><h2 data-i18n="sec.price">料金・ご利用条件</h2></div><div class="option-table"><div class="option-row"><div><span class="cell-label">Support</span><span class="name" data-i18n="support0.name">動画作成プラン</span></div><div><span class="cell-label" data-i18n="opt.label">内容</span><span class="content" data-i18n="support0.desc">選手紹介・プレー動画の作成</span></div><div class="price">¥5,000<span class="tax" data-i18n="opt1.tax">(税込)</span></div></div></div><div class="payment-methods"><span class="label" data-i18n="payment.label">お支払い方法</span><ul><li data-i18n="payment.credit">クレジットカード</li><li data-i18n="payment.transfer">銀行振込</li><li data-i18n="payment.konbini">コンビニ決済(Stripe決済)</li></ul></div></div></section>
+<section id="related"><div class="wrap">
+<div class="section-head"><span class="eyebrow">Other Support</span><h2 data-i18n="sec.related">ほかのサポート</h2><p class="sub" data-i18n="sec.related.sub">契約交渉だけでなく、専門分野ごとの担当者がつく体制で選手のキャリアを支えます。</p></div>
+<div class="rel-grid"><a class="rel-card" href="/contract/"><span class="k">Support 01</span><span class="n" data-i18n="support1.name">契約交渉サポート</span><span class="d" data-i18n="sp.contract.desc">海外クラブへの移籍・契約交渉をサポート</span><span class="go"><span data-i18n="rel.go">詳しく見る</span><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><a class="rel-card" href="/website/"><span class="k">Support 02</span><span class="n" data-i18n="sp.website.name">ホームページ作成</span><span class="d" data-i18n="support2.desc">スポンサー獲得やポートフォリオとして使えるホームページを作成</span><span class="go"><span data-i18n="rel.go">詳しく見る</span><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><a class="rel-card" href="/nutrition/"><span class="k">Support 04</span><span class="n" data-i18n="opt4.name">食事サポート</span><span class="d" data-i18n="sp.nutrition.desc">管理栄養士による食事指導</span><span class="go"><span data-i18n="rel.go">詳しく見る</span><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a><a class="rel-card" href="/english/"><span class="k">Support 05</span><span class="n" data-i18n="opt5.name">英会話個別指導</span><span class="d" data-i18n="sp.english.desc">マンツーマンの英会話レッスン</span><span class="go"><span data-i18n="rel.go">詳しく見る</span><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></a></div>
+</div></section>
 <section class="bleed-alt" id="contact">
 <div class="wrap">
 <div class="section-head">
@@ -182,6 +177,7 @@
 </div>
 </div>
 </footer>
+<script src="/assets/i18n.js"></script>
 <script src="/assets/support.js"></script>
 </body>
 </html>
