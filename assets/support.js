@@ -129,7 +129,7 @@
   });
   function mark(sel, type){ $all(sel).forEach(function(el){ if(!el.hasAttribute('data-reveal')) el.setAttribute('data-reveal', type); }); }
   mark('.section-head .eyebrow', 'line');
-  mark('.section-head .sub, .fit-card > *, .inc-card > *, .flow li, .option-row > *, .note-list > *, .payment-methods, .rel-card > *, .contact-cta, .contact-card > *, .footer-brand, .footer-col, .inc-note', 'up');
+  mark('.section-head .sub, .role > *, .fit-card > *, .inc-card > *, .flow li, .option-row > *, .note-list > *, .payment-methods, .rel-card > *, .contact-cta, .contact-card > *, .footer-brand, .footer-col, .inc-note', 'up');
   mark('.flow', 'line');
   $all('.flow--photo li').forEach(function(li){
     li.setAttribute('data-media', '');
