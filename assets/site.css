@@ -801,7 +801,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{
 html[lang="ko"]{ --font-jp:'Noto Sans KR', 'Manrope', sans-serif; }
 html[lang="th"]{ --font-jp:'Noto Sans Thai', 'Manrope', sans-serif; }
 html[lang="zh"]{ --font-jp:'Noto Sans SC', 'Manrope', sans-serif; }
-html[lang="en"], html[lang="pt"], html[lang="mn"], html[lang="es"]{ --font-jp:'Manrope', 'Zen Kaku Gothic New', sans-serif; }
+html[lang="en"], html[lang="pt"], html[lang="es"]{ --font-jp:'Manrope', 'Zen Kaku Gothic New', sans-serif; }
 
 .lp-link{
   display:inline-flex;align-items:center;gap:.4em;
